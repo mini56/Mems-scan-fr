@@ -15,16 +15,16 @@ jobs:
       - name: Récupérer le code de MEMS-Scan (ce dépôt)
         uses: actions/checkout@v4
 
-      - name: Installer MSYS2 + Qt5 + outils de compilation
+      - name: Installer MSYS2 + Qt5 + outils de compilation (32 bits)
         uses: msys2/setup-msys2@v2
         with:
-          msystem: MINGW64
+          msystem: MINGW32
           update: true
           install: >-
-            mingw-w64-x86_64-toolchain
-            mingw-w64-x86_64-cmake
-            mingw-w64-x86_64-qt5
-            mingw-w64-x86_64-ninja
+            mingw-w64-i686-toolchain
+            mingw-w64-i686-cmake
+            mingw-w64-i686-qt5
+            mingw-w64-i686-ninja
 
       - name: Installer librosco (DLL déjà fournie) au chemin attendu
         run: |
@@ -34,7 +34,7 @@ jobs:
 
       - name: Compiler MEMS-Scan (version française)
         run: |
-          export PATH="/mingw64/share/qt5/plugins/platforms:/mingw64/lib/qt5/plugins/platforms:$PATH"
+          export PATH="/mingw32/share/qt5/plugins/platforms:/mingw32/lib/qt5/plugins/platforms:$PATH"
           mkdir build && cd build
           cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5
           ninja
@@ -47,8 +47,8 @@ jobs:
           cp build/mems-scan.exe /c/mems-scan/
           cp /c/mems-rosco/librosco.dll /c/mems-scan/
 
-          find /mingw64 -iname "qwindows.dll"
-          QWINDOWS_PATH=$(find /mingw64 -iname "qwindows.dll" | head -n1)
+          find /mingw32 -iname "qwindows.dll"
+          QWINDOWS_PATH=$(find /mingw32 -iname "qwindows.dll" | head -n1)
           cp "$QWINDOWS_PATH" /c/mems-scan/platforms/
 
           declare -A copied
@@ -56,7 +56,7 @@ jobs:
           while [ ${#to_process[@]} -gt 0 ]; do
             current="${to_process[0]}"
             to_process=("${to_process[@]:1}")
-            deps=$(ldd "$current" 2>/dev/null | grep -i '/mingw64/bin/' | awk '{print $3}' || true)
+            deps=$(ldd "$current" 2>/dev/null | grep -i '/mingw32/bin/' | awk '{print $3}' || true)
             for dep in $deps; do
               base=$(basename "$dep")
               if [ -z "${copied[$base]:-}" ]; then
