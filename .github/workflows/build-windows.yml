@@ -52,6 +52,10 @@ jobs:
           copy C:\Qt\5.15.2\mingw81_32\bin\Qt5Gui.dll C:\mems-scan\
           copy C:\Qt\5.15.2\mingw81_32\bin\Qt5Widgets.dll C:\mems-scan\
 
+          echo Recherche libstdc++
+          dir /S /B C:\Qt\libstdc++-6.dll
+          copy /Y CHEMIN_TROUVE\libstdc++-6.dll C:\mems-scan\
+
           echo Recherche des DLL MinGW
           dir C:\Qt\5.15.2\mingw81_32\bin\libstdc++-6.dll
           dir C:\Qt\Tools\mingw810_32\bin\libstdc++-6.dll
