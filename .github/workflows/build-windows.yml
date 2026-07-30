@@ -55,14 +55,21 @@ jobs:
           C:\Qt\5.15.2\mingw81_32\bin\qmake.exe -query
           C:\Qt\5.15.2\mingw81_32\bin\windeployqt.exe --version
           
-      - name: Rassembler l'exécutable et toutes ses DLL (windeployqt)
+      - name: Rassembler l'exécutable et les DLL Qt
         shell: cmd
         run: |
-           set PATH=C:\Qt\5.15.2\mingw81_32\bin;C:\Qt\Tools\mingw810_32\bin;C:\Windows\System32;C:\Windows
-           mkdir C:\mems-scan
-           copy build\mems-scan.exe C:\mems-scan\
-           copy C:\mems-rosco\librosco.dll C:\mems-scan\
-           C:\Qt\5.15.2\mingw81_32\bin\windeployqt.exe --release --compiler-runtime C:\mems-scan\mems-scan.exe
+          mkdir C:\mems-scan
+
+          copy build\mems-scan.exe C:\mems-scan\
+          copy C:\mems-rosco\librosco.dll C:\mems-scan\
+
+          C:\Qt\5.15.2\mingw81_32\bin\windeployqt.exe ^
+            --release ^
+            --compiler-runtime ^
+            --no-translations ^
+            --no-system-d3d-compiler ^
+            --verbose 2 ^
+            C:\mems-scan\mems-scan.exe
 
       - name: Publier le paquet Windows prêt à l'emploi
         uses: actions/upload-artifact@v4
