@@ -55,7 +55,7 @@ jobs:
           C:\Qt\5.15.2\mingw81_32\bin\qmake.exe -query
           C:\Qt\5.15.2\mingw81_32\bin\windeployqt.exe --version
           
-      - name: Rassembler l'exécutable et les DLL Qt
+      - name: Rassembler MEMS-Scan Windows
         shell: cmd
         run: |
           mkdir C:\mems-scan
@@ -63,13 +63,16 @@ jobs:
           copy build\mems-scan.exe C:\mems-scan\
           copy C:\mems-rosco\librosco.dll C:\mems-scan\
 
-          C:\Qt\5.15.2\mingw81_32\bin\windeployqt.exe ^
-            --release ^
-            --compiler-runtime ^
-            --no-translations ^
-            --no-system-d3d-compiler ^
-            --verbose 2 ^
-            C:\mems-scan\mems-scan.exe
+          copy C:\Qt\5.15.2\mingw81_32\bin\Qt5Core.dll C:\mems-scan\
+          copy C:\Qt\5.15.2\mingw81_32\bin\Qt5Gui.dll C:\mems-scan\
+          copy C:\Qt\5.15.2\mingw81_32\bin\Qt5Widgets.dll C:\mems-scan\
+
+          copy C:\Qt\Tools\mingw810_32\bin\libgcc_s_dw2-1.dll C:\mems-scan\
+          copy C:\Qt\Tools\mingw810_32\bin\libstdc++-6.dll C:\mems-scan\
+          copy C:\Qt\Tools\mingw810_32\bin\libwinpthread-1.dll C:\mems-scan\
+
+          mkdir C:\mems-scan\platforms
+          copy C:\Qt\5.15.2\mingw81_32\plugins\platforms\qwindows.dll C:\mems-scan\platforms\
 
       - name: Publier le paquet Windows prêt à l'emploi
         uses: actions/upload-artifact@v4
