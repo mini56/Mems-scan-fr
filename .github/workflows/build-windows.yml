@@ -75,7 +75,3 @@ jobs:
         with:
           name: MEMS-Scan-FR-Windows
           path: C:/mems-scan/**
-        uses: actions/upload-artifact@v4
-        with:
-          name: MEMS-Scan-FR-Windows
-          path: C:/mems-scan/**
