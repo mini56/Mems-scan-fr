@@ -172,7 +172,7 @@
        </sizepolicy>
       </property>
       <property name="text">
-       <string>Position moteur de régulation d'air ralenti</string>
+       <string>Position de régulation du d'air ralenti</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -525,7 +525,7 @@
        <item row="0" column="1">
         <widget class="QLabel" name="m_logFileNameLabel">
          <property name="text">
-          <string>Nom du fichier journal :</string>
+          <string>Nom du fichier :</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeft</set>
@@ -541,7 +541,7 @@
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>Démarrer l'enregistrement</string>
+          <string>Enregistrement</string>
          </property>
         </widget>
        </item>
@@ -551,7 +551,7 @@
           <bool>true</bool>
          </property>
          <property name="text">
-          <string>Arrêter l'enregistrement</string>
+          <string>Arrêter</string>
          </property>
         </widget>
        </item>
@@ -1269,7 +1269,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="text">
-       <string> Uniquement à des fins de réglage, le régime affiché va jusqu'à 2000 tr/min</string>
+       <string>Régime jusqu'à 2000 tr/min pour réglage du ralenti</string>
       </property>
      </widget>
 	 <widget class="QPushButton" name="m_resetECUButton">
