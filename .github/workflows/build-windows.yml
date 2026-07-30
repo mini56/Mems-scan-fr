@@ -8,67 +8,47 @@ on:
 jobs:
   build-windows:
     runs-on: windows-latest
-    defaults:
-      run:
-        shell: msys2 {0}
     steps:
       - name: Récupérer le code de MEMS-Scan (ce dépôt)
         uses: actions/checkout@v4
 
-      - name: Installer MSYS2 + Qt5 + outils de compilation (32 bits)
-        uses: msys2/setup-msys2@v2
+      - name: Installer Python (nécessaire pour aqtinstall)
+        uses: actions/setup-python@v5
         with:
-          msystem: MINGW32
-          update: true
-          install: >-
-            mingw-w64-i686-toolchain
-            mingw-w64-i686-cmake
-            mingw-w64-i686-qt5
-            mingw-w64-i686-ninja
+          python-version: '3.11'
+
+      - name: Installer aqtinstall (outil officiel de récupération de Qt)
+        run: pip install aqtinstall
+
+      - name: Installer Qt 5.15.2 MinGW 32 bits (correspond à votre librosco.dll)
+        run: |
+          aqt install-qt windows desktop 5.15.2 win32_mingw81 -O C:\Qt
+          aqt install-tool windows desktop tools_mingw qt.tools.win32_mingw810 -O C:\Qt
 
       - name: Installer librosco (DLL déjà fournie) au chemin attendu
+        shell: cmd
         run: |
-          mkdir -p /c/mems-rosco/include
-          cp rosco.h /c/mems-rosco/include/
-          cp prebuilt-librosco/librosco.dll /c/mems-rosco/librosco.dll
+          mkdir C:\mems-rosco\include
+          copy rosco.h C:\mems-rosco\include\rosco.h
+          copy prebuilt-librosco\librosco.dll C:\mems-rosco\librosco.dll
 
       - name: Compiler MEMS-Scan (version française)
+        shell: cmd
         run: |
-          export PATH="/mingw32/share/qt5/plugins/platforms:/mingw32/lib/qt5/plugins/platforms:$PATH"
-          mkdir build && cd build
-          cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5
-          ninja
+          set PATH=C:\Qt\5.15.2\mingw81_32\bin;C:\Qt\Tools\mingw810_32\bin;%PATH%
+          mkdir build
+          cd build
+          cmake .. -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+          mingw32-make -j4
 
-      - name: Rassembler l'exécutable et toutes ses DLL (détection automatique)
+      - name: Rassembler l'exécutable et toutes ses DLL (windeployqt)
+        shell: cmd
         run: |
-          set -ex
-          mkdir -p /c/mems-scan/platforms
-          ls -la build/
-          cp build/mems-scan.exe /c/mems-scan/
-          cp /c/mems-rosco/librosco.dll /c/mems-scan/
-
-          find /mingw32 -iname "qwindows.dll"
-          QWINDOWS_PATH=$(find /mingw32 -iname "qwindows.dll" | head -n1)
-          cp "$QWINDOWS_PATH" /c/mems-scan/platforms/
-
-          declare -A copied
-          to_process=("/c/mems-scan/mems-scan.exe")
-          while [ ${#to_process[@]} -gt 0 ]; do
-            current="${to_process[0]}"
-            to_process=("${to_process[@]:1}")
-            deps=$(ldd "$current" 2>/dev/null | grep -i '/mingw32/bin/' | awk '{print $3}' || true)
-            for dep in $deps; do
-              base=$(basename "$dep")
-              if [ -z "${copied[$base]:-}" ]; then
-                cp "$dep" /c/mems-scan/
-                copied[$base]=1
-                to_process+=("/c/mems-scan/$base")
-              fi
-            done
-          done
-
-          echo "--- Contenu final du dossier de distribution ---"
-          ls -la /c/mems-scan/
+          set PATH=C:\Qt\5.15.2\mingw81_32\bin;C:\Qt\Tools\mingw810_32\bin;%PATH%
+          mkdir C:\mems-scan
+          copy build\mems-scan.exe C:\mems-scan\
+          copy C:\mems-rosco\librosco.dll C:\mems-scan\
+          windeployqt --release --compiler-runtime C:\mems-scan\mems-scan.exe
 
       - name: Publier le paquet Windows prêt à l'emploi
         uses: actions/upload-artifact@v4
