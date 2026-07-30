@@ -49,6 +49,12 @@ jobs:
           dir C:\Qt\5.15.2\mingw81_32\bin\windeployqt.exe
           dir C:\Qt\5.15.2\mingw81_32\plugins\platforms
           
+      - name: Diagnostic Qt
+        shell: cmd
+        run: |
+          C:\Qt\5.15.2\mingw81_32\bin\qmake.exe -query
+          C:\Qt\5.15.2\mingw81_32\bin\windeployqt.exe --version
+          
       - name: Rassembler l'exécutable et toutes ses DLL (windeployqt)
         shell: cmd
         run: |
