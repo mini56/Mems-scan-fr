@@ -64,6 +64,18 @@ jobs:
           copy /Y C:\Qt\Tools\mingw810_32\bin\libstdc++-6.dll C:\mems-scan\
           copy /Y C:\Qt\Tools\mingw810_32\bin\libgcc_s_dw2-1.dll C:\mems-scan\
           copy /Y C:\Qt\Tools\mingw810_32\bin\libwinpthread-1.dll C:\mems-scan\
+          
+          echo Copie libstdc++
+          copy /Y C:\Qt\Tools\mingw810_32\bin\libstdc++-6.dll C:\mems-scan\libstdc++-6.dll
+
+          echo Copie libgcc
+          copy /Y C:\Qt\Tools\mingw810_32\bin\libgcc_s_dw2-1.dll C:\mems-scan\libgcc_s_dw2-1.dll
+
+          echo Copie pthread
+          copy /Y C:\Qt\Tools\mingw810_32\bin\libwinpthread-1.dll C:\mems-scan\libwinpthread-1.dll
+
+          echo Verification apres copie
+          dir C:\mems-scan\*.dll
 
           echo Contenu final du dossier
           dir C:\mems-scan
