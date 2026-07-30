@@ -124,11 +124,12 @@ if (MINGW)
   endif ()
 
   find_library (ZLIB zlib1)
-  if (ZLIB)
+if (ZLIB)
     message (STATUS "Found zlib1 at ${ZLIB}")
-  else ()
-    message (SEND_ERROR "Could not find zlib1!")
-  endif ()
+    list (APPEND EXTRA_DLLS ${ZLIB})
+else()
+    message (WARNING "zlib1.dll not found")
+endif()
 
   find_library (QTCORE_DLL Qt5Core)
   if (QTCORE_DLL)
@@ -179,16 +180,17 @@ if (MINGW)
   configure_file ("${CMAKE_SOURCE_DIR}/LICENSE" "${CMAKE_BINARY_DIR}/LICENSE.TXT" NEWLINE_STYLE WIN32)
 
   install (FILES "${CMAKE_BINARY_DIR}/README.TXT" "${CMAKE_BINARY_DIR}/LICENSE.TXT" DESTINATION "doc")
-  install (FILES ${EXE_FILE}
-                 ${LIBGCC}
-                 ${LIBSTDCPP}
-                 ${QTCORE_DLL}
-                 ${QTGUI_DLL}
-                 ${QTWIDGETS_DLL}
-                 ${LIBROSCO_DLL}
-				 ${LIPWINPTREAD}
-                 ${ZLIB}
-           DESTINATION ".")
+  install (FILES
+    ${EXE_FILE}
+    ${LIBGCC}
+    ${LIBSTDCPP}
+    ${QTCORE_DLL}
+    ${QTGUI_DLL}
+    ${QTWIDGETS_DLL}
+    ${LIBROSCO_DLL}
+    ${LIPWINPTREAD}
+    ${EXTRA_DLLS}
+    DESTINATION ".")
   install (FILES ${QWINDOWS_DLL} DESTINATION "platforms")
 
   set (CPACK_GENERATOR "ZIP")
