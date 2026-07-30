@@ -45,9 +45,16 @@ jobs:
         shell: cmd
         run: |
           set PATH=C:\Qt\5.15.2\mingw81_32\bin;C:\Qt\Tools\mingw810_32\bin;C:\Windows\System32;C:\Windows
+
           mkdir C:\mems-scan
+
           copy build\mems-scan.exe C:\mems-scan\
           copy C:\mems-rosco\librosco.dll C:\mems-scan\
+
+          mkdir C:\mems-scan\platforms
+
+          copy C:\Qt\5.15.2\mingw81_32\plugins\platforms\qwindows.dll C:\mems-scan\platforms\
+
           windeployqt --release --compiler-runtime C:\mems-scan\mems-scan.exe
 
       - name: Publier le paquet Windows prêt à l'emploi
