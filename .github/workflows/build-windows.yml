@@ -35,7 +35,7 @@ jobs:
       - name: Compiler MEMS-Scan (version française)
         shell: cmd
         run: |
-          set PATH=C:\Qt\5.15.2\mingw81_32\bin;C:\Qt\Tools\mingw810_32\bin;%PATH%
+          set PATH=C:\Qt\5.15.2\mingw81_32\bin;C:\Qt\Tools\mingw810_32\bin;C:\Qt\5.15.2\mingw81_32\plugins\platforms;C:\Windows\System32;C:\Windows
           mkdir build
           cd build
           cmake .. -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5
@@ -44,7 +44,7 @@ jobs:
       - name: Rassembler l'exécutable et toutes ses DLL (windeployqt)
         shell: cmd
         run: |
-          set PATH=C:\Qt\5.15.2\mingw81_32\bin;C:\Qt\Tools\mingw810_32\bin;%PATH%
+          set PATH=C:\Qt\5.15.2\mingw81_32\bin;C:\Qt\Tools\mingw810_32\bin;C:\Windows\System32;C:\Windows
           mkdir C:\mems-scan
           copy build\mems-scan.exe C:\mems-scan\
           copy C:\mems-rosco\librosco.dll C:\mems-scan\
