@@ -1,0 +1,77 @@
+name: Compilation Windows (MEMS-Scan FR)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - name: Récupérer le code de MEMS-Scan (ce dépôt)
+        uses: actions/checkout@v4
+
+      - name: Installer MSYS2 + Qt5 + outils de compilation
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-toolchain
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-qt5
+            mingw-w64-x86_64-ninja
+
+      - name: Installer librosco (DLL déjà fournie) au chemin attendu
+        run: |
+          mkdir -p /c/mems-rosco/include
+          cp rosco.h /c/mems-rosco/include/
+          cp prebuilt-librosco/librosco.dll /c/mems-rosco/librosco.dll
+
+      - name: Compiler MEMS-Scan (version française)
+        run: |
+          export PATH="/mingw64/share/qt5/plugins/platforms:/mingw64/lib/qt5/plugins/platforms:$PATH"
+          mkdir build && cd build
+          cmake .. -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+          ninja
+
+      - name: Rassembler l'exécutable et toutes ses DLL (détection automatique)
+        run: |
+          set -ex
+          mkdir -p /c/mems-scan/platforms
+          ls -la build/
+          cp build/mems-scan.exe /c/mems-scan/
+          cp /c/mems-rosco/librosco.dll /c/mems-scan/
+
+          find /mingw64 -iname "qwindows.dll"
+          QWINDOWS_PATH=$(find /mingw64 -iname "qwindows.dll" | head -n1)
+          cp "$QWINDOWS_PATH" /c/mems-scan/platforms/
+
+          declare -A copied
+          to_process=("/c/mems-scan/mems-scan.exe")
+          while [ ${#to_process[@]} -gt 0 ]; do
+            current="${to_process[0]}"
+            to_process=("${to_process[@]:1}")
+            deps=$(ldd "$current" 2>/dev/null | grep -i '/mingw64/bin/' | awk '{print $3}' || true)
+            for dep in $deps; do
+              base=$(basename "$dep")
+              if [ -z "${copied[$base]:-}" ]; then
+                cp "$dep" /c/mems-scan/
+                copied[$base]=1
+                to_process+=("/c/mems-scan/$base")
+              fi
+            done
+          done
+
+          echo "--- Contenu final du dossier de distribution ---"
+          ls -la /c/mems-scan/
+
+      - name: Publier le paquet Windows prêt à l'emploi
+        uses: actions/upload-artifact@v4
+        with:
+          name: MEMS-Scan-FR-Windows
+          path: C:/mems-scan/**
