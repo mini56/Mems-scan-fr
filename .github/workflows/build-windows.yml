@@ -41,21 +41,13 @@ jobs:
           cmake .. -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5
           mingw32-make -j4
 
-      - name: Rassembler l'exécutable et toutes ses DLL (windeployqt)
+      - name: Vérifier windeployqt
         shell: cmd
         run: |
-          set PATH=C:\Qt\5.15.2\mingw81_32\bin;C:\Qt\Tools\mingw810_32\bin;C:\Windows\System32;C:\Windows
-
-          mkdir C:\mems-scan
-
-          copy build\mems-scan.exe C:\mems-scan\
-          copy C:\mems-rosco\librosco.dll C:\mems-scan\
-
-          mkdir C:\mems-scan\platforms
-
-          copy C:\Qt\5.15.2\mingw81_32\plugins\platforms\qwindows.dll C:\mems-scan\platforms\
-
-          windeployqt --release --compiler-runtime --plugindir C:\Qt\5.15.2\mingw81_32\plugins C:\mems-scan\mems-scan.exe
+          where windeployqt
+          windeployqt --version
+          dir C:\Qt\5.15.2\mingw81_32\bin\windeployqt.exe
+          dir C:\Qt\5.15.2\mingw81_32\plugins\platforms
 
       - name: Publier le paquet Windows prêt à l'emploi
         uses: actions/upload-artifact@v4
