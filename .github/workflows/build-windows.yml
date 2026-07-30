@@ -53,9 +53,9 @@ jobs:
           copy C:\Qt\5.15.2\mingw81_32\bin\Qt5Gui.dll C:\mems-scan\
           copy C:\Qt\5.15.2\mingw81_32\bin\Qt5Widgets.dll C:\mems-scan\
 
-          copy C:\Qt\Tools\mingw810_32\bin\libgcc_s_dw2-1.dll C:\mems-scan\
-          copy C:\Qt\Tools\mingw810_32\bin\libstdc++-6.dll C:\mems-scan\
-          copy C:\Qt\Tools\mingw810_32\bin\libwinpthread-1.dll C:\mems-scan\
+          copy C:\Qt\5.15.2\mingw81_32\bin\libstdc++-6.dll C:\mems-scan\
+          copy C:\Qt\5.15.2\mingw81_32\bin\libgcc_s_dw2-1.dll C:\mems-scan\
+          copy C:\Qt\5.15.2\mingw81_32\bin\libwinpthread-1.dll C:\mems-scan\
 
           mkdir C:\mems-scan\platforms
           copy C:\Qt\5.15.2\mingw81_32\plugins\platforms\qwindows.dll C:\mems-scan\platforms\
