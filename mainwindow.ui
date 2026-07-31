@@ -4520,7 +4520,7 @@ p, li { white-space: pre-wrap; }
         <height>400</height>
        </rect>
       </property>
-      <!-- layout class="QGridLayout" name="actuators_layout1" columnstretch="3,1,1,1" rowstretch="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,99" -->
+      <layout class="QGridLayout" name="actuators_layout1" columnstretch="3,1,1,1" rowstretch="1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,99">
        <item row="1" column="0" colspan="4">
         <widget class="QLabel" name="m_testActuatorLabel">
 		 <property name="text">
@@ -4977,7 +4977,7 @@ p, li { white-space: pre-wrap; }
         </widget>
        </item>
 	  
-      <!-- /layout -->
+      </layout>
      </widget>
 
 	 <widget class="QLabel" name="label">
