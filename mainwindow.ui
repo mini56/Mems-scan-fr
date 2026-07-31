@@ -1106,7 +1106,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLCDNumber" name="e_FuelTrim_lcd">
       <property name="geometry">
        <rect>
-        <x>670</x>
+        <x>730</x>
         <y>380</y>
         <width>60</width>
         <height>27</height>
@@ -1126,7 +1126,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLCDNumber" name="e_IdleDecay_lcd">
       <property name="geometry">
        <rect>
-        <x>670</x>
+        <x>730</x>
         <y>410</y>
         <width>60</width>
         <height>27</height>
@@ -1146,7 +1146,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLCDNumber" name="e_IdleSpeed_lcd">
       <property name="geometry">
        <rect>
-        <x>670</x>
+        <x>730</x>
         <y>440</y>
         <width>60</width>
         <height>27</height>
@@ -1166,7 +1166,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLCDNumber" name="e_IgnitionAdvance_lcd">
       <property name="geometry">
        <rect>
-        <x>670</x>
+        <x>730</x>
         <y>470</y>
         <width>60</width>
         <height>27</height>
