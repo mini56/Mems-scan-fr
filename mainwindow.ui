@@ -5000,7 +5000,7 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>715</x>
+        <x>745</x>
         <y>140</y>
         <width>350</width>
         <height>30</height>
@@ -5017,7 +5017,7 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>670</x>
+        <x>700</x>
         <y>140</y>
         <width>40</width>
         <height>30</height>
@@ -5034,7 +5034,7 @@ p, li { white-space: pre-wrap; }
       </property>
       <property name="geometry">
        <rect>
-        <x>1070</x>
+        <x>1100</x>
         <y>140</y>
         <width>40</width>
         <height>30</height>
