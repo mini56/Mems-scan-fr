@@ -1269,7 +1269,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="text">
-       <string>Régime jusqu'à 2000 tr/min pour réglage fin du ralenti</string>
+       <string> Régime jusqu'à 2000 tr/min pour réglage fin du ralenti</string>
       </property>
      </widget>
 	 <widget class="QPushButton" name="m_resetECUButton">
