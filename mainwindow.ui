@@ -5085,7 +5085,7 @@ p, li { white-space: pre-wrap; }
 	 <widget class="QWidget" name="layoutWidget_6">
       <property name="geometry">
        <rect>
-        <x>613</x>
+        <x>793</x> <!-- +180 -->
         <y>100</y>
         <width>395</width>
         <height>30</height>
