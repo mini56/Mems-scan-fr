@@ -1319,7 +1319,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </widget>
-<!--     <widget class="QWidget" name="summary_tab">
+    <widget class="QWidget" name="summary_tab">
      <property name="accessibleName">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
@@ -4036,8 +4036,8 @@ p, li { white-space: pre-wrap; }
      <zorder>label_44</zorder>
      <zorder>faultcode1_lcd</zorder>
      <zorder>faultcodes_label</zorder>
-    </widget> -->
-
+    </widget>
+<!------------------------------------------------------>
 	<widget class="QWidget" name="errors">
      <attribute name="title">
       <string>Erreurs</string>
