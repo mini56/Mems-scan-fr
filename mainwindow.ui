@@ -1186,7 +1186,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="emi_rpm">
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>420</x>
         <y>445</y>
         <width>180</width>
         <height>16</height>
@@ -1205,7 +1205,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="emi_shorttermftrim">
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>420</x>
         <y>385</y>
         <width>180</width>
         <height>16</height>
@@ -1224,7 +1224,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="emi_idledecay">
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>420</x>
         <y>415</y>
         <width>180</width>
         <height>16</height>
@@ -1243,7 +1243,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="emi_ignadvance">
       <property name="geometry">
        <rect>
-        <x>400</x>
+        <x>420</x>
         <y>475</y>
         <width>180</width>
         <height>16</height>
