@@ -1319,7 +1319,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </widget>
-	<!-- debut -->
+	<!-- debut toutes les mesures -->
     <widget class="QWidget" name="summary_tab">
      <property name="accessibleName">
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -4038,7 +4038,7 @@ p, li { white-space: pre-wrap; }
      <zorder>faultcode1_lcd</zorder>
      <zorder>faultcodes_label</zorder>
     </widget>
-<!-- fin -->
+<!-- fin toutes les mesures -->
 	<widget class="QWidget" name="errors">
      <attribute name="title">
       <string>Erreurs</string>
@@ -6701,8 +6701,8 @@ p, li { white-space: pre-wrap; }
       </layout>
      </widget>     
     </widget>
-
-<!--     <widget class="QWidget" name="ECU">
+<!-- debut page ecu -->
+    <widget class="QWidget" name="ECU">
      <attribute name="title">
       <string>mode interactif</string>
      </attribute>
@@ -6846,7 +6846,8 @@ p, li { white-space: pre-wrap; }
        <string>&quot;0x0F&quot; réinitialisera les changements de la page émissions</string>
       </property>
      </widget>
-    </widget> -->
+    </widget>
+	<!-- fin page ecu -->
    </widget>
    <widget class="QWidget" name="layoutWidget_7">
     <property name="geometry">
