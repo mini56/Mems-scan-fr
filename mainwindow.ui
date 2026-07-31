@@ -6700,8 +6700,8 @@ p, li { white-space: pre-wrap; }
       </layout>
      </widget>     
     </widget>
-<!----------------------------------------------->
-     <widget class="QWidget" name="ECU">
+
+<!--     <widget class="QWidget" name="ECU">
      <attribute name="title">
       <string>mode interactif</string>
      </attribute>
@@ -6845,9 +6845,7 @@ p, li { white-space: pre-wrap; }
        <string>&quot;0x0F&quot; réinitialisera les changements de la page émissions</string>
       </property>
      </widget>
-    </widget>
-	
-	<!---------------------------->
+    </widget> -->
    </widget>
    <widget class="QWidget" name="layoutWidget_7">
     <property name="geometry">
