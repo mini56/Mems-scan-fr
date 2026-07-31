@@ -5134,7 +5134,7 @@ p, li { white-space: pre-wrap; }
      <widget class="Line" name="m_vline3">
       <property name="geometry">
        <rect>
-        <x>485</x>
+        <x>575</x>
         <y>20</y>
         <width>4</width>
         <height>410</height>
