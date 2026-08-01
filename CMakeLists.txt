@@ -72,6 +72,7 @@ add_executable (${PNAME} main.cpp
                          helpviewer.cpp
                          logger.cpp
                          serialdevenumerator.cpp
+                         splashprogress.cpp
                          mainwindow.cpp
                          aboutbox.cpp
                          optionsdialog.cpp
