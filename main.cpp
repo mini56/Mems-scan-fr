@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QIcon>
 #include <QPalette>
 #include <QSplashScreen>
 #include <QPixmap>
@@ -62,6 +63,7 @@ static void drawSplash(QPixmap &pix, int percent)
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
+  a.setWindowIcon(QIcon(":/icons/key.png"));
 
   // Écran de démarrage avec barre de progression réelle
   QPixmap splashPix(420, 150);

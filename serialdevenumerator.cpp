@@ -38,6 +38,8 @@ QStringList SerialDevEnumerator::getSerialDevList(QString savedDevName)
 
 #ifdef linux
 
+  // first check to see if this Linux distribution uses the /dev/serial/
+  // directory to store symlinks to each serial device
   QDir devSerial("/dev/serial/by-id/", "", QDir::Name, QDir::Files | QDir::NoDotAndDotDot);
 
   if (devSerial.exists())
@@ -59,6 +61,8 @@ QStringList SerialDevEnumerator::getSerialDevList(QString savedDevName)
     }
   }
 
+  // if nothing was found using the method above, simply return a list of
+  // devices that match the pattern "ttyS*"
   if (serialDevices.count() == 0)
   {
     QDir dev("/dev", "ttyUSB* ttyS*", QDir::NoSort, QDir::Files | QDir::System | QDir::Hidden | QDir::NoDotAndDotDot);
@@ -106,6 +110,25 @@ QStringList SerialDevEnumerator::getSerialDevList(QString savedDevName)
   DWORD dwSize = sizeof(COMMCONFIG);
 
   // apparently, COM ports can be numbered from 1 to 255
+  // Optimisation : si un port a déjà fonctionné précédemment, on le teste
+  // en premier. S'il répond, on évite de scanner les 255 ports un par un,
+  // ce qui accélère considérablement le démarrage.
+  if (!savedDevName.isEmpty())
+  {
+    COMMCONFIG ccSaved;
+    DWORD dwSizeSaved = sizeof(COMMCONFIG);
+    QByteArray savedDevBytes = savedDevName.toLocal8Bit();
+    if (GetDefaultCommConfig(savedDevBytes.constData(), &ccSaved, &dwSizeSaved))
+    {
+      if (g_splashProgressCallback)
+      {
+        g_splashProgressCallback(100);
+      }
+      serialDevices.removeDuplicates();
+      return serialDevices;
+    }
+  }
+
   for (int portNum = 1; portNum < 256; portNum++)
   {
     snprintf(portName, 8, "COM%d", portNum);

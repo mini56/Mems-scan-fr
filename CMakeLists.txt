@@ -8,7 +8,7 @@ add_definitions (-DPROJECTNAME=\"${PROJECTNAME}\")
 
 set (VER_MAJOR 0)
 set (VER_MINOR 5)
-set (VER_PATCH 1)
+set (VER_PATCH 0)
 
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
 set (CMAKE_AUTOMOC ON)
@@ -125,12 +125,11 @@ if (MINGW)
   endif ()
 
   find_library (ZLIB zlib1)
-if (ZLIB)
+  if (ZLIB)
     message (STATUS "Found zlib1 at ${ZLIB}")
-    list (APPEND EXTRA_DLLS ${ZLIB})
-else()
-    message (WARNING "zlib1.dll not found")
-endif()
+  else ()
+    message (SEND_ERROR "Could not find zlib1!")
+  endif ()
 
   find_library (QTCORE_DLL Qt5Core)
   if (QTCORE_DLL)
@@ -181,17 +180,16 @@ endif()
   configure_file ("${CMAKE_SOURCE_DIR}/LICENSE" "${CMAKE_BINARY_DIR}/LICENSE.TXT" NEWLINE_STYLE WIN32)
 
   install (FILES "${CMAKE_BINARY_DIR}/README.TXT" "${CMAKE_BINARY_DIR}/LICENSE.TXT" DESTINATION "doc")
-  install (FILES
-    ${EXE_FILE}
-    ${LIBGCC}
-    ${LIBSTDCPP}
-    ${QTCORE_DLL}
-    ${QTGUI_DLL}
-    ${QTWIDGETS_DLL}
-    ${LIBROSCO_DLL}
-    ${LIPWINPTREAD}
-    ${EXTRA_DLLS}
-    DESTINATION ".")
+  install (FILES ${EXE_FILE}
+                 ${LIBGCC}
+                 ${LIBSTDCPP}
+                 ${QTCORE_DLL}
+                 ${QTGUI_DLL}
+                 ${QTWIDGETS_DLL}
+                 ${LIBROSCO_DLL}
+				 ${LIPWINPTREAD}
+                 ${ZLIB}
+           DESTINATION ".")
   install (FILES ${QWINDOWS_DLL} DESTINATION "platforms")
 
   set (CPACK_GENERATOR "ZIP")

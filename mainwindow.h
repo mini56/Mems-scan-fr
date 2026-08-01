@@ -133,6 +133,11 @@ private:
 
     Logger *m_logger;
 
+    QTimer *m_reconnectTimer;
+    bool m_autoReconnectEnabled;
+    quint32 m_prevFaultMask;
+    bool m_prevFaultMaskValid;
+
     const float mapGaugeMaxPsi = 16.0;  // vorher static
     const float mapGaugeMaxKPa = 160.0; // vorher static
 
@@ -160,6 +165,8 @@ private slots:
     void onHelpAboutClicked();
     void onConnectClicked();
     void onDisconnectClicked();
+    void onReconnectAttempt();
+    void onToggleAlwaysOnTop(bool checked);
     void onStartLogging();
     void onStopLogging();
     void onMoveIACClicked();

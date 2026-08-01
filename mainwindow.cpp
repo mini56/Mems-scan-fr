@@ -12,6 +12,7 @@
 #include <QGraphicsOpacityEffect>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "styles.h"
 #include <qapplication.h>
 #include <QLCDNumber>
 
@@ -31,9 +32,19 @@ m_mems(0), m_options(0), m_aboutBox(0), m_pleaseWaitBox(0), m_helpViewerDialog(0
 
   m_options = new OptionsDialog(this->windowTitle(), this);
   qApp->processEvents();
+  qApp->setStyleSheet(m_options->getTheme() == "Sombre" ? STYLE_DARK : STYLE_LIGHT);
+
   m_mems = new MEMSInterface(m_options->getSerialDeviceName());
   qApp->processEvents();
   m_logger = new Logger(m_mems);
+
+  m_reconnectTimer = new QTimer(this);
+  m_reconnectTimer->setInterval(3000);
+  m_autoReconnectEnabled = false;
+  connect(m_reconnectTimer, SIGNAL(timeout()), this, SLOT(onReconnectAttempt()));
+
+  m_prevFaultMask = 0;
+  m_prevFaultMaskValid = false;
 
   connect(m_mems, SIGNAL(dataReady()), this, SLOT(onDataReady()));
   connect(m_mems, SIGNAL(connected()), this, SLOT(onConnect()));
@@ -107,7 +118,7 @@ m_mems(0), m_options(0), m_aboutBox(0), m_pleaseWaitBox(0), m_helpViewerDialog(0
   connect(this, SIGNAL(ignition_advance_minus()), m_mems, SLOT(on_m_ignition_advance_minusButton_clicked()));
   connect(this, SIGNAL(interactive_mode()),m_mems,SLOT(on_interactive_push_button_clicked()));
  setWindowIcon(QIcon(":/icons/key.png"));
-	  
+
   qApp->processEvents();
   setupWidgets();
 }
@@ -163,6 +174,13 @@ void MainWindow::setupWidgets()
   m_ui->m_helpAboutAction->setIcon(style()->standardIcon(QStyle::SP_MessageBoxInformation));
   m_ui->m_startLoggingButton->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
   m_ui->m_stopLoggingButton->setIcon(style()->standardIcon(QStyle::SP_MediaStop));
+
+  // Ajout de l'option "Toujours au premier plan" dans le menu Options
+  QAction *alwaysOnTopAction = new QAction("Toujours au premier plan", this);
+  alwaysOnTopAction->setCheckable(true);
+  alwaysOnTopAction->setChecked(false);
+  m_ui->m_optionsMenu->addAction(alwaysOnTopAction);
+  connect(alwaysOnTopAction, SIGNAL(toggled(bool)), this, SLOT(onToggleAlwaysOnTop(bool)));
 
   // connect menu item signals
   connect(m_ui->m_exitAction, SIGNAL(triggered()), this, SLOT(onExitSelected()));
@@ -497,6 +515,8 @@ void MainWindow::setupWidgets()
  */
 void MainWindow::onConnectClicked()
 {
+  m_autoReconnectEnabled = true;
+
   // If the worker thread hasn't been created yet, do that now.
   if (m_memsThread == 0)
   {
@@ -527,7 +547,7 @@ void MainWindow::onEcuIdReceived(uint8_t* id)
 {
   char idString[20];
 
-  sprintf(idString, "ECU ID: %02X %02X %02X %02X", id[0], id[1], id[2], id[3]);
+  sprintf(idString, "ID ECU : %02X %02X %02X %02X", id[0], id[1], id[2], id[3]);
   m_ui->m_ecuIdLabel->setText(QString(idString));
 }
 
@@ -537,6 +557,8 @@ void MainWindow::onEcuIdReceived(uint8_t* id)
  */
 void MainWindow::onDisconnectClicked()
 {
+  m_autoReconnectEnabled = false;
+  m_reconnectTimer->stop();
   m_ui->m_disconnectButton->setEnabled(false);
   m_mems->disconnectFromECU();
 }
@@ -720,6 +742,17 @@ void MainWindow::onDataReady()
  m_ui->m_faultLed22->setChecked((data->dtc2 & 0x20) != 0);
  m_ui->m_faultLed23->setChecked((data->dtc2 & 0x40) != 0);
  m_ui->m_faultLed24->setChecked((data->dtc2 & 0x80) != 0);
+
+  // Alerte (son + clignotement) si un NOUVEAU code défaut apparaît en direct
+  quint32 currentFaultMask = (quint32)data->dtc0 | ((quint32)data->dtc1 << 8) | ((quint32)data->dtc2 << 16);
+  if (m_prevFaultMaskValid && (currentFaultMask & ~m_prevFaultMask) != 0)
+  {
+    QApplication::beep();
+    QApplication::alert(this, 3000);
+  }
+  m_prevFaultMask = currentFaultMask;
+  m_prevFaultMaskValid = true;
+
  m_ui->m_RPMSensor->setChecked((data->uk3) != 0);
  m_ui->m_LambdaSensor->setChecked((data->lambda_sensor_status) != 1);
  m_ui->m_JackCount->setChecked((data->uk1C) == 255);
@@ -1038,6 +1071,11 @@ void MainWindow::onEditOptionsClicked()
   // if the user doesn't cancel the options dialog...
   if (m_options->exec() == QDialog::Accepted)
   {
+    if (m_options->getThemeChanged())
+    {
+      qApp->setStyleSheet(m_options->getTheme() == "Sombre" ? STYLE_DARK : STYLE_LIGHT);
+    }
+
     TemperatureUnits tempUnits = m_options->getTemperatureUnits();
 	LambdaScale LScale= m_options->getLambdaScale();
     QString tempUnitStr = m_tempUnitSuffix->value(tempUnits);
@@ -1126,6 +1164,7 @@ void MainWindow::clearRecordedAnomalies()
  */
 void MainWindow::onConnect()
 {
+  m_reconnectTimer->stop();
   m_ui->m_connectButton->setEnabled(false);
   m_ui->m_disconnectButton->setEnabled(true);
   m_ui->m_commsGoodLed->setChecked(false);
@@ -1149,7 +1188,7 @@ void MainWindow::onDisconnect()
   m_ui->m_engine_error->setChecked(false);
   m_ui->m_commsGoodLed->setChecked(false);
   m_ui->m_commsBadLed->setChecked(false);
-  m_ui->m_ecuIdLabel->setText("ECU ID:");
+  m_ui->m_ecuIdLabel->setText("ID ECU :");
   m_ui->m_mapGauge->setValue(0.0);
   m_ui->m_revCounter->setValue(0.0);
   m_ui->m_waterTempGauge->setValue(m_ui->m_waterTempGauge->minimum());
@@ -1201,6 +1240,7 @@ void MainWindow::onDisconnect()
   setActuatorTestsEnabled(false);
   setAdjustmentsEnabled(false);
   setActuatorsOffEnabled(false);
+  m_prevFaultMaskValid = false;
 }
 
 /**
@@ -1217,6 +1257,48 @@ void MainWindow::onReadError()
   m_ui->m_connectButton->setEnabled(true);
   m_ui->m_disconnectButton->setEnabled(true);
   m_ui->m_engine_error->setChecked(false);
+
+  // Tentative de reconnexion automatique (câble débranché puis rebranché),
+  // seulement si la déconnexion n'est pas volontaire
+  if (m_autoReconnectEnabled && !m_reconnectTimer->isActive())
+  {
+    m_reconnectTimer->start();
+  }
+}
+
+/**
+ * Tente une reconnexion automatique après une perte de communication
+ * (câble débranché). N'a d'effet que si la reconnexion automatique est
+ * toujours souhaitée (l'utilisateur n'a pas cliqué sur "Déconnecter").
+ */
+void MainWindow::onReconnectAttempt()
+{
+  if (m_autoReconnectEnabled)
+  {
+    onConnectClicked();
+  }
+  else
+  {
+    m_reconnectTimer->stop();
+  }
+}
+
+/**
+ * Bascule l'option "toujours au premier plan" pour la fenêtre principale.
+ */
+void MainWindow::onToggleAlwaysOnTop(bool checked)
+{
+  Qt::WindowFlags flags = this->windowFlags();
+  if (checked)
+  {
+    flags |= Qt::WindowStaysOnTopHint;
+  }
+  else
+  {
+    flags &= ~Qt::WindowStaysOnTopHint;
+  }
+  this->setWindowFlags(flags);
+  this->show();
 }
 
 /**
@@ -1487,7 +1569,7 @@ void MainWindow::onAdjustmentsResetComplete()
 
 void MainWindow::onConfirmResetAdjustments()
 {
-  if(QMessageBox::warning(this, "You will lose all adjustments!", "<p>This will reset all adjustments to factory settings.</p><p><b>Continue at your own risk!</b></p><i>Are you sure you want to continue?</i>", QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
+  if(QMessageBox::warning(this, "Vous allez perdre tous les réglages !", "<p>Ceci va réinitialiser tous les réglages aux valeurs d'usine.</p><p><b>Continuez à vos risques et périls !</b></p><i>Êtes-vous sûr de vouloir continuer ?</i>", QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
 	 {emit ResetAdjustmentsRequested();}	
 }
 
@@ -1498,7 +1580,7 @@ void MainWindow::onECUResetComplete()
 
 void MainWindow::onConfirmResetECU()
 {
-  if(QMessageBox::warning(this, "You will lose all data!", "<p>This will completely reset the ECU.</p><p><b>Continue at your own risk!</b></p><i>Are you sure you want to continue?</i>", QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
+  if(QMessageBox::warning(this, "Vous allez perdre toutes les données !", "<p>Ceci va complètement réinitialiser l'ECU.</p><p><b>Continuez à vos risques et périls !</b></p><i>Êtes-vous sûr de vouloir continuer ?</i>", QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
 	 {emit ResetECURequested();}	
 }
 
@@ -1601,7 +1683,7 @@ void MainWindow::on_m_O2Heater_TestButton_clicked()
 
 void MainWindow::on_m_O2Heater_OnButton_clicked()
 {
-    if(QMessageBox::warning(this, "WARNING: RISK OF DAMAGING THE SENSOR", "<p>Prolonged heating can overheat and damage the lambda sensor. </p><p>Also it is not advised to start the engine untill the sensor has sufficiently cooled down.</p><p><b>Continue at your own risk!</b></p><i>Are you sure you want to continue?</i>", QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
+    if(QMessageBox::warning(this, "ATTENTION : RISQUE D'ENDOMMAGER LA SONDE", "<p>Un chauffage prolongé peut surchauffer et endommager la sonde lambda. </p><p>Il est aussi déconseillé de démarrer le moteur avant que la sonde ait suffisamment refroidi.</p><p><b>Continuez à vos risques et périls !</b></p><i>Êtes-vous sûr de vouloir continuer ?</i>", QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
 	 {
 		m_ui->m_O2Heater_TestButton->setEnabled(false);
 		m_ui->m_O2Heater_OnButton->setEnabled(false);
