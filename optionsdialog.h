@@ -27,6 +27,8 @@ public:
     bool getSerialDeviceChanged() { return m_serialDeviceChanged; }
     TemperatureUnits getTemperatureUnits() { return m_tempUnits; }
 	LambdaScale getLambdaScale() { return m_lambdaScale; }
+    QString getTheme() { return m_theme; }
+    bool getThemeChanged() { return m_themeChanged; }
 
 protected:
     void accept();
@@ -42,6 +44,9 @@ private:
 	QLabel *m_lambdaScaleLabel;
 	QComboBox *m_lambdaScaleBox;
 
+    QLabel *m_themeLabel;
+    QComboBox *m_themeBox;
+
     QFrame *m_horizontalLineA;
 
     QCheckBox *m_refreshFuelMapCheckbox;
@@ -52,6 +57,8 @@ private:
     QString m_serialDeviceName;
     TemperatureUnits m_tempUnits;
 	LambdaScale m_lambdaScale;
+    QString m_theme;
+    bool m_themeChanged;
 
     bool m_serialDeviceChanged;
 
@@ -61,6 +68,7 @@ private:
     const QString m_settingSerialDev;
     const QString m_settingTemperatureUnits;
 	const QString m_settingLambdaScale;
+    const QString m_settingTheme;
 
     void setupWidgets();
     void readSettings();
@@ -68,4 +76,3 @@ private:
 };
 
 #endif // OPTIONSDIALOG_H
-
