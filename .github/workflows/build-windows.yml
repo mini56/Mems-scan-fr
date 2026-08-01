@@ -32,6 +32,11 @@ jobs:
           copy rosco.h C:\mems-rosco\include\rosco.h
           copy prebuilt-librosco\librosco.dll C:\mems-rosco\librosco.dll
 
+      - name: Installer zlib1.dll (DLL déjà fournie) au chemin attendu par CMake
+        shell: cmd
+        run: |
+          copy prebuilt-zlib\zlib1.dll "C:\Qt\5.15.2\mingw81_32\bin\zlib1.dll"
+
       - name: Compiler MEMS-Scan (version française)
         shell: cmd
         run: |
@@ -48,6 +53,7 @@ jobs:
 
           copy build\mems-scan.exe C:\mems-scan\
           copy C:\mems-rosco\librosco.dll C:\mems-scan\
+          copy prebuilt-zlib\zlib1.dll C:\mems-scan\
 
           copy C:\Qt\5.15.2\mingw81_32\bin\Qt5Core.dll C:\mems-scan\
           copy C:\Qt\5.15.2\mingw81_32\bin\Qt5Gui.dll C:\mems-scan\
