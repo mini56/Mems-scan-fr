@@ -23,13 +23,16 @@ m_mems(0), m_options(0), m_aboutBox(0), m_pleaseWaitBox(0), m_helpViewerDialog(0
 {
   buildSpeedAndTempUnitTables();
   m_ui->setupUi(this);
+  qApp->processEvents();
   this->setWindowTitle(PROJECTNAME + QString(" ") +
       QString::number(VER_MAJOR) + "." +
       QString::number(VER_MINOR) + "." +
       QString::number(VER_PATCH));
 
   m_options = new OptionsDialog(this->windowTitle(), this);
+  qApp->processEvents();
   m_mems = new MEMSInterface(m_options->getSerialDeviceName());
+  qApp->processEvents();
   m_logger = new Logger(m_mems);
 
   connect(m_mems, SIGNAL(dataReady()), this, SLOT(onDataReady()));
@@ -104,7 +107,8 @@ m_mems(0), m_options(0), m_aboutBox(0), m_pleaseWaitBox(0), m_helpViewerDialog(0
   connect(this, SIGNAL(ignition_advance_minus()), m_mems, SLOT(on_m_ignition_advance_minusButton_clicked()));
   connect(this, SIGNAL(interactive_mode()),m_mems,SLOT(on_interactive_push_button_clicked()));
  setWindowIcon(QIcon(":/icons/key.png"));
-
+	  
+  qApp->processEvents();
   setupWidgets();
 }
 
