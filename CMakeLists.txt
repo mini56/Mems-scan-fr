@@ -6,8 +6,8 @@ string (TOLOWER ${PROJECTNAME} PNAME)
 project (${PNAME})
 add_definitions (-DPROJECTNAME=\"${PROJECTNAME}\")
 
-set (VER_MAJOR 0)
-set (VER_MINOR 5)
+set (VER_MAJOR  0)
+set (VER_MINOR 6)
 set (VER_PATCH 0)
 
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
