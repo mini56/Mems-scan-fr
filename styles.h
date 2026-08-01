@@ -6,13 +6,13 @@
 // Feuille de style moderne - thème clair
 static const QString STYLE_LIGHT = R"(
 QWidget {
-    background-color: #f4f5f7;
+    background-color: #ffffff;
     color: #1f2430;
     font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
     font-size: 9pt;
 }
 QMainWindow, QDialog {
-    background-color: #f4f5f7;
+    background-color: #ffffff;
 }
 QGroupBox {
     background-color: #ffffff;
