@@ -6,9 +6,12 @@
 #include <QTimer>
 #include <QtMath>
 #include "mainwindow.h"
+#include "splashprogress.h"
 #include <QtPlugin>
 
-static void drawSpinner(QPixmap &pix, int angle)
+static int g_currentProgress = 0;
+
+static void drawSplash(QPixmap &pix, int percent)
 {
   pix.fill(QColor("#1f66e6"));
   QPainter painter(&pix);
@@ -17,51 +20,69 @@ static void drawSpinner(QPixmap &pix, int angle)
   painter.setPen(Qt::white);
   QFont titleFont("Segoe UI", 16, QFont::Bold);
   painter.setFont(titleFont);
-  painter.drawText(pix.rect().adjusted(0, -20, 0, 0), Qt::AlignCenter,
+  painter.drawText(pix.rect().adjusted(0, -25, 0, 0), Qt::AlignCenter,
                     QString("Démarrage de MEMS-Scan"));
   QFont versionFont("Segoe UI", 10);
   painter.setFont(versionFont);
   QString versionText = QString("v%1.%2.%3").arg(VER_MAJOR).arg(VER_MINOR).arg(VER_PATCH);
-  painter.drawText(pix.rect().adjusted(0, 30, 0, 0), Qt::AlignCenter, versionText);
+  painter.drawText(pix.rect().adjusted(0, 15, 0, 0), Qt::AlignCenter, versionText);
 
-  // Petite roue tournante façon Windows, faite de 12 points en dégradé
-  const int dotCount = 12;
-  const int radius = 12;
-  const QPoint center(pix.width() / 2, pix.height() - 30);
-  for (int i = 0; i < dotCount; ++i)
+  // Barre de progression façon "Crystal" (dégradé brillant, coins arrondis)
+  const int barWidth = 340;
+  const int barHeight = 18;
+  const int barX = (pix.width() - barWidth) / 2;
+  const int barY = pix.height() - 45;
+
+  QRect track(barX, barY, barWidth, barHeight);
+  painter.setPen(QColor(255, 255, 255, 90));
+  painter.setBrush(QColor(255, 255, 255, 40));
+  painter.drawRoundedRect(track, 9, 9);
+
+  int fillWidth = barWidth * qBound(0, percent, 100) / 100;
+  if (fillWidth > 4)
   {
-    double a = (angle + i * (360.0 / dotCount)) * M_PI / 180.0;
-    int x = center.x() + radius * qCos(a);
-    int y = center.y() + radius * qSin(a);
-    int alpha = 255 - (i * (255 / dotCount));
-    painter.setBrush(QColor(255, 255, 255, alpha));
+    QRect fillRect(barX, barY, fillWidth, barHeight);
+    QLinearGradient grad(fillRect.topLeft(), fillRect.bottomLeft());
+    grad.setColorAt(0.0, QColor("#d9ecff"));
+    grad.setColorAt(0.45, QColor("#ffffff"));
+    grad.setColorAt(0.46, QColor("#bfe0ff"));
+    grad.setColorAt(1.0, QColor("#7bb8ff"));
     painter.setPen(Qt::NoPen);
-    painter.drawEllipse(QPoint(x, y), 3, 3);
+    painter.setBrush(grad);
+    painter.drawRoundedRect(fillRect, 9, 9);
   }
+
+  painter.setPen(Qt::white);
+  QFont pctFont("Segoe UI", 8);
+  painter.setFont(pctFont);
+  painter.drawText(QRect(barX, barY + barHeight + 4, barWidth, 16),
+                    Qt::AlignCenter, QString("%1 %").arg(percent));
   painter.end();
 }
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
 
-  // Écran de démarrage animé, affiché pendant le chargement de la fenêtre principale
+  // Écran de démarrage avec barre de progression réelle
   QPixmap splashPix(420, 150);
-  drawSpinner(splashPix, 0);
+  drawSplash(splashPix, 0);
 
   QSplashScreen splash(splashPix);
   splash.show();
   a.processEvents();
 
-  int spinnerAngle = 0;
-  QTimer spinnerTimer;
-  QObject::connect(&spinnerTimer, &QTimer::timeout, [&]() {
-    spinnerAngle = (spinnerAngle + 20) % 360;
+  g_splashProgressCallback = [](int percent) {
+    g_currentProgress = percent;
+  };
+
+  QTimer refreshTimer;
+  QObject::connect(&refreshTimer, &QTimer::timeout, [&]() {
     QPixmap frame(420, 150);
-    drawSpinner(frame, spinnerAngle);
+    drawSplash(frame, g_currentProgress);
     splash.setPixmap(frame);
     a.processEvents();
   });
-  spinnerTimer.start(60);
+  refreshTimer.start(60);
   a.processEvents();
 
   QPalette palette = a.palette();
@@ -201,8 +222,9 @@ int main(int argc, char *argv[])
 
   MainWindow w;
 
-  spinnerTimer.stop();
-  w.show();
+  g_splashProgressCallback = 0;
+  refreshTimer.stop();
+  w.showMaximized();
   splash.finish(&w);
   return a.exec();
 }
