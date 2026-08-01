@@ -32,22 +32,28 @@ QLabel {
     background-color: transparent;
 }
 QPushButton {
-    background-color: #2f6fed;
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #7bb8ff, stop:0.49 #2f7dff, stop:0.5 #1f66e6, stop:1 #1653c2);
     color: #ffffff;
-    border: none;
-    border-radius: 6px;
+    border: 1px solid #14479e;
+    border-radius: 8px;
     padding: 6px 16px;
     font-weight: 600;
 }
 QPushButton:hover {
-    background-color: #245bd1;
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #96c8ff, stop:0.49 #4a90ff, stop:0.5 #2f7ded, stop:1 #1f66c8);
 }
 QPushButton:pressed {
-    background-color: #1c48a8;
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #1653c2, stop:0.5 #1f66e6, stop:0.51 #2f7dff, stop:1 #7bb8ff);
+    padding-top: 7px;
 }
 QPushButton:disabled {
-    background-color: #c7cbd4;
-    color: #8b909c;
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #f2f3f5, stop:0.5 #dfe2e8, stop:1 #cdd1d8);
+    color: #9aa0ab;
+    border: 1px solid #c7cbd4;
 }
 QLineEdit, QComboBox, QSpinBox, QDoubleSpinBox {
     background-color: #ffffff;
@@ -188,22 +194,28 @@ QLabel {
     background-color: transparent;
 }
 QPushButton {
-    background-color: #3d7bff;
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #6fa8f5, stop:0.49 #3d7bff, stop:0.5 #2c63e0, stop:1 #1f4bb8);
     color: #ffffff;
-    border: none;
-    border-radius: 6px;
+    border: 1px solid #14356e;
+    border-radius: 8px;
     padding: 6px 16px;
     font-weight: 600;
 }
 QPushButton:hover {
-    background-color: #598fff;
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #8ebbff, stop:0.49 #598fff, stop:0.5 #3d78f0, stop:1 #2c5cc4);
 }
 QPushButton:pressed {
-    background-color: #2f63d1;
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #1f4bb8, stop:0.5 #2c63e0, stop:0.51 #3d7bff, stop:1 #6fa8f5);
+    padding-top: 7px;
 }
 QPushButton:disabled {
-    background-color: #3a3f4a;
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 #3a3f4a, stop:0.5 #2f333c, stop:1 #26292f);
     color: #6b7180;
+    border: 1px solid #363b47;
 }
 QLineEdit, QComboBox, QSpinBox, QDoubleSpinBox {
     background-color: #2b2f39;
