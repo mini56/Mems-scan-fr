@@ -35,8 +35,8 @@ static void drawSplash(QPixmap &pix, int percent)
   const int barY = pix.height() - 45;
 
   QRect track(barX, barY, barWidth, barHeight);
-  painter.setPen(QColor(255, 255, 255, 90));
-  painter.setBrush(QColor(255, 255, 255, 40));
+  painter.setPen(QColor("#c7cbd4"));
+  painter.setBrush(QColor("#ffffff"));
   painter.drawRoundedRect(track, 9, 9);
 
   int fillWidth = barWidth * qBound(0, percent, 100) / 100;
