@@ -1,10 +1,32 @@
 #include <QApplication>
 #include <QPalette>
+#include <QSplashScreen>
+#include <QPixmap>
+#include <QPainter>
 #include "mainwindow.h"
 #include <QtPlugin>
 int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
+
+  // Écran de démarrage, affiché pendant le chargement de la fenêtre principale
+  QPixmap splashPix(420, 150);
+  splashPix.fill(QColor("#1f66e6"));
+  QPainter painter(&splashPix);
+  painter.setPen(Qt::white);
+  QFont titleFont("Segoe UI", 16, QFont::Bold);
+  painter.setFont(titleFont);
+  painter.drawText(splashPix.rect().adjusted(0, -20, 0, 0), Qt::AlignCenter,
+                    QString("Démarrage de MEMS-Scan"));
+  QFont versionFont("Segoe UI", 10);
+  painter.setFont(versionFont);
+  QString versionText = QString("v%1.%2.%3").arg(VER_MAJOR).arg(VER_MINOR).arg(VER_PATCH);
+  painter.drawText(splashPix.rect().adjusted(0, 30, 0, 0), Qt::AlignCenter, versionText);
+  painter.end();
+
+  QSplashScreen splash(splashPix);
+  splash.show();
+  a.processEvents();
 
   QPalette palette = a.palette();
   palette.setColor(QPalette::Window, Qt::white);
@@ -144,5 +166,6 @@ int main(int argc, char *argv[])
   MainWindow w;
 
   w.show();
+  splash.finish(&w);
   return a.exec();
 }
