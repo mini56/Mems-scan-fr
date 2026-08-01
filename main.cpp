@@ -43,10 +43,10 @@ static void drawSplash(QPixmap &pix, int percent)
   {
     QRect fillRect(barX, barY, fillWidth, barHeight);
     QLinearGradient grad(fillRect.topLeft(), fillRect.bottomLeft());
-    grad.setColorAt(0.0, QColor("#d9ecff"));
+    grad.setColorAt(0.0, QColor("#d8f5d8"));
     grad.setColorAt(0.45, QColor("#ffffff"));
-    grad.setColorAt(0.46, QColor("#bfe0ff"));
-    grad.setColorAt(1.0, QColor("#7bb8ff"));
+    grad.setColorAt(0.46, QColor("#bdeeb8"));
+    grad.setColorAt(1.0, QColor("#4cd964"));
     painter.setPen(Qt::NoPen);
     painter.setBrush(grad);
     painter.drawRoundedRect(fillRect, 9, 9);
