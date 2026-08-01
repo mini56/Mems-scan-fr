@@ -7,7 +7,7 @@
  */
 OptionsDialog::OptionsDialog(QString title, QWidget * parent):QDialog(parent),
 m_serialDeviceChanged(false),
-m_settingsGroupName("Settings"), m_settingSerialDev("SerialDevice"), m_settingTemperatureUnits("TemperatureUnits"), m_settingLambdaScale("LambdaScale")
+m_settingsGroupName("Settings"), m_settingSerialDev("SerialDevice"), m_settingTemperatureUnits("TemperatureUnits"), m_settingLambdaScale("LambdaScale"), m_settingTheme("Theme")
 {
   this->setWindowTitle(title);
   readSettings();
@@ -28,6 +28,9 @@ void OptionsDialog::setupWidgets()
 
   m_temperatureUnitsLabel = new QLabel("Unités de température :", this);
   m_temperatureUnitsBox = new QComboBox(this);
+
+  m_themeLabel = new QLabel("Thème de l'interface :", this);
+  m_themeBox = new QComboBox(this);
   
 /*   m_lambdaScaleLabel = new QLabel("Lambda sensor scale:", this);
   m_lambdaScaleBox = new QComboBox(this); */
@@ -49,6 +52,11 @@ void OptionsDialog::setupWidgets()
   m_temperatureUnitsBox->addItem("Fahrenheit");
   m_temperatureUnitsBox->addItem("Celsius");
   m_temperatureUnitsBox->setCurrentIndex((int)m_tempUnits);
+
+  m_themeBox->setEditable(false);
+  m_themeBox->addItem("Clair");
+  m_themeBox->addItem("Sombre");
+  m_themeBox->setCurrentIndex(m_theme == "Sombre" ? 1 : 0);
   
 /*   m_lambdaScaleBox->setEditable(false);
   m_lambdaScaleBox->addItem("_4mV_steps");
@@ -60,6 +68,9 @@ void OptionsDialog::setupWidgets()
 
   m_grid->addWidget(m_temperatureUnitsLabel, row, 0);
   m_grid->addWidget(m_temperatureUnitsBox, row++, 1);
+
+  m_grid->addWidget(m_themeLabel, row, 0);
+  m_grid->addWidget(m_themeBox, row++, 1);
   
 /*   m_grid->addWidget(m_lambdaScaleLabel, row, 0);  
   m_grid->addWidget(m_lambdaScaleBox, row++, 1); */
@@ -96,6 +107,10 @@ void OptionsDialog::accept()
   m_tempUnits = (TemperatureUnits) (m_temperatureUnitsBox->currentIndex());
   // m_lambdaScale = (LambdaScale) (m_lambdaScaleBox->currentIndex());
 
+  QString newTheme = m_themeBox->currentIndex() == 1 ? "Sombre" : "Clair";
+  m_themeChanged = (m_theme != newTheme);
+  m_theme = newTheme;
+
   writeSettings();
   done(QDialog::Accepted);
 }
@@ -111,6 +126,8 @@ void OptionsDialog::readSettings()
   m_serialDeviceName = settings.value(m_settingSerialDev, "").toString();
   m_tempUnits = (TemperatureUnits) (settings.value(m_settingTemperatureUnits, Celsius).toInt());
   // m_lambdaScale = (LambdaScale) (settings.value(m_settingLambdaScale, _5mV_steps).toInt());
+  m_theme = settings.value(m_settingTheme, "Clair").toString();
+  m_themeChanged = false;
 
   settings.endGroup();
 }
@@ -126,6 +143,7 @@ void OptionsDialog::writeSettings()
   settings.setValue(m_settingSerialDev, m_serialDeviceName);
   settings.setValue(m_settingTemperatureUnits, m_tempUnits);
   // settings.setValue(m_settingLambdaScale, m_lambdaScale);
+  settings.setValue(m_settingTheme, m_theme);
 
   settings.endGroup();
 }
