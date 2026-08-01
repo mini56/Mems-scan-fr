@@ -8,6 +8,8 @@
 #include <windows.h>
 #endif
 #include "serialdevenumerator.h"
+#include "splashprogress.h"
+#include <QApplication>
 
 /**
  * Constructor.
@@ -36,8 +38,6 @@ QStringList SerialDevEnumerator::getSerialDevList(QString savedDevName)
 
 #ifdef linux
 
-  // first check to see if this Linux distribution uses the /dev/serial/
-  // directory to store symlinks to each serial device
   QDir devSerial("/dev/serial/by-id/", "", QDir::Name, QDir::Files | QDir::NoDotAndDotDot);
 
   if (devSerial.exists())
@@ -59,8 +59,6 @@ QStringList SerialDevEnumerator::getSerialDevList(QString savedDevName)
     }
   }
 
-  // if nothing was found using the method above, simply return a list of
-  // devices that match the pattern "ttyS*"
   if (serialDevices.count() == 0)
   {
     QDir dev("/dev", "ttyUSB* ttyS*", QDir::NoSort, QDir::Files | QDir::System | QDir::Hidden | QDir::NoDotAndDotDot);
@@ -114,6 +112,15 @@ QStringList SerialDevEnumerator::getSerialDevList(QString savedDevName)
     if (GetDefaultCommConfig(portName, &cc, &dwSize))
     {
       serialDevices.append(portName);
+    }
+
+    if (g_splashProgressCallback)
+    {
+      g_splashProgressCallback((portNum * 100) / 255);
+    }
+    if (qApp)
+    {
+      qApp->processEvents();
     }
   }
 
