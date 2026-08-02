@@ -4,6 +4,10 @@
 #include <QList>
 #include <QDateTime>
 #include <QDir>
+#include <QDateTime>
+#include <QPixmap>
+#include <QScreen>
+#include <QStatusBar>
 #include <QHBoxLayout>
 #include <QThread>
 #include <QFileDialog>
