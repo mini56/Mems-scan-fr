@@ -2,46 +2,1304 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 <head>
-<title>Documentation @PROJECTNAME@</title>
-<style media="screen" type="text/css">
+<meta charset="UTF-8" />
+<title>Notice d'utilisation - @PROJECTNAME@</title>
+<style type="text/css">
     body {
-        background: #FFF8E0;
-        color: #000000;
-        font-family: verdana,sans;
+        background-color: #f4f6fa;
+        color: #2a2f3a;
+        font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        font-size: 10pt;
+        margin: 18px 26px;
     }
-    ul li {
-        margin: 0 10px 10px 0;
-        vertical-align:top
+    h1 {
+        color: #ffffff;
+        background-color: #1f66e6;
+        font-size: 15pt;
+        padding: 8px 12px;
+        margin-top: 34px;
+        border-radius: 6px;
+    }
+    h1#sommaire {
+        margin-top: 0;
+    }
+    h2 {
+        color: #ffffff;
+        background-color: #4b8bf5;
+        font-size: 12pt;
+        padding: 5px 10px;
+        margin-top: 24px;
+        border-radius: 5px;
+    }
+    h3 {
+        color: #14479e;
+        font-size: 11pt;
+        margin-top: 18px;
+        border-bottom: 2px solid #cddcfa;
+        padding-bottom: 3px;
+    }
+    p { margin: 8px 0; }
+    li { margin: 3px 0; }
+    strong { color: #16233d; }
+    a { color: #1f66e6; }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 14px 0 20px 0;
+        background-color: #ffffff;
+    }
+    th, td {
+        border: 1px solid #d6ddea;
+        padding: 6px 9px;
+        text-align: left;
+        vertical-align: top;
+        font-size: 9pt;
+    }
+    th {
+        background-color: #1f66e6;
+        color: #ffffff;
+    }
+
+    img {
+        max-width: 640px;
+        border: 1px solid #d6ddea;
+        margin: 14px auto 4px auto;
+        display: block;
+    }
+    em {
+        display: block;
+        text-align: center;
+        color: #5a6072;
+        font-size: 8.5pt;
+        margin-bottom: 18px;
     }
 </style>
 </head>
 <body>
-    <h3>Présentation</h3>
-    <p>@PROJECTNAME@ est un utilitaire logiciel destiné au diagnostic et au test du Rover Modular Engine Management System (MEMS). Actuellement, seul le MEMS 1.6 est pris en charge, reconnaissable à sa prise de diagnostic ronde à trois broches, généralement située dans le compartiment moteur près de la cloison pare-feu.</p>
-    <p><b>@PROJECTNAME@ s'appuie sur le travail de MEMSgauge de Colin et de MEMS-rosco de Leopold. La communication repose sur la bibliothèque librosco, spécifiquement adaptée pour @PROJECTNAME@. Je remercie Colin, Leopold, Alan, Andy et Martin pour leurs contributions et retours. Haro</p>
-    <p>Tous les véhicules équipés du MEMS 1.3, 1.6 ou 1.9 n'utilisent pas le même ensemble de capteurs et d'actionneurs. @PROJECTNAME@ a été testé sur une Mini SPi 1.3 ; certaines fonctionnalités du logiciel ne sont pas utilisées sur ce véhicule. Si vous souhaitez contribuer et possédez un moteur MEMS 1.6 avec turbo, boîte automatique, climatisation ou d'autres équipements absents sur la Mini SPi, merci de me contacter.</p>
-    <h3>Câble d'interface</h3>
-    <p>Pour communiquer avec l'ECU MEMS, @PROJECTNAME@ nécessite un câble d'interface spécial. Les informations pour le fabriquer se trouvent <a href="https://github.com/colinbourassa/librosco/blob/wiki/HardwareInterface.md">ici</a>.</p>
-    <p>En résumé : le câble doit être basé sur un convertisseur série USB 5V (TTL). Le FTDI TTL-232R-5V est recommandé. Le connecteur requis est le TE Connectivity 172201, à équiper de trois broches TE Connectivity 170280.</p>
-    <p>En regardant la face du connecteur avec le détrompeur (l'encoche) en bas, la broche 1 se trouve en haut. La numérotation se poursuit dans le sens horaire. La broche 1 doit être reliée au fil GND (noir) du câble FTDI. La broche 2 se connecte au fil RxD (jaune) du FTDI, et la broche 3 au fil TxD (orange). Les autres fils du FTDI ne sont pas utilisés ; ils doivent être coupés et isolés.</p>
-    <h3>Liens utiles :</h3>
-	<p><a href="http://alum.wpi.edu/~colinb/rover-mems-16-diagnostic-protocol.html">Protocole de diagnostic Rover MEMS 1.6 par Colin</a>
-	<p><a href="https://blackbox-solutions.com/help/SM002.html">Informations de diagnostic Rover MEMS 1.6/1.9</a>
-	<p><a href="https://groups.google.com/forum/?pli=1#!forum/mems-diagnostics">Groupe de discussion Google sur le diagnostic MEMS</a>
-	<h3>Fonctionnalités</h3>
-    <p><b>Paramètres :</b> Les jauges de température et de pression collecteur peuvent être changées d'unité via "Modifier les paramètres" dans le menu "Options".</p>
-    <p><b>ID ECU :</b> Affiche, en hexadécimal, la réponse de l'ECU à la commande 0xD0, envoyée lors de l'initialisation de la liaison série. Si vous disposez d'informations sur la signification de cette réponse de quatre octets, merci de les transmettre à l'auteur.</p>
-    <p><b>Communications :</b> Indicateurs d'état ; vert quand la liaison série fonctionne, rouge en cas de problème.
-	<p><b>Erreurs ECU :</b> Indicateur rouge si des erreurs sont présentes dans l'ECU.
-	<p><b>Aperçu :</b> Les paramètres les plus importants sont affichés dans cet onglet. Il permet aussi de démarrer et d'arrêter l'enregistrement.
-	<p><b>Réglages :</b> Plusieurs paramètres de l'ECU peuvent être ajustés manuellement, ou une réinitialisation complète de l'ECU peut être effectuée. Avant tout réglage, il est fortement recommandé de noter les valeurs actuelles afin de pouvoir toujours revenir aux réglages initiaux. La réinitialisation automatique de tous les réglages aux valeurs d'usine n'est pas (encore) possible.
-	<p><b>Erreurs :</b> Un total de 24 erreurs possibles enregistrées par l'ECU sont affichées. Toutes ne sont pas connues, mais toutes peuvent être effacées. Un indicateur vert s'allume également en présence d'un signal du capteur régime/PMH. Enfin, certains indicateurs signalent des anomalies. Ces anomalies ne sont PAS enregistrées par l'ECU, mais MEMS-Scan considère ces valeurs comme inhabituelles. Elles ne sont donc visibles/enregistrées que lorsque MEMS-Scan est connecté, et disparaissent à la déconnexion.
-	<p><b>Actionneurs :</b> Pour la sécurité du moteur, les tests d'actionneurs ne sont disponibles que lorsque le moteur est arrêté. Notez que tous les véhicules ne sont pas équipés de tous les actionneurs pour lesquels des fonctions de test sont proposées.</p>
-    <p><b>Toutes les données :</b> Affiche toutes les données reçues de l'ECU en réponse aux commandes 0x7D et 0x80. Une description est fournie quand elle est connue, et la réponse est interprétée si possible.</p>
-	<p></p>
-	<p><b><i>Remarque :</b><i> Les tests montrent que la position finale du moteur pas-à-pas de régulation d'air ne correspond parfois pas exactement à la position commandée. Si l'écart dépasse 1%, il est conseillé de sélectionner un "Latency Timer" plus élevé dans les paramètres avancés du port COM utilisé</i></p>
-    
 
+<table width="100%" cellpadding="18" cellspacing="0" style="background-color:#1f66e6; margin-bottom:22px;">
+<tr><td align="center">
+<span style="color:#ffffff; font-size:20pt; font-weight:bold;">@PROJECTNAME@</span><br/>
+<span style="color:#ffffff; font-size:12pt;">Notice d'utilisation compl&egrave;te &mdash; version fran&ccedil;aise</span><br/>
+<span style="color:#dbe8ff; font-size:9.5pt;">Logiciel de diagnostic pour calculateurs Rover MEMS &mdash; Mini SPi / MPi</span>
+</td></tr>
+</table>
+
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; Notice illustrée à partir de captures d’écran réelles du logiciel MEMS-Scan v 0.6.0, complétées par la documentation technique communautaire sur les calculateurs Rover MEMS (protocole ROSCO).</td></tr></table>
+<h1 id="sommaire">Sommaire</h1>
+<ol type="1">
+<li><p>Présentation générale et sécurité</p></li>
+<li><p>Matériel requis et connexion</p></li>
+<li><p>Onglet Aperçu — surveillance temps réel</p></li>
+<li><p>Onglet Réglages — réglages fins</p></li>
+<li><p>Onglet Erreurs — codes défauts et anomalies</p></li>
+<li><p>Onglet Actionneurs — test des actionneurs</p></li>
+<li><p>Onglet Toutes les données — table brute des paramètres</p></li>
+<li><p>L’enregistrement de logs et leur exploitation</p></li>
+<li><p>Guides pratiques par situation (recettes de diagnostic)</p></li>
+<li><p>Réglage du ralenti de base — procédure complète</p></li>
+<li><p>Dépannage rapide — tableau de synthèse</p></li>
+<li><p>Glossaire</p></li>
+<li><p>Circuit de dépression (durites) — Mini 1.3 SPI, point de panne fréquent</p></li>
+<li><p>Véhicules compatibles avec MEMS-Scan 0.5.2</p></li>
+<li><p>Nouveautés de la version française</p></li>
+<li><p>Contact</p></li>
+</ol>
+<h1 id="présentation-générale-et-sécurité">1. Présentation générale et sécurité</h1>
+<p>MEMS-Scan est un logiciel de diagnostic gratuit/communautaire pour les calculateurs Rover MEMS (Modular Engine Management System) équipant les Mini SPI (injection monopoint) et MPI (injection multipoint). Il dialogue avec l’ECU via le protocole propriétaire ROSCO (Rover Service Communications).</p>
+<p>La fenêtre principale comprend en permanence :</p>
+<ul>
+<li><p>Une barre de menu : File, Options, Help</p></li>
+<li><p>Les boutons Connecter / Déconnecter pour établir ou couper la liaison avec l’ECU</p></li>
+<li><p>Un champ ID ECU affichant l’identifiant du calculateur une fois connecté</p></li>
+<li><p>Deux voyants : Communications (vert = trafic actif sur la ligne, rouge = pas de communication) et Erreurs ECU (vert = au moins un code défaut actif)</p></li>
+<li><p>5 onglets fonctionnels : Aperçu, Réglages, Erreurs, Actionneurs, Toutes les données</p></li>
+</ul>
+<h2 id="ce-que-permet-mems-scan">1.1 Ce que permet MEMS-Scan</h2>
+<ul>
+<li><p>Lire toutes les données moteur en temps réel</p></li>
+<li><p>Lire, comprendre et effacer les codes défauts</p></li>
+<li><p>Tester manuellement chaque actionneur du véhicule (pompes, ventilateurs, vannes, injecteur, bobine)</p></li>
+<li><p>Ajuster finement richesse, ralenti et avance à l’allumage</p></li>
+<li><p>Réinitialiser les valeurs adaptatives ou l’ECU entier</p></li>
+<li><p>Enregistrer des sessions de données (logs) pour analyse a posteriori</p></li>
+</ul>
+<h2 id="consignes-de-sécurité-générales">1.2 Consignes de sécurité générales</h2>
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; Ne jamais tester Injecteur ou Bobine d’allumage moteur en marche : risque de sur-injection, d’incendie ou de choc électrique.</td></tr></table>
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; Ne jamais accélérer/emballer le moteur pendant un réglage du ralenti ou une initialisation du moteur pas à pas : cela fausse le calage.</td></tr></table>
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; Ne jamais brancher/débrancher le câble de diagnostic contact mis : risque d’activation intempestive de relais (ventilateurs, pompe à essence).</td></tr></table>
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; Un Réinitialiser l’ECU efface les valeurs adaptatives apprises (richesse, ralenti) : prévoir un temps de réapprentissage après coup (plusieurs cycles de conduite).</td></tr></table>
+<h2 id="repères-visuels-des-pièces-citées-dans-cette-notice">1.3 Repères visuels des pièces citées dans cette notice</h2>
+<p>Les captures d’écran de MEMS-Scan montrent des données et des commandes, mais pas les pièces physiques elles-mêmes. Le schéma ci-dessous situe, de façon simplifiée, les principaux capteurs et actionneurs évoqués dans ce document et lus/pilotés par l’ECU :</p>
+<p><img src="./media/media/image1.png" style="width:4.79167in;height:4.01042in" /></p>
+<p><em>Schéma de principe — capteurs et actionneurs pilotés par l’ECU MEMS (schéma simplifié, hors échelle)</em></p>
+<p><em>Ce schéma est une représentation fonctionnelle simplifiée (les pièces ne sont pas à l’échelle et leur implantation réelle varie selon le véhicule) — il sert de repère de vocabulaire, pas de plan d’implantation.</em></p>
+<h1 id="matériel-requis-et-connexion">2. Matériel requis et connexion</h1>
+<ul>
+<li><p>Un PC (Windows) avec MEMS-Scan installé</p></li>
+<li><p>Un câble de diagnostic compatible ROSCO (connecteur rond 3 broches pour MEMS 1.3/1.6)</p></li>
+<li><p>Contact mis, moteur arrêté, pour la connexion initiale</p></li>
+</ul>
+<h2 id="procédure-de-connexion">2.1 Procédure de connexion</h2>
+<ol type="1">
+<li><p>Localiser le connecteur de diagnostic. Attention : certains véhicules ont deux connecteurs identiques — un pour l’ECU moteur, un pour le boîtier d’immobilisation 5AS. Le connecteur moteur est généralement de couleur beige.</p></li>
+<li><p>Brancher le câble, contact coupé.</p></li>
+<li><p>Mettre le contact (sans démarrer) puis lancer MEMS-Scan.</p></li>
+<li><p>Cliquer sur Connecter.</p></li>
+<li><p>Vérifier que le voyant Communications passe au vert et que le champ ID ECU se renseigne.</p></li>
+<li><p>Si rien ne se passe : vérifier le câble, le bon connecteur, et relancer Connecter.</p></li>
+</ol>
+<table class="callout tip" width="100%" cellpadding="12" cellspacing="0" style="background-color:#eefbf1; border:1px solid #a9dfb8; margin:16px 0;"><tr><td style="color:#166534;">&#128161; Le bouton Déconnecter coupe proprement la communication — à utiliser avant de débrancher physiquement le câble.</td></tr></table>
+<h1 id="onglet-aperçu-surveillance-temps-réel">3. Onglet “Aperçu” — surveillance temps réel</h1>
+<p>Vue d’ensemble avec 10 cadrans analogiques, pensée pour un contrôle visuel rapide pendant que le moteur tourne :</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Cadran</strong></th>
+<th style="text-align: left;"><strong>Signification</strong></th>
+<th style="text-align: left;"><strong>Valeur normale indicative</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Régime moteur</td>
+<td style="text-align: left;">Régime moteur (RPM)</td>
+<td style="text-align: left;">~800-950 tr/min au ralenti chaud</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pression collecteur Pr</td>
+<td style="text-align: left;">ession collecteur ~ (kPa)</td>
+<td style="text-align: left;">30-45 kPa au ralenti</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Position papillon</td>
+<td style="text-align: left;">Position papillon (%)</td>
+<td style="text-align: left;">0 % papillon relâché</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Idle Air Control Motor Position</td>
+<td style="text-align: left;">Position IACV (%) + voyant Contact ralenti</td>
+<td style="text-align: left;">~14-19 % à chaud (25-35 steps)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Tension batterie</td>
+<td style="text-align: left;">Tension batterie (V)</td>
+<td style="text-align: left;">~12 V contact, ~13.5-14.5 V moteur tournant</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Température liquide de</td>
+<td style="text-align: left;">refroidissement Tempér refroidissement (°C)</td>
+<td style="text-align: left;">ature liquide de ~85-95°C à chaud</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Température d’air</td>
+<td style="text-align: left;">Température air admission (°C)</td>
+<td style="text-align: left;">Proche de la température ambiante</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tension sonde lambda</td>
+<td style="text-align: left;">Tension sonde lambd (mV)</td>
+<td style="text-align: left;">a Oscille ~100-900 mV en boucle fermée</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Short/Long Term Fuel Correction</td>
+<td style="text-align: left;">Correction de richesse (%) + voyant Boucle fermé</td>
+<td style="text-align: left;">Proche de 0 %, stable e</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Avance à l’allumage</td>
+<td style="text-align: left;">Avance à l’allumage (°</td>
+<td style="text-align: left;">) Variable selon régime/charge</td>
+</tr>
+</tbody>
+</table>
+<p><em>Onglet Aperçu — cadrans de synthèse temps réel</em></p>
+<h2 id="enregistrement-de-session-logging">3.1 Enregistrement de session (logging)</h2>
+<p>En bas de l’écran : un champ Nom du fichier journal (nommé automatiquement par date/heure, modifiable) et les boutons Démarrer l’enregistrement / Arrêter l’enregistrement. Voir section 8 pour l’exploitation des logs.</p>
+<h1 id="onglet-réglages-réglages-fins">4. Onglet “Réglages” — réglages fins</h1>
+<p>Cet onglet regroupe 4 cadrans de contrôle (error, Régime moteur, STFT, advance/lambda) et 4 réglages ajustables par boutons, à utiliser moteur chaud et stabilisé :</p>
+<p><em>Onglet Réglages — réglages fins en direct</em></p>
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; Mention affichée à l’écran : “Only for tuning purpose, rpm shows only up to 2000 RPM” — le grand cadran RPM est volontairement limité à 2000 tr/min, il est réservé au réglage fin au ralenti/petite charge, pas à la lecture en roulant.</td></tr></table>
+<h2 id="correction-carburant-leaner-richer">4.1 Correction carburant (Leaner / Richer)</h2>
+<p>Permet d’enrichir ou d’appauvrir manuellement le mélange air/essence. À utiliser avec prudence :</p>
+<ul>
+<li><p>Un mélange trop pauvre (Leaner excessif) peut provoquer surchauffe, à-coups, voire endommager le moteur/catalyseur</p></li>
+<li><p>Un mélange trop riche (Richer excessif) encrasse la bougie, la sonde lambda, augmente la consommation</p></li>
+</ul>
+<table class="callout tip" width="100%" cellpadding="12" cellspacing="0" style="background-color:#eefbf1; border:1px solid #a9dfb8; margin:16px 0;"><tr><td style="color:#166534;">&#128161; N’utiliser Correction carburant que pour des tests ponctuels ou pour compenser un problème identifié (ex : injecteur légèrement bouché). Pour un réglage permanent, préférer investiguer la cause plutôt que de compenser indéfiniment.</td></tr></table>
+<h2 id="position-ralenti-chaud-less-more">4.2 Position ralenti chaud (Less / More)</h2>
+<p>Ajuste électroniquement la position du moteur pas à pas à chaud, en complément du réglage mécanique de la vis de butée de papillon (voir section 10). Utile pour un ajustement fin sans avoir à démonter/toucher la vis.</p>
+<h2 id="régime-de-ralenti-slower-faster">4.3 Régime de ralenti (Slower / Faster)</h2>
+<p>Modifie directement la consigne de régime de ralenti. Utile par exemple pour relever légèrement le ralenti sur un moteur équipé d’accessoires gourmands (climatisation, direction assistée électrique additionnelle, etc.).</p>
+<h2 id="avance-à-lallumage-retard-advance">4.4 Avance à l’allumage (Retard / Advance)</h2>
+<p>Modifie l’avance à l’allumage appliquée.</p>
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; Une avance excessive favorise le cliquetis (code défaut 07 - Knock detected) et peut endommager le moteur à moyen terme. Toujours vérifier l’absence de cliquetis après une avance de l’allumage, surtout en charge.</td></tr></table>
+<h2 id="réinitialiser-les-réglages-réinitialiser-lecu">4.5 Réinitialiser les réglages / Réinitialiser l’ECU</h2>
+<ul>
+<li><p>Réinitialiser les réglages : annule uniquement les réglages fins ci-dessus, sans toucher aux valeurs apprises par l’ECU</p></li>
+<li><p>Réinitialiser l’ECU : réinitialisation complète, y compris les valeurs adaptatives apprises (richesse long terme, décalage de ralenti)</p></li>
+</ul>
+<h3 id="ce-que-le-réinitialiser-lecu-efface-concrètement">4.5.1 Ce que le Réinitialiser l’ECU efface concrètement</h3>
+<ul>
+<li><p>La correction de richesse à long terme (Correction carburant long terme) apprise au fil des kilomètres</p></li>
+<li><p>Le décalage de ralenti appris (Décalage régime de ralenti) et la position de référence “hot idle”</p></li>
+<li><p>Le décalage d’avance à l’allumage appris (Décalage d’avance)</p></li>
+<li><p>Dans certains cas, l’historique des codes défauts (selon version) — à ne pas confondre avec Effacer les codes défaut (onglet Erreurs), qui est un effacement indépendant</p></li>
+</ul>
+<table class="callout tip" width="100%" cellpadding="12" cellspacing="0" style="background-color:#eefbf1; border:1px solid #a9dfb8; margin:16px 0;"><tr><td style="color:#166534;">&#128161; Le Réinitialiser l’ECU ne touche pas aux réglages mécaniques (vis de butée, câble d’accélérateur) : ce sont deux choses totalement indépendantes. Un Réinitialiser l’ECU ne remplace jamais un mauvais réglage mécanique et inversement.</td></tr></table>
+<h3 id="conséquences-immédiates-après-un-réinitialiser-lecu">4.5.2 Conséquences immédiates après un Réinitialiser l’ECU</h3>
+<p>Juste après un Réinitialiser l’ECU, il est normal d’observer temporairement :</p>
+<ul>
+<li><p>Un ralenti un peu instable ou légèrement différent de d’habitude (l’ECU repart sur des valeurs neutres, pas encore affinées pour ton moteur)</p></li>
+<li><p>De légers à-coups ou hésitations à froid ou à faible charge, le temps que la richesse se réapprenne</p></li>
+<li><p>Une position du moteur pas à pas (Position moteur pas-à-pas ralenti) qui peut sortir un peu de la plage habituelle (14-19 %) pendant les premiers cycles</p></li>
+<li><p>Une consommation légèrement différente le temps de la période de réapprentissage</p></li>
+</ul>
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; Ces effets sont normaux et temporaires. Il ne s’agit pas d’une panne : c’est le comportement attendu pendant que l’ECU réapprend les caractéristiques réelles du moteur. Ne pas re-régler le ralenti ou la richesse dans les minutes qui suivent un Réinitialiser l’ECU — laisser le temps au réapprentissage de se faire d’abord (voir 4.5.3).</td></tr></table>
+<h3 id="que-faire-après-un-réinitialiser-lecu-procédure-de-réapprentissage">4.5.3 Que faire après un Réinitialiser l’ECU — procédure de réapprentissage</h3>
+<ol type="1">
+<li><p>Vérifier/refaire le réglage du câble d’accélérateur (Lost Motion Gap) si cela n’a pas été fait récemment — voir section 10.1. C’est le point de départ pour que l’ECU puisse gérer correctement le mélange air/essence.</p></li>
+<li><p>Démarrer le moteur à froid et le laisser chauffer normalement, sans le couper prématurément.</p></li>
+<li><p>Laisser tourner au ralenti quelques minutes une fois à température, sans toucher à l’accélérateur.</p></li>
+<li><p>Effectuer un trajet varié (ville, route, quelques accélérations franches, un peu d’autoroute si possible) pour que l’ECU rencontre différentes charges et régimes.</p></li>
+<li><p>Répéter sur plusieurs cycles démarrage à froid / conduite / arrêt — le réapprentissage complet des valeurs adaptatives peut prendre plusieurs trajets, parfois plusieurs jours d’utilisation normale.</p></li>
+<li><p>Revenir sur MEMS-Scan (onglet Aperçu) et vérifier que Short/Long Term Fuel Correction se stabilise proche de 0 %, et que Idle Air Control Motor Position se stabilise dans la plage 14-19 %.</p></li>
+<li><p>Vérifier l’onglet Erreurs : aucun code ne doit être resté actif après ce cycle de réapprentissage.</p></li>
+</ol>
+<table class="callout tip" width="100%" cellpadding="12" cellspacing="0" style="background-color:#eefbf1; border:1px solid #a9dfb8; margin:16px 0;"><tr><td style="color:#166534;">&#128161; Éviter de juger le comportement du moteur (ralenti, souplesse, consommation) dans les tout premiers kilomètres après un Réinitialiser l’ECU : le jugement fiable se fait après ce cycle de réapprentissage complet, pas juste après le reset.</td></tr></table>
+<table class="callout tip" width="100%" cellpadding="12" cellspacing="0" style="background-color:#eefbf1; border:1px solid #a9dfb8; margin:16px 0;"><tr><td style="color:#166534;">&#128161; Faire un Réinitialiser l’ECU est souvent recommandé après une intervention mécanique importante (remplacement injecteur, sonde lambda, gros travail sur l’admission) pour repartir sur des valeurs adaptatives neutres, plutôt que de garder des corrections apprises qui ne correspondent plus à la nouvelle configuration.</td></tr></table>
+<h1 id="onglet-erreurs-codes-défauts-et-anomalies">5. Onglet “Erreurs” — codes défauts et anomalies</h1>
+<p>Liste 24 codes défauts possibles (voyant rouge = inactif, vert = actif/détecté), avec un bouton Effacer les codes défaut pour les effacer :</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 25%" />
+<col style="width: 57%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Code</strong></th>
+<th style="text-align: left;"><strong>Libellé</strong></th>
+<th style="text-align: left;"><strong>Causes probables</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">01</td>
+<td style="text-align: left;"><strong>Coolant temp sensor</strong></td>
+<td style="text-align: left;">Sonde CTN température liquide de refroidissement : circuit ouvert ou court-circuit, connecteur oxydé, câblage endommagé</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">02</td>
+<td style="text-align: left;"><strong>Inlet Air temp sensor</strong></td>
+<td style="text-align: left;">Sonde température d’air admission : mêmes causes que ci-dessus (circuit ouvert/court-circuit)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">03</td>
+<td style="text-align: left;"><strong>—</strong></td>
+<td style="text-align: left;">Code non utilisé sur cette version</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">04</td>
+<td style="text-align: left;"><strong>High turbo inlet pressure</strong></td>
+<td style="text-align: left;">Pression d’admission anormalement élevée (véhicules suralimentés) : durite de surpression, capteur, ou électrovanne de boost</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">05</td>
+<td style="text-align: left;"><strong>Ambient air temp sensor</strong></td>
+<td style="text-align: left;">Sonde température d’air extérieur : circuit ouvert/court-circuit ou capteur défaillant</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">06</td>
+<td style="text-align: left;"><strong>Fuel temp sensor</strong></td>
+<td style="text-align: left;">Sonde température carburant : circuit ouvert/court-circuit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">07</td>
+<td style="text-align: left;"><strong>Knock detected</strong></td>
+<td style="text-align: left;">Détection de cliquetis moteur : essence inadaptée (indice d’octane trop faible), avance à l’allumage excessive, point chaud moteur</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">08</td>
+<td style="text-align: left;"><strong>—</strong></td>
+<td style="text-align: left;">Code non utilisé sur cette version</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">09</td>
+<td style="text-align: left;"><strong>Temperature gauge</strong></td>
+<td style="text-align: left;">Anomalie sur la sortie de commande du cadran de température au tableau de bord</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10</td>
+<td style="text-align: left;"><strong>Fuel pump circuit</strong></td>
+<td style="text-align: left;">Circuit de commande de la pompe à essence : relais, fusible, câblage ou pompe HS</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">11</td>
+<td style="text-align: left;"><strong>—</strong></td>
+<td style="text-align: left;">Code non utilisé sur cette version</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12</td>
+<td style="text-align: left;"><strong>Embrayage climatis drive</strong></td>
+<td style="text-align: left;">ation Circuit de commande de l’embrayage de climatisation : relais ou câblage</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">13</td>
+<td style="text-align: left;"><strong>Purge valve</strong></td>
+<td style="text-align: left;">Circuit de l’électrovanne de purge canister : câblage, connecteur ou vanne grippée</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">14</td>
+<td style="text-align: left;"><strong>MAP sensor</strong></td>
+<td style="text-align: left;">Capteur de pression collecteur : circuit ouvert/court-circuit, durite de prise de pression débranchée ou percée</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">15</td>
+<td style="text-align: left;"><strong>Turbo boost valve</strong></td>
+<td style="text-align: left;">Circuit de l’électrovanne de suralimentation (véhicules turbo) : câblage ou vanne</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">16</td>
+<td style="text-align: left;"><strong>TPS circuit</strong></td>
+<td style="text-align: left;">Capteur de position papillon : potentiomètre usé, câblage, ou mauvais calage mécanique</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">17</td>
+<td style="text-align: left;"><strong>—</strong></td>
+<td style="text-align: left;">Code non utilisé sur cette version</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">18</td>
+<td style="text-align: left;"><strong>—</strong></td>
+<td style="text-align: left;">Code non utilisé sur cette version</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">19</td>
+<td style="text-align: left;"><strong>—</strong></td>
+<td style="text-align: left;">Code non utilisé sur cette version</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">20</td>
+<td style="text-align: left;"><strong>Lambda heater supply voltage</strong></td>
+<td style="text-align: left;">Alimentation du chauffage de la sonde lambda : fusible, relais ou câblage</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">21</td>
+<td style="text-align: left;"><strong>Crank shaft Sync</strong></td>
+<td style="text-align: left;">Perte de synchronisation avec le capteur de position vilebrequin : capteur, cible denture (couronne), ou entrefer incorrect</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">**Commande ventilate</td>
+<td style="text-align: left;">ur 1** Circuit de commande du ventilateur 1 : relais, fusible ou câblage</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">23</td>
+<td style="text-align: left;"><strong>Immobiliser control</strong></td>
+<td style="text-align: left;">Communication avec le boîtier d’immobilisation : câblage, boîtier 5AS, ou clé/transpondeur non reconnu</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">24</td>
+<td style="text-align: left;">**Commande ventilate</td>
+<td style="text-align: left;">ur 2** Circuit de commande du ventilateur 2 : relais, fusible ou câblage</td>
+</tr>
+</tbody>
+</table>
+<p><em>Onglet Erreurs — codes défauts (01-24) et anomalies live/enregistrées</em></p>
+<h2 id="section-anomalies-live-rec.">5.1 Section Anomalies (Live / Rec.)</h2>
+<p>En complément des 24 codes, une zone dédiée surveille des conditions plus fines, avec deux colonnes Live (en cours actuellement) et Rec. (déjà enregistrée en mémoire, même si non présente actuellement) :</p>
+<ul>
+<li><p>Erreur signal lambda : perte du signal de la sonde lambda</p></li>
+<li><p>Signal lambda anormalement élevé : tension lambda anormalement haute en continu → possible mélange trop riche ou sonde défaillante</p></li>
+<li><p>Signal lambda anormalement bas : tension lambda anormalement basse en continu → possible mélange trop pauvre, fuite d’admission, ou sonde défaillante</p></li>
+<li><p>Position mini du moteur pas-à-pas atteinte : le moteur pas à pas a atteint sa butée basse → signe probable de mauvais réglage de la vis de butée papillon (trop ouverte)</p></li>
+<li><p>Compteur Jack au maximum (&gt;255 resets) : le moteur pas à pas s’est réinitialisé un nombre anormal de fois → possible souci de câblage, connecteur, ou usure du moteur pas à pas</p></li>
+</ul>
+<p>Un bouton Effacer les anomalies enregistrées efface la colonne Rec. Il est recommandé de l’effacer après une réparation pour vérifier que l’anomalie ne réapparaît pas.</p>
+<h2 id="méthode-de-travail-recommandée">5.2 Méthode de travail recommandée</h2>
+<ol type="1">
+<li><p>Noter tous les codes actifs et les anomalies Rec. avant toute intervention.</p></li>
+<li><p>Traiter la cause probable (voir tableau ci-dessus) plutôt que d’effacer directement.</p></li>
+<li><p>Cliquer sur Effacer les codes défaut et Effacer les anomalies enregistrées.</p></li>
+<li><p>Faire un tour du contact / un essai routier.</p></li>
+<li><p>Revenir sur cet onglet pour vérifier qu’aucun code ne réapparaît.</p></li>
+</ol>
+<h1 id="onglet-actionneurs-test-des-actionneurs">6. Onglet “Actionneurs” — test des actionneurs</h1>
+<p>Permet de commander manuellement chaque actionneur pour vérifier son fonctionnement électrique et mécanique, indépendamment de la logique de l’ECU.</p>
+<p><em>Onglet Actionneurs — test des actionneurs + test du moteur pas à pas de ralenti</em></p>
+<h2 id="procédures-de-test-par-actionneur">6.1 Procédures de test par actionneur</h2>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 40%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Actionneur</strong></th>
+<th style="text-align: left;">**Comment tester / ce qu’on * doit observer**</th>
+<th style="text-align: left;">*Si aucune réaction**</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Réchauffeur collecte</td>
+<td style="text-align: left;">ur Test puis On : le récha doit chauffer (prudence, ne pas toucher à mains nues)</td>
+<td style="text-align: left;">uffeur Vérifier fusible, relais, résistance chauffante</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Pompe à carburant</td>
+<td style="text-align: left;">Test puis On : la pomp se faire entendre (bourdonnement) et la pression monter</td>
+<td style="text-align: left;">e doit Vérifier relais, fusible, câblage, pompe</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Chauffage sonde O2/l</td>
+<td style="text-align: left;">ambda Test puis On : consom de courant sur le chauffage de sonde</td>
+<td style="text-align: left;">mation Vérifier câblage, connecteur, sonde</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Carbon Canister Purge Valve</td>
+<td style="text-align: left;">Open / Close : un léger clic ou sifflement doit être perceptible</td>
+<td style="text-align: left;">Vérifier câblage, vanne grippée</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Embrayage climatisat</td>
+<td style="text-align: left;">ion Test puis On : l’ du compresseur clim doit s’enclencher (clic + rotation poulie)</td>
+<td style="text-align: left;">embrayage Vérifier relais, câblage, embrayage</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Électrovanne suralim</td>
+<td style="text-align: left;">entation Test puis On clic/sifflement de l’électrovanne</td>
+<td style="text-align: left;">: Vérifier câblage, vanne</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ventilateur 1 / Vent 3</td>
+<td style="text-align: left;">ilateur 2 / Fan Test puis On : concerné doit démarrer</td>
+<td style="text-align: left;">le ventilateur Vérifier relais, fusible, moteur du ventilateur</td>
+</tr>
+</tbody>
+</table>
+<h2 id="injecteur-déclencher-et-bobine-dallumage-étincelle">6.2 Injecteur (Déclencher) et Bobine d’allumage (Étincelle)</h2>
+<p>Ces deux commandes déclenchent manuellement, une seule fois, l’injecteur ou la bobine d’allumage.</p>
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; À utiliser IMPÉRATIVEMENT moteur arrêté et à froid. Pour l’injecteur, prévoir un chiffon/récipient si testé hors du collecteur. Pour la bobine, ne jamais toucher les connexions haute tension pendant le test.</td></tr></table>
+<table class="callout tip" width="100%" cellpadding="12" cellspacing="0" style="background-color:#eefbf1; border:1px solid #a9dfb8; margin:16px 0;"><tr><td style="color:#166534;">&#128161; Déclencher permet de vérifier que l’injecteur clique et pulvérise correctement (test visuel hors moteur). Étincelle permet de vérifier la présence d’une étincelle sur la bobine déposée.</td></tr></table>
+<h2 id="reset-all-actuators">6.3 Reset all actuators</h2>
+<p>Le bouton “tous les actionneurs désactivés / réinitialisés” coupe immédiatement tous les actionneurs activés manuellement — à utiliser en fin de session de test, ou en cas de doute sur l’état d’un actionneur resté activé.</p>
+<h2 id="test-du-moteur-pas-à-pas-de-ralenti-iacv">6.4 Test du moteur pas à pas de ralenti (IACV)</h2>
+<p>Panneau dédié à droite de l’onglet : “Select desired position in steps of 25% then activate ‘Déplacer le moteur de ralenti’”. On choisit une position cible avec les boutons -/+ (par paliers de 25 %), le curseur Closed → Open et la valeur Position moteur pas-à-pas ralenti (steps et %) se mettent à jour, puis on clique sur Déplacer le moteur de ralenti pour commander physiquement le moteur vers cette position.</p>
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; Ce panneau sert à VÉRIFIER le bon fonctionnement mécanique du moteur pas à pas (bruit, mouvement fluide, absence de blocage aux extrêmes). Ce n’est pas l’écran de calibration du ralenti de base — voir section 10.</td></tr></table>
+<ol type="1">
+<li><p>Contact mis, moteur arrêté ou tournant selon le test souhaité.</p></li>
+<li><p>Sélectionner 25 %, puis 50 %, 75 %, 100 %, puis revenir à 0 % en cliquant Déplacer le moteur de ralenti à chaque étape.</p></li>
+<li><p>Écouter/observer que le moteur se déplace franchement à chaque palier, sans à-coups ni bruit anormal.</p></li>
+<li><p>Si le moteur ne bouge pas ou se bloque avant 100 % : suspecter un moteur pas à pas usé, un connecteur oxydé, ou un obstacle mécanique.</p></li>
+</ol>
+<h1 id="onglet-toutes-les-données-table-brute-des-paramètres-ecu">7. Onglet “Toutes les données” — table brute des paramètres ECU</h1>
+<p>Expose l’intégralité des trames lues sur le bus de diagnostic, organisées en deux blocs d’adresses (Pos. 7D et Pos. 80), chacun avec les colonnes Received (valeur brute) et Computed (valeur convertie/interprétée). Cet onglet est le plus complet pour un diagnostic fin, notamment quand un paramètre n’est pas repris dans Aperçu.</p>
+<h2 id="bloc-pos.-7d">7.1 Bloc Pos. (7D)</h2>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 34%" />
+<col style="width: 44%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Adresse</strong></th>
+<th style="text-align: left;"><strong>Description</strong></th>
+<th style="text-align: left;"><strong>Valeurs / remarques typiques</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0x01</td>
+<td style="text-align: left;"><strong>Contact allumage</strong></td>
+<td style="text-align: left;">On / Off — reflète l’état du contact</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x02</td>
+<td style="text-align: left;"><strong>Angle papillon</strong></td>
+<td style="text-align: left;">0° papillon fermé, augmente à l’ouverture</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x03</td>
+<td style="text-align: left;"><strong>Unknown</strong></td>
+<td style="text-align: left;">Non documenté</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x04</td>
+<td style="text-align: left;"><strong>Ratio air/carburant</strong></td>
+<td style="text-align: left;">~14.7 AFR (stœchiométrique) en boucle fermée à chaud</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x05</td>
+<td style="text-align: left;"><strong>DTC 2</strong></td>
+<td style="text-align: left;">Code défaut brut (voir onglet Erreurs)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x06</td>
+<td style="text-align: left;"><strong>Tension sonde lambda</strong></td>
+<td style="text-align: left;">Oscille ~100-900 mV en boucle fermée (sonde active)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x07</td>
+<td style="text-align: left;"><strong>Fréquence lambda</strong></td>
+<td style="text-align: left;">Fréquence d’oscillation du signal lambda</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x08</td>
+<td style="text-align: left;"><strong>Cycle lambda</strong> Rapp</td>
+<td style="text-align: left;">ort cyclique du signal lambda, %</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x09</td>
+<td style="text-align: left;"><strong>État lambda</strong> ok</td>
+<td style="text-align: left;">/ not ok — état de fonctionnement de la sonde</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x0A</td>
+<td style="text-align: left;"><strong>Indicateur de boucle</strong></td>
+<td style="text-align: left;">Open / Closed — mode boucle ouverte ou fermée</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x0B</td>
+<td style="text-align: left;">**Correction carburant lon</td>
+<td style="text-align: left;">g terme** Correction apprise, idéalement proche de 0-10 %</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x0C</td>
+<td style="text-align: left;">**Correction carburant cou</td>
+<td style="text-align: left;">rt terme** Correction instantanée, oscille autour de 0 %</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x0D</td>
+<td style="text-align: left;"><strong>Carbon Canister Purge Valve</strong></td>
+<td style="text-align: left;">% d’ouverture commandée de la purge canister</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x0E</td>
+<td style="text-align: left;"><strong>DTC 3</strong></td>
+<td style="text-align: left;">Code défaut brut</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x0F</td>
+<td style="text-align: left;">**Position de base ralenti</td>
+<td style="text-align: left;">** Position de référence du ralenti (steps)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x10</td>
+<td style="text-align: left;"><strong>Unknown / DTC?</strong></td>
+<td style="text-align: left;">Non totalement documenté</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x11</td>
+<td style="text-align: left;"><strong>DTC 4</strong></td>
+<td style="text-align: left;">Code défaut brut</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x12</td>
+<td style="text-align: left;"><strong>Avance à l’allumage Offset</strong></td>
+<td style="text-align: left;">Décalage appliqué à l’avance à l’allumage</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x13</td>
+<td style="text-align: left;">**Décalage régime de ralen</td>
+<td style="text-align: left;">ti** Décalage de consigne de ralenti, en RPM</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x14-15</td>
+<td style="text-align: left;"><strong>Unknown</strong></td>
+<td style="text-align: left;">Non documenté</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x16</td>
+<td style="text-align: left;"><strong>DTC 5</strong></td>
+<td style="text-align: left;">Code défaut brut</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x17</td>
+<td style="text-align: left;"><strong>Unknown</strong></td>
+<td style="text-align: left;">Non documenté</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x18</td>
+<td style="text-align: left;"><strong>Unknown</strong></td>
+<td style="text-align: left;">Non documenté</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x19</td>
+<td style="text-align: left;"><strong>Unknown</strong></td>
+<td style="text-align: left;">Non documenté</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x1A</td>
+<td style="text-align: left;"><strong>Unknown</strong></td>
+<td style="text-align: left;">Non documenté</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x1B</td>
+<td style="text-align: left;"><strong>Unknown</strong></td>
+<td style="text-align: left;">Non documenté</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x1C</td>
+<td style="text-align: left;"><strong>Unknown</strong></td>
+<td style="text-align: left;">Non documenté</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x1D</td>
+<td style="text-align: left;"><strong>Unknown</strong></td>
+<td style="text-align: left;">Non documenté</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x1E</td>
+<td style="text-align: left;"><strong>Unknown</strong></td>
+<td style="text-align: left;">Non documenté</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x1F</td>
+<td style="text-align: left;"><strong>N° compteur Jack</strong></td>
+<td style="text-align: left;">Nombre de réinitialisations du moteur pas à pas — doit rester faible et stable</td>
+</tr>
+</tbody>
+</table>
+<h2 id="bloc-pos.-80">7.2 Bloc Pos. (80)</h2>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 34%" />
+<col style="width: 44%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Adresse</strong></th>
+<th style="text-align: left;"><strong>Description</strong></th>
+<th style="text-align: left;"><strong>Valeurs / remarques typiques</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0x01-02</td>
+<td style="text-align: left;"><strong>RPM</strong></td>
+<td style="text-align: left;">Régime moteur (0 à l’arrêt, ~800-950 au ralenti à chaud typiquement)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x03</td>
+<td style="text-align: left;">**Température liquide de r</td>
+<td style="text-align: left;">efroidissement** ~85-95°C moteur chaud</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x04</td>
+<td style="text-align: left;"><strong>Température ambiante</strong></td>
+<td style="text-align: left;">Température extérieure mesurée</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x05</td>
+<td style="text-align: left;"><strong>Intake Air Temperature</strong></td>
+<td style="text-align: left;">Température de l’air admis</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x06</td>
+<td style="text-align: left;"><strong>Température carburant</strong></td>
+<td style="text-align: left;">Température du carburant</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x07</td>
+<td style="text-align: left;"><strong>Pression collecteur</strong> ~</td>
+<td style="text-align: left;">30-45 kPa au ralenti, monte vers 95-100 kPa pied levé/coupure</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x08</td>
+<td style="text-align: left;"><strong>Tension batterie</strong></td>
+<td style="text-align: left;">~12-14.5 V (alternateur en charge)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x09</td>
+<td style="text-align: left;">**Capteur potentiomètre pa</td>
+<td style="text-align: left;">pillon** Tension du potentiomètre papillon, croît à l’ouverture</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x0A</td>
+<td style="text-align: left;"><strong>Contact ralenti</strong></td>
+<td style="text-align: left;">On / Off — papillon en butée fermée ou non</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x0B</td>
+<td style="text-align: left;"><strong>Contact climatisation</strong></td>
+<td style="text-align: left;">On / Off — demande de climatisation active</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x0C</td>
+<td style="text-align: left;"><strong>Contact point mort</strong></td>
+<td style="text-align: left;">On / Off — point mort engagé (boîte manuelle)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x0D</td>
+<td style="text-align: left;"><strong>DTC 0</strong></td>
+<td style="text-align: left;">Code défaut brut</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x0E</td>
+<td style="text-align: left;"><strong>DTC 1</strong></td>
+<td style="text-align: left;">Code défaut brut</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x0F</td>
+<td style="text-align: left;"><strong>Consigne de ralenti</strong></td>
+<td style="text-align: left;">Consigne de régime de ralenti cible</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x10</td>
+<td style="text-align: left;">**Ralenti chaud / décroiss</td>
+<td style="text-align: left;">ance ralenti** Paramètres de gestion du ralenti chaud / décroissance</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x11</td>
+<td style="text-align: left;"><strong>Unknown</strong></td>
+<td style="text-align: left;">Non documenté</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x12</td>
+<td style="text-align: left;"><strong>Idle Air Control Motor Position</strong></td>
+<td style="text-align: left;">Position du moteur pas à pas en % — voir section réglage du ralenti</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x13-14</td>
+<td style="text-align: left;">**Écart régime de ralenti*</td>
+<td style="text-align: left;">* Écart entre régime réel et consigne, en RPM</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x15</td>
+<td style="text-align: left;"><strong>Avance à l’allumage Offset</strong></td>
+<td style="text-align: left;">Décalage appliqué à l’avance</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x16</td>
+<td style="text-align: left;"><strong>Avance à l’allumage</strong></td>
+<td style="text-align: left;">Avance à l’allumage réelle, en degrés</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x17-18</td>
+<td style="text-align: left;"><strong>Temps bobine</strong></td>
+<td style="text-align: left;">Temps de charge de la bobine, en ms</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x19</td>
+<td style="text-align: left;"><strong>Crankshaft Position Sensor</strong></td>
+<td style="text-align: left;">signal yes/no — présence du signal capteur vilebrequin</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0x1A</td>
+<td style="text-align: left;"><strong>Unknown</strong></td>
+<td style="text-align: left;">Non documenté</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0x1B</td>
+<td style="text-align: left;"><strong>Unknown</strong></td>
+<td style="text-align: left;">Non documenté</td>
+</tr>
+</tbody>
+</table>
+<p><em>Onglet Toutes les données — table complète des paramètres ECU (blocs 7D et 80)</em></p>
+<table class="callout tip" width="100%" cellpadding="12" cellspacing="0" style="background-color:#eefbf1; border:1px solid #a9dfb8; margin:16px 0;"><tr><td style="color:#166534;">&#128161; Cet onglet est particulièrement utile pour suivre en direct Idle Air Control Motor Position (0x12, bloc 80) et N° compteur Jack (0x1F, bloc 7D) pendant un diagnostic de ralenti — voir section 10.</td></tr></table>
+<h1 id="lenregistrement-de-logs-et-leur-exploitation">8. L’enregistrement de logs et leur exploitation</h1>
+<p>L’onglet Aperçu propose Démarrer l’enregistrement / Arrêter l’enregistrement, avec un nom de fichier par défaut horodaté (ex: 2026-07-27_18.33).</p>
+<h2 id="quand-enregistrer-un-log">8.1 Quand enregistrer un log</h2>
+<ul>
+<li><p>Avant/après une réparation, pour comparer objectivement le comportement du moteur</p></li>
+<li><p>Pendant un essai routier, pour capturer un défaut intermittent (à-coup, hésitation) difficile à observer en temps réel</p></li>
+<li><p>Avant un Réinitialiser l’ECU, pour garder une trace des valeurs adaptatives d’origine</p></li>
+</ul>
+<h2 id="bonnes-pratiques">8.2 Bonnes pratiques</h2>
+<ol type="1">
+<li><p>Renommer le fichier de log de façon explicite (ex : “avant_reglage_ralenti”, “essai_route_a-coups”).</p></li>
+<li><p>Cliquer Démarrer l’enregistrement juste avant de démarrer le moteur, pour capturer toute la phase de démarrage à froid.</p></li>
+<li><p>Reproduire le défaut ou la situation à surveiller pendant l’enregistrement.</p></li>
+<li><p>Cliquer Arrêter l’enregistrement dès l’essai terminé.</p></li>
+<li><p>Analyser le fichier généré (généralement un fichier texte/CSV exploitable dans un tableur) pour repérer les valeurs anormales au moment du défaut.</p></li>
+</ol>
+<table class="callout tip" width="100%" cellpadding="12" cellspacing="0" style="background-color:#eefbf1; border:1px solid #a9dfb8; margin:16px 0;"><tr><td style="color:#166534;">&#128161; Comparer un log “avant” et un log “après” intervention est souvent la façon la plus fiable de confirmer qu’une réparation a bien résolu le problème.</td></tr></table>
+<h1 id="guides-pratiques-par-situation">9. Guides pratiques par situation</h1>
+<h2 id="ralenti-instable-ou-moteur-qui-cale-au-ralenti">9.1 Ralenti instable ou moteur qui cale au ralenti</h2>
+<ol type="1">
+<li><p>Onglet Aperçu : vérifier Position moteur pas-à-pas ralenti (cible ~14-19 %) et Température liquide de refroidissement (bien monté en température).</p></li>
+<li><p>Onglet Erreurs : vérifier l’absence de “Idle Air Control Position bottom reached” et de “Compteur Jack au maximum”.</p></li>
+<li><p>Onglet Actionneurs : tester le moteur pas à pas par paliers de 25 % pour valider son bon fonctionnement mécanique.</p></li>
+<li><p>Si le moteur pas à pas fonctionne bien mais reste hors plage : revoir le réglage de la vis de butée papillon (section 10).</p></li>
+<li><p>Vérifier aussi l’absence de fuite d’air parasite (durites, joint de collecteur) qui perturberait le calcul de l’ECU.</p></li>
+</ol>
+<h2 id="le-moteur-ne-démarre-pas">9.2 Le moteur ne démarre pas</h2>
+<ol type="1">
+<li><p>Onglet Aperçu : vérifier Tension batterie (&gt;10-11V pendant le démarreur), Capteur position vilebrequin (signal yes) dans Toutes les données.</p></li>
+<li><p>Onglet Erreurs : vérifier le code 21 - Synchro vilebrequin et le code 23 - Commande antidémarrage.</p></li>
+<li><p>Onglet Actionneurs : tester Pompe à carburant (doit s’entendre) et Ignition coil / Injecteur hors moteur pour valider l’étincelle et l’injection.</p></li>
+<li><p>Si le code commande antidémarrage est actif : suspecter un problème de reconnaissance de clé/transpondeur avant de chercher plus loin côté injection.</p></li>
+</ol>
+<h2 id="suspicion-de-mélange-trop-riche-ou-trop-pauvre">9.3 Suspicion de mélange trop riche ou trop pauvre</h2>
+<ol type="1">
+<li><p>Onglet Aperçu : observer Tension sonde lambda et Short/Long Term Fuel Correction en régime stabilisé, moteur chaud, Boucle fermée actif.</p></li>
+<li><p>Onglet Erreurs : vérifier les anomalies “Unusual high/low lambda signal”.</p></li>
+<li><p>Une LTFT très positive (l’ECU enrichit beaucoup) indique un mélange naturellement trop pauvre (fuite d’air, injecteur bouché, pression d’essence faible).</p></li>
+<li><p>Une LTFT très négative (l’ECU appauvrit beaucoup) indique un mélange naturellement trop riche (pression d’essence trop haute, injecteur qui goutte, sonde lambda encrassée).</p></li>
+<li><p>Utiliser Correction carburant (onglet Réglages) uniquement pour confirmer le diagnostic, pas comme réglage permanent.</p></li>
+</ol>
+<h2 id="vérifier-la-pompe-à-essence-et-le-circuit-dalimentation">9.4 Vérifier la pompe à essence et le circuit d’alimentation</h2>
+<ol type="1">
+<li><p>Onglet Actionneurs : Pompe à carburant → Test puis On, écouter le bourdonnement de la pompe.</p></li>
+<li><p>Si silence total : vérifier fusible et relais avant de suspecter la pompe elle-même (voir aussi code 10 - Circuit pompe à carburant dans Erreurs).</p></li>
+<li><p>Si la pompe tourne mais que le moteur peine en charge : suspecter la pression réelle (filtre à essence colmaté, régulateur de pression) plutôt que la commande électrique.</p></li>
+</ol>
+<h2 id="vérifier-le-refroidissement-ventilateurs">9.5 Vérifier le refroidissement (ventilateurs)</h2>
+<ol type="1">
+<li><p>Onglet Actionneurs : Ventilateur 1 → Test puis On, puis Ventilateur 2, puis Ventilateur 3 si présent, en vérifiant chaque fois le démarrage effectif.</p></li>
+<li><p>Onglet Erreurs : vérifier les codes 22 - Commande ventilateur 1 et 24 - Ventilateur 2 control.</p></li>
+<li><p>Si un ventilateur ne démarre pas au test mais que son code défaut n’est pas actif : suspecter en priorité le moteur du ventilateur ou son câblage propre plutôt que l’ECU.</p></li>
+</ol>
+<h2 id="après-une-intervention-mécanique-importante">9.6 Après une intervention mécanique importante</h2>
+<p><em>Voir aussi en détail : section 4.5 (conséquences du Réinitialiser l’ECU et procédure de réapprentissage) et section 10.1 (réglage du câble d’accélérateur).</em></p>
+<ol type="1">
+<li><p>Effectuer un Réinitialiser l’ECU (onglet Réglages) pour repartir sur des valeurs adaptatives neutres — voir section 4.5.1 pour le détail de ce qui est effacé.</p></li>
+<li><p>Régler le câble d’accélérateur (“Lost Motion Gap”) — voir section 10.1, procédure obligatoire avant tout réglage de ralenti.</p></li>
+<li><p>Démarrer un log (onglet Aperçu) dès le premier démarrage pour suivre la phase de réapprentissage.</p></li>
+<li><p>Rouler plusieurs cycles (froid → chaud, différentes charges) avant de tirer des conclusions sur le comportement du moteur — voir section 4.5.3 pour la procédure complète de réapprentissage.</p></li>
+<li><p>Revérifier l’onglet Erreurs après ces cycles pour s’assurer qu’aucun défaut persistant n’apparaît.</p></li>
+</ol>
+<h1 id="réglage-du-ralenti-de-base-procédure-complète">10. Réglage du ralenti de base — procédure complète</h1>
+<p>Le réglage du ralenti se fait mécaniquement (vis de butée de papillon), en observant électroniquement la position du moteur pas à pas (IACV) affichée par MEMS-Scan. Le moteur pas à pas a une course totale de 180 steps.</p>
+<p><img src="./media/media/image7.png" style="width:4.79167in;height:2.6875in" /></p>
+<p><em>Schéma — corps de papillon, vis de butée et moteur pas à pas de ralenti (schéma simplifié)</em></p>
+<h2 id="préliminaire-obligatoire-réglage-du-câble-daccélérateur-lost-motion-gap">10.1 Préliminaire obligatoire : réglage du câble d’accélérateur (“Lost Motion Gap”)</h2>
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; Cette étape doit être effectuée AVANT tout réglage du ralenti, et systématiquement après remplacement du câble d’accélérateur. Un mauvais réglage de ce jeu (“lost motion gap”) est une cause très fréquente de ralenti anormalement haut, instable, ou de calage moteur sur les Mini SPI — bien avant de suspecter l’ECU ou les capteurs.</td></tr></table>
+<p>Le “lost motion gap” est le jeu ménagé au niveau d’une petite chape en U sur la timonerie mécanique qui relie le câble d’accélérateur au corps de papillon. Ce jeu permet au moteur pas à pas (IACV) de faire varier la position du papillon pour réguler le ralenti, indépendamment de la position du câble — sans ce jeu correctement centré, le moteur pas à pas se retrouve bridé ou en butée en permanence.</p>
+<h3 id="vue-densemble-du-montage">10.1.1 Vue d’ensemble du montage</h3>
+<p>Avant de détailler la procédure, voici comment ce montage se présente réellement sur le véhicule : le câble arrive du compartiment moteur et sa gaine se termine sur une patte de fixation métallique fixe (l’“abutment bracket”). L’âme du câble, filetée à son extrémité, traverse cette patte et porte un écrou de réglage et un contre-écrou. Elle actionne ensuite un levier/came solidaire du corps de papillon. C’est entre ce levier et l’axe du papillon que se trouve la chape en U du “lost motion gap”.</p>
+<p><img src="./media/media/image8.png" style="width:4.79167in;height:2.69792in" /></p>
+<p><em>Montage réel du câble d’accélérateur — patte de fixation, écrous de réglage, chape en U et moteur pas à pas (schéma technique)</em></p>
+<h3 id="procédure-de-réglage">10.1.2 Procédure de réglage</h3>
+<ol type="1">
+<li><p>Contact mis (moteur arrêté), déplacer la commande d’accélérateur à fond (pleine ouverture du papillon) puis relâcher : ce mouvement complet permet au moteur pas à pas de se réinitialiser (l’ECU le recale, généralement entre 25 et 35 steps selon motorisation et équipements — vérifiable avec MEMS-Scan connecté).</p></li>
+<li><p>Repérer la chape en U (“lost motion bracket”) sur la timonerie, en bas à l’arrière des leviers mécaniques : une languette centrale pointue doit se retrouver équidistante des deux côtés de cette chape.</p></li>
+<li><p>Desserrer le contre-écrou de la patte de fixation (clé de 13 mm).</p></li>
+<li><p>Desserrer l’écrou de réglage de la patte de fixation.</p></li>
+<li><p>Tendre le câble à l’aide de l’écrou de réglage jusqu’à obtenir un jeu égal de chaque côté de la chape, au niveau du corps de papillon.</p></li>
+<li><p>Serrer le contre-écrou contre la patte de fixation (clé de 13 mm).</p></li>
+<li><p>À l’aide de deux clés de 13 mm, bloquer les écrous l’un contre l’autre contre la patte de fixation.</p></li>
+<li><p>Vérifier une dernière fois que le jeu reste bien égal des deux côtés de la chape.</p></li>
+<li><p>Couper le contact (important : c’est cette coupure de contact qui valide/mémorise l’initialisation du moteur pas à pas — si elle n’est pas faite, le réglage ne sera pas retenu).</p></li>
+<li><p>Se connecter avec MEMS-Scan, remettre le contact, et vérifier que le moteur pas à pas s’est bien initialisé dans une plage cohérente (Aperçu ou Toutes les données, Position moteur pas-à-pas ralenti).</p></li>
+</ol>
+<p><img src="./media/media/image9.png" style="width:4.79167in;height:2.09375in" /></p>
+<p><em>Jeu de la chape en U : avant réglage (jeu inégal, moteur pas à pas bridé) / après réglage (jeu égal des deux côtés)</em></p>
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; Ne jamais essayer de “rattraper” un jeu mal réglé en tirant sur le câble ou en jouant sur la vis de butée du papillon : cela perturbe le calage du capteur TPS (position papillon) et masque le vrai problème. Si le câble neuf semble trop long ou trop court pour obtenir un jeu égal, vérifier la référence exacte du câble avant de forcer le réglage.</td></tr></table>
+<table class="callout tip" width="100%" cellpadding="12" cellspacing="0" style="background-color:#eefbf1; border:1px solid #a9dfb8; margin:16px 0;"><tr><td style="color:#166534;">&#128161; Signes qu’un mauvais réglage du câble est en cause : ralenti qui monte anormalement haut et n’en redescend pas malgré les réglages ECU, moteur pas à pas qui semble “buté” en permanence (Idle Air Control Motor Position proche de 0 % ou au contraire toujours au maximum), ou stepper qui ne répond plus aux ajustements Position ralenti chaud (onglet Réglages).</td></tr></table>
+<h2 id="pré-requis-réglage-du-ralenti-proprement-dit">10.2 Pré-requis (réglage du ralenti proprement dit)</h2>
+<ul>
+<li><p>Le câble d’accélérateur / lost motion gap doit avoir été vérifié ou réglé au préalable (section 10.1)</p></li>
+<li><p>Moteur à température de fonctionnement normale (&gt; 85-88°C d’eau)</p></li>
+<li><p>Tous les consommateurs électriques éteints (phares, ventilation…) sauf réglage “avec accessoires”</p></li>
+<li><p>Ne jamais accélérer/emballer le moteur pendant la procédure</p></li>
+</ul>
+<h2 id="procédure">10.3 Procédure</h2>
+<ol type="1">
+<li><p>Couper le contact.</p></li>
+<li><p>Ouvrir puis refermer complètement le papillon à la main (came du câble d’accélérateur) pour réinitialiser le zéro du moteur pas à pas — cliquetis audibles.</p></li>
+<li><p>Remettre le contact, se connecter avec MEMS-Scan (bouton Connecter), aller sur l’onglet Aperçu ou Toutes les données et vérifier la valeur Idle Air Control Motor Position avant démarrage (proche de 25-35 steps).</p></li>
+<li><p>Démarrer le moteur et le laisser chauffer.</p></li>
+<li><p>Sur Aperçu (ou Toutes les données, bloc Pos 80, 0x12), surveiller Idle Air Control Motor Position.</p></li>
+<li><p>Ajuster mécaniquement la vis de butée de papillon (clé de 7 mm pour le contre-écrou) pour ramener la valeur dans la plage cible, en laissant le régime se stabiliser entre chaque petit ajustement.</p></li>
+<li><p>Optionnel : affiner électroniquement avec Position ralenti chaud (More/Less) sur l’onglet Réglages pour un réglage fin sans toucher à la vis.</p></li>
+<li><p>Vérifier sur l’onglet Erreurs qu’aucune anomalie “Idle Air Control Position bottom reached” n’est active.</p></li>
+<li><p>Bloquer le contre-écrou de la vis sans la faire tourner une fois la valeur stabilisée dans la plage cible.</p></li>
+<li><p>Démarrer un log (Démarrer l’enregistrement, onglet Aperçu) si besoin pour archivage.</p></li>
+</ol>
+<h2 id="table-de-correspondance-steps-pourcentage">10.4 Table de correspondance steps / pourcentage</h2>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 24%" />
+<col style="width: 26%" />
+<col style="width: 23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Steps (sur 180)</strong></th>
+<th style="text-align: left;"><strong>Pourcentage</strong></th>
+<th style="text-align: left;"><strong>Interprétation</strong></th>
+<th style="text-align: left;"><strong>Action</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0 - 10</td>
+<td style="text-align: left;">0 - 6 %</td>
+<td style="text-align: left;">Anormalement bas</td>
+<td style="text-align: left;">Vérifier vis de butée / fuite d’air</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">25 - 30</td>
+<td style="text-align: left;">14 - 17 %</td>
+<td style="text-align: left;">Cible sans accessoires</td>
+<td style="text-align: left;">Réglage correct</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">30 - 35</td>
+<td style="text-align: left;">17 - 19 %</td>
+<td style="text-align: left;">Cible avec accessoires (clim, etc.)</td>
+<td style="text-align: left;">Réglage correct</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">50 +</td>
+<td style="text-align: left;">28 % +</td>
+<td style="text-align: left;">Anormalement haut</td>
+<td style="text-align: left;">Vérifier vis de butée / usure moteur pas à pas</td>
+</tr>
+</tbody>
+</table>
+<p><em>Conversion : pourcentage = (valeur en steps ÷ 180) × 100.</em></p>
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; Un Réinitialiser l’ECU (onglet Réglages) réinitialise la référence électronique du moteur pas à pas et les valeurs adaptatives apprises (richesse, décalage de ralenti). Cela ne corrige jamais un mauvais réglage mécanique de la vis de butée.</td></tr></table>
+<h1 id="dépannage-rapide-tableau-de-synthèse">11. Dépannage rapide — tableau de synthèse</h1>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Symptôme</strong></th>
+<th><strong>Piste probable / onglet à consulter</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Position moteur pas-à-pas ralent &lt; 10-15 % en permanence</td>
+<td>i Papillon trop ouvert au repos → resserrer la vis de butée (section 10)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Position moteur pas-à-pas ralent &gt; 28-30 % en permanence</td>
+<td>i Papillon trop fermé, fuite d’air, ou usure moteur pas à pas</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Anomalie “Idle Air Control M Position bottom reached” r active</td>
+<td>oteur pas à pas en butée basse — evoir réglage vis + refaire l’initialisation (section 10)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">“Compteur Jack au maximum” actif</td>
+<td>Réinitialisations anormalement fréquentes → vérifier câblage/connecteur IACV</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Codes 22/23/24 actifs (Ventilate Immobiliser / Ventilateur 2)</td>
+<td>ur 1 / Tester les actionneurs concernés (onglet Actionneurs) ou vérifier le boîtier d’immobilisation</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Code 07 - Cliquetis détecté</td>
+<td>Vérifier qualité carburant, avance à l’allumage (onglet Réglages), point chaud moteur</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Code 16 - Circuit capteur positi</td>
+<td>on papillon Vérifier le potentiomètre papillon et son câblage, recalibrer si nécessaire</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Anomalie Lambda signal (high/low)</td>
+<td>Suspecter fuite d’air, injecteur, pression d’essence, ou sonde lambda encrassée/HS</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pas de communication (voyant Communications rouge)</td>
+<td>Vérifier le bon connecteur (moteur vs immobilisateur), câble, bouton Connecter</td>
+</tr>
+</tbody>
+</table>
+<h1 id="glossaire">12. Glossaire</h1>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 24%" />
+<col style="width: 72%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Terme</strong></th>
+<th style="text-align: left;"><strong>Signification</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>ECU</strong></td>
+<td style="text-align: left;">Electronic Control Unit — le calculateur moteur</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>MEMS</strong></td>
+<td style="text-align: left;">Modular Engine Management System — système de gestion moteur Rover équipant les Mini SPI/MPI</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>ROSCO</strong></td>
+<td style="text-align: left;">Rover Service Communications — protocole de diagnostic propriétaire utilisé par les calculateurs MEMS 1.3/1.6</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>SPI / SPi</strong></td>
+<td style="text-align: left;">Single Point Injection — injection monopoint (un seul injecteur pour tout le moteur)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>IACV / IAC</strong></td>
+<td style="text-align: left;">Idle Air Control Valve — vanne/moteur pas à pas de contrôle d’air de ralenti</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>TPS</strong></td>
+<td style="text-align: left;">Position papillon Sensor — capteur de position papillon</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>MAP</strong></td>
+<td style="text-align: left;">Pression collecteur — pression absolue dans le collecteur d’admission</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>STFT</strong></td>
+<td style="text-align: left;">Correction carburant court terme — correction de richesse à court terme (instantanée)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>LTFT</strong></td>
+<td style="text-align: left;">Correction carburant long terme — correction de richesse à long terme (apprise et mémorisée)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>DTC</strong></td>
+<td style="text-align: left;">Diagnostic Trouble Code — code défaut</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Boucle fermée</strong></td>
+<td style="text-align: left;">Mode où l’ECU asservit le mélange air/essence sur la sonde lambda (boucle fermée)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Boucle ouverte</strong></td>
+<td style="text-align: left;">Mode où l’ECU pilote le mélange selon des tables préprogrammées, sans tenir compte de la sonde lambda (démarrage à froid, forte charge)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>compteur Jack</strong></td>
+<td style="text-align: left;">Compteur de réinitialisations du moteur pas à pas (nombre de fois où l’ECU a dû recaler l’IACV)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Lost Motion Gap</strong></td>
+<td style="text-align: left;">Jeu mécanique entre la timonerie d’accélérateur et la butée du papillon, à régler lors de l’initialisation du moteur pas à pas</td>
+</tr>
+</tbody>
+</table>
+<h1 id="circuit-de-dépression-durites-mini-1.3-spi">13. Circuit de dépression (durites) — Mini 1.3 SPI</h1>
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; Ce circuit est une cause très fréquente de pannes sur les Mini 1.3i SPI : durites craquelées/durcies par l’âge et la chaleur, boîtier de dégazage monté à l’envers ou bouché, raccords desserrés. Un défaut sur ce circuit provoque typiquement un ralenti instable, des à-coups, une consommation anormale, voire l’endommagement du capteur MAP intégré à l’ECU.</td></tr></table>
+<p>Sur les Mini Rover 1.3i SPI (1991-1996), le circuit de dépression comporte 4 durites d’origine, chacune identifiable par sa couleur, reliant le boîtier de filtre à air, le collecteur d’admission, un petit boîtier de dégazage (“fuel trap”) et l’ECU :</p>
+<p><img src="./media/media/image10.png" style="width:4.79167in;height:3.28125in" /></p>
+<p><em>Circuit de dépression Mini 1.3i SPI — couleurs d’origine (schéma reconstitué à partir de la documentation pièces détachées Mini Spares / retours d’expérience communautaires)</em></p>
+<h2 id="description-des-4-durites-et-de-leur-rôle">13.1 Description des 4 durites et de leur rôle</h2>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 34%" />
+<col style="width: 44%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Couleur</strong></th>
+<th style="text-align: left;"><strong>Trajet</strong></th>
+<th style="text-align: left;"><strong>Fonction / remarque</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Jaune</strong></td>
+<td style="text-align: left;">Dessous du boîtier de filtre à air → clapet thermostatique (dessus du boîtier)</td>
+<td style="text-align: left;">Pilote le clapet d’admission d’air chaud/froid (préchauffage de l’air admis par temps froid)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Rouge</strong></td>
+<td style="text-align: left;">Dessous du boîtier de filtre à air → collecteur d’admission t</td>
+<td style="text-align: left;">Fournit la référence de dépression moteur au clapet hermostatique</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Noire (embouts coudés)</strong></td>
+<td style="text-align: left;">Collecteur d’admission → A boîtier de dégazage</td>
+<td style="text-align: left;">mène la dépression moteur jusqu’au boîtier de dégazage</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Verte</strong></td>
+<td style="text-align: left;">Boîtier de dégazage → ECU (entrée capteur MAP)</td>
+<td style="text-align: left;">Le repère vert doit impérativement être raccordé côté ECU (“green is clean”) — sens obligatoire</td>
+</tr>
+</tbody>
+</table>
+<h2 id="le-boîtier-de-dégazage-fuel-trap">13.2 Le boîtier de dégazage (“fuel trap”)</h2>
+<p>Il s’agit d’un petit boîtier noir en plastique situé à l’arrière du moteur, sous/derrière le filtre à air, intercalé entre la durite noire (venant du collecteur) et la durite verte (allant vers l’ECU). Son rôle est de piéger les vapeurs d’essence et la condensation avant qu’elles n’atteignent le capteur MAP intégré à l’ECU.</p>
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; Ce boîtier est directionnel : le côté repéré en vert doit toujours être raccordé côté ECU. Monté à l’envers, il ne protège plus correctement le capteur MAP et peut provoquer des problèmes de ralenti et de richesse, voire endommager l’ECU à terme.</td></tr></table>
+<h2 id="symptômes-typiques-dune-fuite-ou-dun-défaut-sur-ce-circuit">13.3 Symptômes typiques d’une fuite ou d’un défaut sur ce circuit</h2>
+<ul>
+<li><p>Ralenti instable, oscillant ou qui décroche</p></li>
+<li><p>À-coups ou hésitations en conduite, surtout à faible charge</p></li>
+<li><p>Position moteur pas-à-pas ralenti anormalement haute dans MEMS-Scan (l’ECU compense une fuite d’air en ouvrant davantage l’IACV — voir section 10)</p></li>
+<li><p>Anomalies Lambda (onglet Erreurs) liées à un mélange anormalement pauvre</p></li>
+<li><p>Dans les cas avancés : dysfonctionnement du capteur MAP (code défaut 14) si le boîtier de dégazage ne joue plus son rôle</p></li>
+</ul>
+<h2 id="points-de-contrôle-recommandés">13.4 Points de contrôle recommandés</h2>
+<ol type="1">
+<li><p>Inspecter visuellement les 4 durites : elles durcissent, craquellent et se fendent avec l’âge et la chaleur moteur — remplacer systématiquement si le plastique/caoutchouc est cassant.</p></li>
+<li><p>Vérifier que tous les raccords sont bien enfoncés et non desserrés (embouts coniques qui se rétractent avec le temps).</p></li>
+<li><p>Vérifier le sens de montage du boîtier de dégazage (repère vert côté ECU).</p></li>
+<li><p>Si le boîtier de dégazage est ancien ou d’origine inconnue, le remplacer par précaution : son rôle de protection du capteur MAP en fait une pièce peu coûteuse mais critique.</p></li>
+<li><p>Après remplacement des durites, effacer les anomalies (onglet Erreurs) et surveiller Position moteur pas-à-pas ralenti et les corrections de richesse (onglet Aperçu) sur un cycle de conduite complet.</p></li>
+</ol>
+<table class="callout tip" width="100%" cellpadding="12" cellspacing="0" style="background-color:#eefbf1; border:1px solid #a9dfb8; margin:16px 0;"><tr><td style="color:#166534;">&#128161; Ce circuit étant une cause de panne très répandue et peu coûteuse à traiter, il est recommandé de le vérifier systématiquement en première intention face à un ralenti instable ou un défaut de richesse persistant sur une Mini 1.3i SPI, avant d’aller chercher plus loin (capteurs, ECU, etc.).</td></tr></table>
+<h1 id="véhicules-compatibles-avec-mems-scan-0.5.2">14. Véhicules compatibles avec MEMS-Scan 0.5.2</h1>
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; Cette section a été vérifiée à partir de la documentation officielle du logiciel et de sources techniques communautaires sur les calculateurs Rover MEMS. Le développeur du logiciel précise lui-même que sa compatibilité effective a surtout été validée sur MEMS 1.6 et sur une Mini SPi 1.3 — au-delà, certaines fonctionnalités peuvent ne pas s’appliquer selon le véhicule.</td></tr></table>
+<h2 id="ce-que-dit-la-documentation-officielle-du-logiciel">14.1 Ce que dit la documentation officielle du logiciel</h2>
+<p>D’après l’aide intégrée fournie avec MEMS-Scan (menu Help) :</p>
+<ul>
+<li><p>Le logiciel est conçu pour dialoguer avec les calculateurs Rover MEMS (Modular Engine Management System) via le connecteur de diagnostic rond à 3 broches.</p></li>
+<li><p>Le développeur indique que le support a surtout été validé sur MEMS 1.6, et que le logiciel a été testé concrètement sur une Mini SPi 1.3.</p></li>
+<li><p>Tous les véhicules équipés de MEMS 1.3, 1.6 ou 1.9 n’utilisent pas le même jeu de capteurs et d’actionneurs : certaines fonctions du logiciel (test d’un actionneur absent sur ton véhicule, par exemple) peuvent donc rester sans effet selon la configuration réelle de la voiture.</p></li>
+<li><p>Seul le calculateur moteur est géré : ni l’ABS, ni l’airbag, ni les autres calculateurs du véhicule ne sont pris en charge.</p></li>
+<li><p>Les tests d’actionneurs (onglet Actionneurs) ne sont accessibles que moteur arrêté, pour la sécurité du moteur.</p></li>
+</ul>
+<h2 id="véhicules-connus-utilisant-ces-familles-de-calculateurs-mems-1.3-1.6-1.9">14.2 Véhicules connus utilisant ces familles de calculateurs (MEMS 1.3 / 1.6 / 1.9)</h2>
+<p>Le groupe Rover a utilisé ces calculateurs MEMS, avec ce même type de connecteur rond de diagnostic, sur une large gamme de véhicules entre 1991 et 2000 environ. Le tableau ci-dessous liste les véhicules identifiés dans la documentation technique et les retours communautaires :</p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 25%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Véhicule</strong></th>
+<th style="text-align: left;"><strong>Calculateur</strong></th>
+<th style="text-align: left;"><strong>Remarque</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Mini SPi (1.3i)</strong></td>
+<td style="text-align: left;">MEMS 1.3</td>
+<td style="text-align: left;">Véhicule de référence : testé directement par le développeur du logiciel</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Rover Metro / Rover 100</strong></td>
+<td style="text-align: left;">MEMS 1.3 / 1.6</td>
+<td style="text-align: left;">Même famille de calculateur que la Mini SPi</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Rover 200 / Rover 400</strong></td>
+<td style="text-align: left;">MEMS 1.6 / 1.9</td>
+<td style="text-align: left;">Rover 400 1.6Si (MEMS 1.9) confirmé fonctionnel par la communauté</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Rover 600</strong></td>
+<td style="text-align: left;">MEMS 1.6 / 1.9</td>
+<td style="text-align: left;">Rover 620Ti confirmé fonctionnel (versions pré/post restylage)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Rover 800</strong></td>
+<td style="text-align: left;">MEMS 1.6</td>
+<td style="text-align: left;">Rover 800 coupé 2.0 turbo confirmé fonctionnel</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Land Rover Freelander 1</strong></td>
+<td style="text-align: left;">MEMS 1.9</td>
+<td style="text-align: left;">Version 1.8i essence (1999) confirmée fonctionnelle</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>MG F / MG TF</strong></td>
+<td style="text-align: left;">MEMS 1.9</td>
+<td style="text-align: left;">Même génération de calculateur que Rover 400/600/Freelander</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Lotus Elise (1996-2000)</strong></td>
+<td style="text-align: left;">MEMS 1.9</td>
+<td style="text-align: left;">Moteur Rover K-series ; version 1998 confirmée fonctionnelle</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Kit-cars à moteur Rover K-series (Caterham, Morgan, Westfield, etc.)</strong></td>
+<td style="text-align: left;">MEMS 1.6 / 1.9</td>
+<td style="text-align: left;">Selon le calculateur monté par le préparateur</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ce-qui-nest-pas-pris-en-charge">14.3 Ce qui n’est PAS pris en charge</h2>
+<ul>
+<li><p>Les calculateurs plus récents MEMS 2J et MEMS 3 (fin des années 1990 / 2000+), qui utilisent un connecteur de diagnostic OBD-II 16 broches et un protocole différent — MEMS-Scan 0.5.2 ne dialogue qu’avec le protocole ROSCO du connecteur rond 3 broches</p></li>
+<li><p>Les calculateurs autres que celui du moteur : ABS, airbag, climatisation autonome, etc. ne sont pas gérés par ce logiciel</p></li>
+<li><p>Les véhicules non-Rover Group (même à moteur K-series) équipés d’un calculateur non-MEMS</p></li>
+</ul>
+<h2 id="en-pratique">14.4 En pratique</h2>
+<table class="callout tip" width="100%" cellpadding="12" cellspacing="0" style="background-color:#eefbf1; border:1px solid #a9dfb8; margin:16px 0;"><tr><td style="color:#166534;">&#128161; Si la voiture dispose du connecteur de diagnostic rond à 3 broches typique des calculateurs MEMS (généralement situé côté cloison moteur), il y a de bonnes chances que MEMS-Scan fonctionne, même si le logiciel n’a pas été testé exhaustivement sur ce modèle précis. En cas de doute, vérifiez d’abord que le voyant Communications passe au vert après Connecter : si la liaison s’établit, l’essentiel du dialogue avec l’ECU doit fonctionner, même si certains actionneurs listés dans l’onglet Actionneurs ne sont pas présents sur la configuration (ils resteront simplement sans effet).</td></tr></table>
+<h2 id="différencier-visuellement-un-mems-1.3-dun-mems-1.6">14.5 Différencier visuellement un MEMS 1.3 d’un MEMS 1.6</h2>
+<p>Les deux calculateurs se ressemblent beaucoup (même boîtier en aluminium, même connecteur rond 3 broches pour le diagnostic), mais quelques détails permettent de les distinguer sans avoir à lire une étiquette :</p>
+<p><img src="./media/media/image11.png" style="width:4.79167in;height:3.59375in" /></p>
+<p><em>Repères visuels pour différencier un calculateur MEMS 1.3 d’un MEMS 1.6</em></p>
+<table style="width:97%;">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 36%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: left;"><strong>MEMS 1.3</strong></th>
+<th style="text-align: left;"><strong>MEMS 1.6</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Couvercle</strong></td>
+<td style="text-align: left;">Lignes ET vis apparentes</td>
+<td style="text-align: left;">Lignes, mais SANS vis apparentes (couvercle plus lisse)</td>
+</tr>
+<tr class="even">
+<td><strong>Connectereurs</strong></td>
+<td style="text-align: left;">1x36 broches + 1x18 broche</td>
+<td style="text-align: left;">s 1x36 broches (parfois + 1x18 broches selon véhicule)</td>
+</tr>
+<tr class="odd">
+<td><strong>Prise de dépression</strong></td>
+<td style="text-align: left;">Positionnée entre les deux connecteurs</td>
+<td style="text-align: left;">Positionnée à côté du premier connecteur</td>
+</tr>
+<tr class="even">
+<td><strong>Période / usage typique</strong></td>
+<td style="text-align: left;">Mini SPi, 1992-1993 environ</td>
+<td style="text-align: left;">Mini SPi/MPi et autres Rover, 1993-1999 environ</td>
+</tr>
+</tbody>
+</table>
+<table class="callout warn" width="100%" cellpadding="12" cellspacing="0" style="background-color:#fff6e8; border:1px solid #f0c987; margin:16px 0;"><tr><td style="color:#7a4a05;">&#9888;&#65039; Ce schéma est reconstitué à partir de la documentation technique Rover MEMS (rovermems.com) et non d’une photographie —Pour une confirmation à 100 %, le plus fiable reste de lire la référence exacte inscrite sur l’étiquette du calculateur (référence commençant généralement par MKC10…).</td></tr></table>
+<h1 id="nouveautés-de-la-version-française-de-mems-scan">15. Nouveautés de la version française de MEMS-Scan</h1>
+<p>Cette version française de MEMS-Scan reprend fidèlement toutes les fonctionnalités de diagnostic du logiciel d’origine, et y ajoute quelques améliorations de confort d’utilisation.</p>
+<h2 id="thème-clair-sombre">15.1 Thème clair / sombre</h2>
+<p>Un sélecteur de thème est disponible dans <strong>Options → Modifier les paramètres</strong>. Deux présentations modernisées sont proposées (fond clair ou fond sombre), avec des boutons à effet brillant. Le choix est mémorisé et réappliqué automatiquement au démarrage suivant.</p>
+<h2 id="écran-de-démarrage-avec-barre-de-progression">15.2 Écran de démarrage avec barre de progression</h2>
+<p>Au lancement du logiciel, un écran affiche une barre de progression pendant la phase de détection des ports série, avec le numéro de version affiché. Le port série ayant fonctionné lors du dernier lancement est testé en priorité, ce qui accélère nettement les démarrages suivants.</p>
+<h2 id="reconnexion-automatique">15.3 Reconnexion automatique</h2>
+<p>Si la liaison avec l’ECU est interrompue pendant une session (câble débranché accidentellement, faux contact), le logiciel tente automatiquement de se reconnecter toutes les 3 secondes, sans action de votre part. Cette reconnexion automatique s’arrête dès que vous cliquez vous-même sur <strong>Déconnecter</strong>.</p>
+<h2 id="alerte-sur-nouveau-code-défaut">15.4 Alerte sur nouveau code défaut</h2>
+<p>Si un nouveau code défaut apparaît pendant que vous êtes connecté (et non déjà présent au moment de la connexion), un signal sonore retentit et l’icône du logiciel clignote dans la barre des tâches Windows — utile si vous surveillez le logiciel du coin de l’œil pendant un essai routier ou sous le capot.</p>
+<h2 id="toujours-au-premier-plan">15.5 Toujours au premier plan</h2>
+<p>Une case à cocher, dans le menu <strong>Options</strong>, permet de garder la fenêtre de MEMS-Scan visible au-dessus des autres applications — pratique pour consulter les valeurs en direct pendant que vous manipulez d’autres réglages ou documents.</p>
+<h2 id="capture-décran-instantanée">15.6 Capture d’écran instantanée</h2>
+<p>Un bouton <strong>Vue instantanée</strong>, situé dans la barre du haut à côté du voyant Erreurs ECU, permet d’enregistrer une image de l’écran du logiciel à l’instant précis où vous cliquez. Chaque capture est enregistrée dans un dossier <code>captures</code>, créé automatiquement à côté de l’exécutable, avec un nom de fichier horodaté (<code>AAAA-MM-JJ_HH-MM-SS.png</code>).</p>
+<table class="callout tip" width="100%" cellpadding="12" cellspacing="0" style="background-color:#eefbf1; border:1px solid #a9dfb8; margin:16px 0;"><tr><td style="color:#166534;">&#128161; Bonnes pratiques d’utilisation de la capture d’écran :</td></tr></table>
+<ul>
+<li>Utilisez la capture pour <strong>figer un état précis</strong> de tous les paramètres visibles à l’écran, par exemple juste avant ou juste après une intervention (réglage du ralenti, remplacement d’une pièce), ou au moment exact où un symptôme se manifeste (à-coup, ralenti qui décroche).</li>
+<li>Contrairement à l’enregistrement de log (section 8), qui capture une <strong>série de valeurs dans le temps</strong> sous forme de fichier texte/CSV, la capture d’écran fige une <strong>image visuelle complète</strong> de l’onglet affiché à un instant donné — les deux sont complémentaires : le log pour l’analyse fine après coup, la capture pour un repère visuel immédiat et facile à partager.</li>
+<li>Pensez à être sur l’onglet pertinent (Aperçu, Erreurs, Toutes les données…) avant de cliquer, puisque seul le contenu visible à l’écran est enregistré.</li>
+<li>Les captures sont pratiques pour <strong>documenter un diagnostic avant/après réparation</strong>, ou pour partager rapidement une situation avec un tiers (forum, mécanicien, vendeur de pièces) sans avoir à décrire chaque valeur à l’écrit.</li>
+<li>Pensez à vider ou trier régulièrement le dossier <code>captures</code> si vous l’utilisez souvent : chaque image est indépendante et n’est jamais supprimée automatiquement.</li>
+</ul>
+<h1 id="contact">16. Contact</h1>
+<p>Cette traduction française et ces améliorations ont été réalisées de façon indépendante, à partir du logiciel MEMS-Scan original de haro78 (lui-même basé sur MEMSGauge de Colin Bourassa et MEMS-rosco de Leopold).</p>
+<table width="100%" cellpadding="16" cellspacing="0" style="background-color:#ffffff; border:1px solid #d6ddea; margin-top:10px;">
+<tr><td align="center">
+Pour toute question, retour d'exp&eacute;rience, suggestion ou bug concernant cette version fran&ccedil;aise :<br/><br/>
+<span style="font-size:12pt; font-weight:bold;">&#128231; <a href="mailto:mini56@free.fr">mini56@free.fr</a></span>
+</td></tr>
+</table>
 </body>
 </html>
-
