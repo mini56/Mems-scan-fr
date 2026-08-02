@@ -186,6 +186,10 @@ void MainWindow::setupWidgets()
   m_ui->m_optionsMenu->addAction(alwaysOnTopAction);
   connect(alwaysOnTopAction, SIGNAL(toggled(bool)), this, SLOT(onToggleAlwaysOnTop(bool)));
 
+  // Ajout du bouton "Vue instantanée" dans la barre du haut, après Erreurs ECU
+  QPushButton *snapshotButton = new QPushButton("Vue instantanée", this);
+  m_ui->comunicationlayout->addWidget(snapshotButton);
+  connect(snapshotButton, SIGNAL(clicked()), this, SLOT(onSnapshotClicked()));
   // connect menu item signals
   connect(m_ui->m_exitAction, SIGNAL(triggered()), this, SLOT(onExitSelected()));
   connect(m_ui->m_editSettingsAction, SIGNAL(triggered()), this, SLOT(onEditOptionsClicked()));
