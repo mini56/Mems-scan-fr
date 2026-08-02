@@ -5,9 +5,10 @@
 
 HelpViewer::HelpViewer(const QString title, QWidget * parent):QDialog(parent), m_vbox(0), m_viewer(0), m_closeButton(0)
 {
-  this->setWindowTitle(title + " - Help");
+  this->setWindowTitle(title + " - Aide");
   this->setMinimumWidth(850);
   this->setMinimumHeight(550);
+  this->setWindowFlags(this->windowFlags() | Qt::WindowMaximizeButtonHint | Qt::WindowMinimizeButtonHint);
 
   m_vbox = new QVBoxLayout(this);
   m_closeButton = new QPushButton("Fermer", this);
