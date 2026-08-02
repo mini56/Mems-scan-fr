@@ -167,6 +167,7 @@ private slots:
     void onDisconnectClicked();
     void onReconnectAttempt();
     void onToggleAlwaysOnTop(bool checked);
+    void onSnapshotClicked();
     void onStartLogging();
     void onStopLogging();
     void onMoveIACClicked();
