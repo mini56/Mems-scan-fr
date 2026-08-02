@@ -1306,6 +1306,34 @@ void MainWindow::onToggleAlwaysOnTop(bool checked)
 }
 
 /**
+ * Prend une capture d'écran de la fenêtre à l'instant présent et
+ * l'enregistre dans un dossier "captures", à côté de l'exécutable,
+ * avec un nom de fichier horodaté.
+ */
+void MainWindow::onSnapshotClicked()
+{
+  QString capturesPath = QCoreApplication::applicationDirPath() + "/captures";
+  QDir capturesDir(capturesPath);
+  if (!capturesDir.exists())
+  {
+    capturesDir.mkpath(".");
+  }
+
+  QString fileName = QDateTime::currentDateTime().toString("yyyy-MM-dd_HH-mm-ss") + ".png";
+  QString fullPath = capturesPath + "/" + fileName;
+
+  QPixmap snapshot = this->grab();
+  if (snapshot.save(fullPath, "PNG"))
+  {
+    statusBar()->showMessage("Capture enregistrée : captures/" + fileName, 4000);
+  }
+  else
+  {
+    QMessageBox::warning(this, "Erreur", "Échec de l'enregistrement de la capture d'écran.", QMessageBox::Ok);
+  }
+}
+
+/**
  * Responds to the "read success" signal from the worker thread by turning
  * on a green lamp.
  */
