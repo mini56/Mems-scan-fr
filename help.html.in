@@ -62,10 +62,10 @@
     }
 
     img {
-        max-width: 640px;
+        max-width: 640px !important;
         border: 1px solid #d6ddea;
         margin: 14px auto 4px auto;
-        display: block;
+        display: block !important;
     }
     em {
         display: block;
@@ -101,7 +101,7 @@
 <p>11. Dépannage rapide — tableau de synthèse</p>
 <p>12. Glossaire</p>
 <p>13. Circuit de dépression (durites) — Mini 1.3 SPI, point de panne fréquent</p>
-<p>14. Véhicules compatibles avec MEMS-Scan 0.5.2</p>
+<p>14. Véhicules compatibles avec MEMS-Scan 0.6.0</p>
 <h1 id="présentation-générale-et-sécurité">1. Présentation générale et sécurité</h1>
 <p>MEMS-Scan est un logiciel de diagnostic gratuit/communautaire pour les calculateurs Rover MEMS (Modular Engine Management System) équipant les Mini SPI (injection monopoint) et MPI (injection multipoint). Il dialogue avec l’ECU via le protocole propriétaire ROSCO (Rover Service Communications).</p>
 <p>La fenêtre principale comprend en permanence :</p>
@@ -1149,7 +1149,7 @@
 <li><p>Après remplacement des durites, effacer les anomalies (onglet Erreurs) et surveiller Position moteur pas-à-pas ralenti et les corrections de richesse (onglet Aperçu) sur un cycle de conduite complet.</p></li>
 </ol>
 <table class="callout tip" width="100%" cellpadding="12" cellspacing="0" style="background-color:#eefbf1; border:1px solid #a9dfb8; margin:16px 0;"><tr><td style="color:#166534;">&#128161; Ce circuit étant une cause de panne très répandue et peu coûteuse à traiter, il est recommandé de le vérifier systématiquement en première intention face à un ralenti instable ou un défaut de richesse persistant sur une Mini 1.3i SPI, avant d’aller chercher plus loin (capteurs, ECU, etc.).</td></tr></table>
-<h1 id="véhicules-compatibles-avec-mems-scan-0.5.2">14. Véhicules compatibles avec MEMS-Scan 0.5.2</h1>
+<h1 id="véhicules-compatibles-avec-mems-scan-0.5.2">14. Véhicules compatibles avec MEMS-Scan 0.6.0</h1>
 <ol start="15" type="1">
 <li><p>Nouveautés de la version française</p></li>
 <li><p>Contact</p></li>
@@ -1229,7 +1229,7 @@
 </table>
 <h2 id="ce-qui-nest-pas-pris-en-charge">14.3 Ce qui n’est PAS pris en charge</h2>
 <ul>
-<li><p>Les calculateurs plus récents MEMS 2J et MEMS 3 (fin des années 1990 / 2000+), qui utilisent un connecteur de diagnostic OBD-II 16 broches et un protocole différent — MEMS-Scan 0.5.2 ne dialogue qu’avec le protocole ROSCO du connecteur rond 3 broches</p></li>
+<li><p>Les calculateurs plus récents MEMS 2J et MEMS 3 (fin des années 1990 / 2000+), qui utilisent un connecteur de diagnostic OBD-II 16 broches et un protocole différent — MEMS-Scan 0.6.0 ne dialogue qu’avec le protocole ROSCO du connecteur rond 3 broches</p></li>
 <li><p>Les calculateurs autres que celui du moteur : ABS, airbag, climatisation autonome, etc. ne sont pas gérés par ce logiciel</p></li>
 <li><p>Les véhicules non-Rover Group (même à moteur K-series) équipés d’un calculateur non-MEMS</p></li>
 </ul>
