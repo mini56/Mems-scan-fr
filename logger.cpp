@@ -24,6 +24,7 @@ m_logExtension(".txt"), m_logDir("logs")
 bool Logger::EcuIdTransmitted(QString id)
 {
 	ecuid = id;
+	return true;
 }
 
 /**
