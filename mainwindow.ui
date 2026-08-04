@@ -1325,7 +1325,7 @@ p, li { white-space: pre-wrap; }
       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <attribute name="title">
-      <string>toutes les mesures</string>
+      <string>Toutes les mesures</string>
      </attribute>
      <widget class="QLabel" name="rpm_label">
       <property name="geometry">
