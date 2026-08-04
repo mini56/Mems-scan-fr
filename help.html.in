@@ -62,7 +62,7 @@
     }
 
     img {
-        width: 620px;
+        width: 800px;
         border: 1px solid #d6ddea;
         margin: 14px auto 4px auto;
         display: block;
