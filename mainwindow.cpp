@@ -1351,6 +1351,7 @@ void MainWindow::onReadSuccess()
 
 /**
  * Opens the log file for writing.
+ *Ouvre le fichier journal en écriture.
  */
 void MainWindow::onStartLogging()
 {
@@ -1358,6 +1359,8 @@ void MainWindow::onStartLogging()
   if (m_logger->openLog(m_ui->m_logFileNameBox->text()))
   {
 	m_ui->m_startLoggingButton->setEnabled(false);
+    m_ui->m_startLoggingButton->setStyleSheet(
+      "QPushButton:disabled { background-color: #22c55e; color: #ffffff; border: 1px solid #16803c; }");
     m_ui->m_stopLoggingButton->setEnabled(true);
   }
   else
@@ -1367,14 +1370,17 @@ void MainWindow::onStartLogging()
 }
 
 /**
- * Closes the open log file.
+ * close the log file for writing.
+ *ferme le fichier journal en écriture.
  */
 void MainWindow::onStopLogging()
 {
   m_logger->closeLog();
   m_ui->m_stopLoggingButton->setEnabled(false);
+  m_ui->m_startLoggingButton->setStyleSheet("");
   m_ui->m_startLoggingButton->setEnabled(true);
 }
+
 
 /**
  * Displays an dialog box with information about the program.
