@@ -59,6 +59,7 @@ class AnalysisTab : public QWidget
 
 public:
     explicit AnalysisTab(QWidget *parent = 0);
+    void loadFile(const QString &path);
 
 private slots:
     void onLoadFileClicked();

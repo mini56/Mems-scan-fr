@@ -6,6 +6,65 @@
 #include <QTime>
 #include <QMessageBox>
 #include <QScrollBar>
+#include <QMap>
+
+// Correspondance entre les noms techniques des colonnes du CSV et des
+// libellés clairs en français, affichés dans la liste des voies.
+static QString friendlyColumnName(const QString &rawName)
+{
+  static QMap<QString, QString> names;
+  if (names.isEmpty())
+  {
+    names["80x01-02_engine-rpm"] = "Régime moteur (tr/min)";
+    names["80x03_coolant_temp"] = "Température liquide refroid. (°C)";
+    names["80x04_ambient_temp"] = "Température ambiante (°C)";
+    names["80x05_intake_air_temp"] = "Température air admission (°C)";
+    names["80x06_fuel_temp"] = "Température carburant (°C)";
+    names["80x07_map_kpa"] = "Pression collecteur (kPa)";
+    names["80x08_battery_voltage"] = "Tension batterie (V)";
+    names["80x09_throttle_pot"] = "Position papillon (%)";
+    names["80x0A_idle_switch"] = "Contact ralenti";
+    names["80x0C_park_neutral_switch"] = "Contact point mort";
+    names["80x0D-0E_fault_codes"] = "Codes défaut (brut)";
+    names["80x0F_idle_set_point"] = "Consigne de ralenti";
+    names["80x10_idle_hot"] = "Ralenti chaud";
+    names["80x12_iac_position"] = "Position moteur pas-à-pas (%)";
+    names["80x13-14_idle_error"] = "Erreur de ralenti";
+    names["80x15_ignition_advance_offset"] = "Décalage d'avance";
+    names["80x16_ignition_advance"] = "Avance à l'allumage (°)";
+    names["80x17-18_coil_time"] = "Temps bobine (ms)";
+    names["80x19_crankshaft_position_sensor"] = "Capteur position vilebrequin";
+    names["7dx01_ignition_switch"] = "Contact allumage";
+    names["7dx02_throttle_angle"] = "Angle papillon (°)";
+    names["7dx04_air_fuel_ratio"] = "Ratio air/carburant";
+    names["7dx05_dtc2"] = "DTC 2";
+    names["7dx06_lambda_voltage"] = "Tension sonde lambda (mV)";
+    names["7dx07_lambda_sensor_frequency"] = "Fréquence lambda";
+    names["7dx08_lambda_sensor_dutycycle"] = "Cycle lambda (%)";
+    names["7dx09_lambda_sensor_status"] = "État lambda";
+    names["7dx0A_closed_loop"] = "Boucle fermée";
+    names["7dx0B_long_term_fuel_trim"] = "Correction carburant long terme (%)";
+    names["7dx0C_short_term_fuel_trim"] = "Correction carburant court terme (%)";
+    names["7dx0D_carbon_canister_dutycycle"] = "Cycle purge canister (%)";
+    names["7dx0E_dtc3"] = "DTC 3";
+    names["7dx0F_idle_base_pos"] = "Position de base ralenti";
+    names["7dx11_dtc4"] = "DTC 4";
+    names["7dx12_ignition_advance2"] = "Avance à l'allumage 2";
+    names["7dx13_idle_speed_offset"] = "Décalage régime de ralenti";
+    names["7dx14_idle_error2"] = "Erreur de ralenti 2";
+    names["7dx16_dtc5"] = "DTC 5";
+  }
+
+  if (names.contains(rawName))
+  {
+    return names[rawName];
+  }
+  if (rawName.contains("_uk") || rawName.contains("uk1") || rawName.contains("uk2"))
+  {
+    return "Non documenté (" + rawName + ")";
+  }
+  return rawName;
+}
 
 //=============================================================================
 // ChartWidget
@@ -13,7 +72,8 @@
 
 ChartWidget::ChartWidget(QWidget *parent) : QWidget(parent), m_hasCursor(false), m_cursorX(0)
 {
-  setMinimumHeight(320);
+  setMinimumHeight(150);
+  setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
   setMouseTracking(true);
   setAutoFillBackground(true);
   QPalette pal = palette();
@@ -220,6 +280,8 @@ void ChartWidget::paintEvent(QPaintEvent *event)
 
 AnalysisTab::AnalysisTab(QWidget *parent) : QWidget(parent)
 {
+  setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
   // Palette de couleurs distinctes pour les voies (cycle si plus de colonnes)
   m_colors << QColor("#4fc3f7") << QColor("#ff7043") << QColor("#66bb6a")
            << QColor("#ffca28") << QColor("#ba68c8") << QColor("#26c6da")
@@ -230,7 +292,8 @@ AnalysisTab::AnalysisTab(QWidget *parent) : QWidget(parent)
 
   // --- Colonne de gauche : chargement + liste des voies ---
   QWidget *leftPanel = new QWidget(this);
-  leftPanel->setMaximumWidth(280);
+  leftPanel->setMaximumWidth(320);
+  leftPanel->setMinimumWidth(300);
   QVBoxLayout *leftLayout = new QVBoxLayout(leftPanel);
 
   m_loadButton = new QPushButton("Charger un fichier CSV...", leftPanel);
@@ -257,6 +320,7 @@ AnalysisTab::AnalysisTab(QWidget *parent) : QWidget(parent)
 
   m_checkboxScrollArea = new QScrollArea(leftPanel);
   m_checkboxScrollArea->setWidgetResizable(true);
+  m_checkboxScrollArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
   m_checkboxContainer = new QWidget();
   m_checkboxLayout = new QVBoxLayout(m_checkboxContainer);
   m_checkboxLayout->addStretch();
@@ -270,6 +334,11 @@ AnalysisTab::AnalysisTab(QWidget *parent) : QWidget(parent)
   mainLayout->addWidget(m_chart, 1);
 }
 
+void AnalysisTab::loadFile(const QString &path)
+{
+  parseCsv(path);
+}
+
 void AnalysisTab::onLoadFileClicked()
 {
   QString path = QFileDialog::getOpenFileName(this, "Charger un fichier journal",
@@ -278,7 +347,7 @@ void AnalysisTab::onLoadFileClicked()
   {
     return;
   }
-  parseCsv(path);
+  loadFile(path);
 }
 
 void AnalysisTab::parseCsv(const QString &path)
@@ -321,7 +390,7 @@ void AnalysisTab::parseCsv(const QString &path)
   m_columnNames.clear();
   for (int i = 1; i < headers.count(); i++)
   {
-    m_columnNames << headers[i];
+    m_columnNames << friendlyColumnName(headers[i].trimmed());
   }
 
   m_time.clear();
@@ -386,9 +455,9 @@ void AnalysisTab::parseCsv(const QString &path)
 
   m_fileLabel->setText(QFileInfo(path).fileName() + " (" + QString::number(lineCount) + " points)");
 
-  rebuildCheckboxes();
-
   m_chart->setData(m_time, m_columns, m_columnNames, m_colors);
+
+  rebuildCheckboxes();
 }
 
 void AnalysisTab::rebuildCheckboxes()
@@ -408,12 +477,16 @@ void AnalysisTab::rebuildCheckboxes()
   {
     QCheckBox *cb = new QCheckBox(m_columnNames[i], m_checkboxContainer);
     QColor c = m_colors[i % m_colors.count()];
-    cb->setStyleSheet(QString("QCheckBox::indicator { width: 12px; height: 12px; background-color: %1; border-radius: 2px; }")
-                       .arg(c.name()));
+    cb->setStyleSheet(QString(
+      "QCheckBox { padding: 3px 0; }"
+      "QCheckBox::indicator { width: 14px; height: 14px; border: 2px solid %1; border-radius: 3px; background-color: #ffffff; }"
+      "QCheckBox::indicator:checked { background-color: %1; }"
+      "QCheckBox::indicator:hover { border: 2px solid %1; }"
+      ).arg(c.name()));
 
     // Cocher automatiquement quelques voies usuelles au premier chargement
-    if (m_columnNames[i].contains("engine-rpm") || m_columnNames[i].contains("coolant_temp") ||
-        m_columnNames[i].contains("battery_voltage"))
+    if (m_columnNames[i].contains("Régime moteur") || m_columnNames[i].contains("liquide refroid") ||
+        m_columnNames[i].contains("Tension batterie"))
     {
       cb->setChecked(true);
     }
