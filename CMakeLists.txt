@@ -6,8 +6,8 @@ string (TOLOWER ${PROJECTNAME} PNAME)
 project (${PNAME})
 add_definitions (-DPROJECTNAME=\"${PROJECTNAME}\")
 
-set (VER_MAJOR  0)
-set (VER_MINOR 6)
+set (VER_MAJOR 0)
+set (VER_MINOR 5)
 set (VER_PATCH 0)
 
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -73,6 +73,7 @@ add_executable (${PNAME} main.cpp
                          logger.cpp
                          serialdevenumerator.cpp
                          splashprogress.cpp
+                         analysistab.cpp
                          mainwindow.cpp
                          aboutbox.cpp
                          optionsdialog.cpp
@@ -128,7 +129,7 @@ if (MINGW)
   if (ZLIB)
     message (STATUS "Found zlib1 at ${ZLIB}")
   else ()
-    message (SEND_ERROR "Could not find zlib1!")
+    message (STATUS "zlib1.dll not found separately - likely statically linked into Qt5Core.dll, continuing anyway")
   endif ()
 
   find_library (QTCORE_DLL Qt5Core)

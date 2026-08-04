@@ -4,10 +4,6 @@
 #include <QList>
 #include <QDateTime>
 #include <QDir>
-#include <QDateTime>
-#include <QPixmap>
-#include <QScreen>
-#include <QStatusBar>
 #include <QHBoxLayout>
 #include <QThread>
 #include <QFileDialog>
@@ -17,8 +13,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "styles.h"
+#include "analysistab.h"
 #include <qapplication.h>
 #include <QLCDNumber>
+#include <QDir>
+#include <QDateTime>
+#include <QPixmap>
+#include <QScreen>
+#include <QStatusBar>
 
 MainWindow::MainWindow(QWidget* parent):QMainWindow(parent),
 m_ui(new Ui::MainWindow),
@@ -190,6 +192,11 @@ void MainWindow::setupWidgets()
   QPushButton *snapshotButton = new QPushButton("Vue instantanée", this);
   m_ui->comunicationlayout->addWidget(snapshotButton);
   connect(snapshotButton, SIGNAL(clicked()), this, SLOT(onSnapshotClicked()));
+
+  // Ajout de l'onglet "Analyse" (lecture de fichiers CSV enregistrés)
+  AnalysisTab *analysisTab = new AnalysisTab(this);
+  m_ui->Tab_main->addTab(analysisTab, "Analyse");
+
   // connect menu item signals
   connect(m_ui->m_exitAction, SIGNAL(triggered()), this, SLOT(onExitSelected()));
   connect(m_ui->m_editSettingsAction, SIGNAL(triggered()), this, SLOT(onEditOptionsClicked()));
@@ -1310,9 +1317,10 @@ void MainWindow::onToggleAlwaysOnTop(bool checked)
 }
 
 /**
- * Prend une capture d'écran de la fenêtre à l'instant présent et
- * l'enregistre dans un dossier "captures", à côté de l'exécutable,
- * avec un nom de fichier horodaté.
+ * Prend une capture d'écran de la fenêtre à l'instant présent (utile pendant
+ * l'enregistrement d'un journal, pour garder une image des informations à
+ * un moment précis) et l'enregistre dans un dossier "captures", à côté de
+ * l'exécutable, avec un nom de fichier horodaté.
  */
 void MainWindow::onSnapshotClicked()
 {
@@ -1351,7 +1359,6 @@ void MainWindow::onReadSuccess()
 
 /**
  * Opens the log file for writing.
- *Ouvre le fichier journal en écriture.
  */
 void MainWindow::onStartLogging()
 {
@@ -1370,8 +1377,7 @@ void MainWindow::onStartLogging()
 }
 
 /**
- * close the log file for writing.
- *ferme le fichier journal en écriture.
+ * Closes the open log file.
  */
 void MainWindow::onStopLogging()
 {
@@ -1380,7 +1386,6 @@ void MainWindow::onStopLogging()
   m_ui->m_startLoggingButton->setStyleSheet("");
   m_ui->m_startLoggingButton->setEnabled(true);
 }
-
 
 /**
  * Displays an dialog box with information about the program.
