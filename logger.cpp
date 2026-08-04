@@ -7,7 +7,7 @@
  * well as log directory and log file extension.
  */
 Logger::Logger(MEMSInterface* memsiface):
-m_logExtension(".txt"), m_logDir("logs")
+m_logExtension(".csv"), m_logDir("logs")
 {
   m_mems = memsiface;
 }
