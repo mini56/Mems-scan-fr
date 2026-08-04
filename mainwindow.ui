@@ -6704,7 +6704,7 @@ p, li { white-space: pre-wrap; }
 <!-- debut page ecu -->
     <widget class="QWidget" name="ECU">
      <attribute name="title">
-      <string>mode interactif</string>
+      <string>Mode interactif</string>
      </attribute>
      <widget class="QLabel" name="label_9">
       <property name="geometry">
