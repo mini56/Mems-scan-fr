@@ -3876,8 +3876,8 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
 <!-- debut toute les mesures -->
-<widget class="QWidget" name="centralWidget">
- <layout class="QGridLayout" name="gridLayout">
+    <widget class="QWidget" name="centralWidget">
+     <layout class="QGridLayout" name="gridLayout">
     
     <!-- Ligne 0 -->
     <item row="0" column="0"><widget class="QLabel" name="m_faultcode1_2"/></item>
@@ -4149,8 +4149,8 @@ p, li { white-space: pre-wrap; }
     <item row="53" column="1"><widget class="QLCDNumber" name="faultcode1_lcd"/></item>
     <item row="53" column="2"><widget class="QLabel" name="faultcodes_label"/></item>
 
- </layout>
-</widget>
+     </layout>
+    </widget>
 <!-- fin toutes les mesures -->
 	<widget class="QWidget" name="errors">
      <attribute name="title">
