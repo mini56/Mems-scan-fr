@@ -137,6 +137,7 @@ private:
     bool m_autoReconnectEnabled;
     quint32 m_prevFaultMask;
     bool m_prevFaultMaskValid;
+    class SummaryTab *m_summaryTab;
 
     const float mapGaugeMaxPsi = 16.0;  // vorher static
     const float mapGaugeMaxKPa = 160.0; // vorher static

@@ -14,6 +14,7 @@
 #include "ui_mainwindow.h"
 #include "styles.h"
 #include "analysistab.h"
+#include "summarytab.h"
 #include <qapplication.h>
 #include <QLCDNumber>
 #include <QDir>
@@ -192,6 +193,11 @@ void MainWindow::setupWidgets()
   QPushButton *snapshotButton = new QPushButton("Vue instantanée", this);
   m_ui->comunicationlayout->addWidget(snapshotButton);
   connect(snapshotButton, SIGNAL(clicked()), this, SLOT(onSnapshotClicked()));
+
+  // Ajout de l'onglet "toutes les mesures" (reconstruit : son contenu
+  // d'origine était resté commenté dans le fichier .ui, le rendant vide)
+  m_summaryTab = new SummaryTab(this);
+  m_ui->Tab_main->insertTab(2, m_summaryTab, "toutes les mesures");
 
   // Ajout de l'onglet "Analyse" (lecture de fichiers CSV enregistrés)
   AnalysisTab *analysisTab = new AnalysisTab(this);
@@ -697,6 +703,7 @@ void MainWindow::setAdjustmentsEnabled(bool enabled)
 void MainWindow::onDataReady()
 {
   mems_data* data = m_mems->getData();
+  m_summaryTab->updateData(data);
   int corrected_iac = (data->iac_position > IAC_MAXIMUM) ? IAC_MAXIMUM : data->iac_position;
 /*   float corrected_throttle = ((data->throttle_pot * 0.02) > 5.0) ? 5.0 : data->throttle_pot; */
 
