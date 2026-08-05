@@ -3875,168 +3875,279 @@ p, li { white-space: pre-wrap; }
        <string>0.0V</string>
       </property>
      </widget>
-     <zorder>m_faultcode1_2</zorder>
-     <zorder>m_uk4_2</zorder>
-     <zorder>m_iacpos_2</zorder>
-     <zorder>m_idlespeeddev_2</zorder>
-     <zorder>m_ignadvanceoffset_2</zorder>
-     <zorder>m_ignadvance_2</zorder>
-     <zorder>m_coiltime_2</zorder>
-     <zorder>m_uk6_2</zorder>
-     <zorder>m_uk7_2</zorder>
-     <zorder>m_uk8_2</zorder>
-     <zorder>m_ignitionswitch_2</zorder>
-     <zorder>m_throttleangle_2</zorder>
-     <zorder>m_uk11_2</zorder>
-     <zorder>m_airratio_2</zorder>
-     <zorder>m_faultcode0_2</zorder>
-     <zorder>m_rpm_2</zorder>
-     <zorder>m_waterT_2</zorder>
-     <zorder>m_ambientT_2</zorder>
-     <zorder>m_airT_2</zorder>
-     <zorder>m_fuelT_2</zorder>
-     <zorder>m_map_2</zorder>
-     <zorder>m_voltage_2</zorder>
-     <zorder>m_throttlepot_2</zorder>
-     <zorder>m_idleswitch_2</zorder>
-     <zorder>m_uk1_2</zorder>
-     <zorder>m_park_2</zorder>
-     <zorder>m_idlesetpoint_2</zorder>
-     <zorder>m_idlehot_2</zorder>
-     <zorder>m_lambdavoltage_2</zorder>
-     <zorder>m_lambdafrequency_2</zorder>
-     <zorder>m_lambdadutycycle_2</zorder>
-     <zorder>m_lambdastatus_2</zorder>
-     <zorder>m_closedloop_2</zorder>
-     <zorder>m_longtermftrim_2</zorder>
-     <zorder>m_shorttermftrim_2</zorder>
-     <zorder>m_carbondutycycle_2</zorder>
-     <zorder>m_fcodes_2</zorder>
-     <zorder>m_idlebase_2</zorder>
-     <zorder>m_uk15_2</zorder>
-     <zorder>m_uk16_2</zorder>
-     <zorder>m_ignadvance2_2</zorder>
-     <zorder>m_uk18_2</zorder>
-     <zorder>m_idleerror2_2</zorder>
-     <zorder>m_uk20_2</zorder>
-     <zorder>m_faultcode4_2</zorder>
-     <zorder>m_uk22_2</zorder>
-     <zorder>m_uk23_2</zorder>
-     <zorder>m_uk24_2</zorder>
-     <zorder>m_uk25_2</zorder>
-     <zorder>m_uk26_2</zorder>
-     <zorder>m_uk27_2</zorder>
-     <zorder>m_uk28_2</zorder>
-     <zorder>m_uk29_2</zorder>
-     <zorder>m_uk30_2</zorder>
-     <zorder>label_16</zorder>
-     <zorder>rpm_label</zorder>
-     <zorder>rpm_lcd</zorder>
-     <zorder>watertemp_lcd</zorder>
-     <zorder>unknown16_lcd</zorder>
-     <zorder>ambient_label</zorder>
-     <zorder>idleerror2_lcd</zorder>
-     <zorder>unknown22_lcd</zorder>
-     <zorder>map_lcd</zorder>
-     <zorder>map_label</zorder>
-     <zorder>voltage_lcd</zorder>
-     <zorder>Voltage_label</zorder>
-     <zorder>throttlepot_lcd</zorder>
-     <zorder>throttlepot_label</zorder>
-     <zorder>idleswitch_lcd</zorder>
-     <zorder>idleswitch_label</zorder>
-     <zorder>label_3</zorder>
-     <zorder>park_label</zorder>
-     <zorder>idlesetpoint_lcd</zorder>
-     <zorder>idlehot_lcd</zorder>
-     <zorder>longterm_fuel_lcd</zorder>
-     <zorder>idlespeeddev_lcd</zorder>
-     <zorder>unknown2_label</zorder>
-     <zorder>unknown4_label</zorder>
-     <zorder>label_4</zorder>
-     <zorder>idleairpos_label</zorder>
-     <zorder>idlespeeddev_label</zorder>
-     <zorder>label_5</zorder>
-     <zorder>label_6</zorder>
-     <zorder>label_7</zorder>
-     <zorder>label_8</zorder>
-     <zorder>cranksensor</zorder>
-     <zorder>label_10</zorder>
-     <zorder>label_11</zorder>
-     <zorder>label_12</zorder>
-     <zorder>label_13</zorder>
-     <zorder>label_15</zorder>
-     <zorder>label_17</zorder>
-     <zorder>label_18</zorder>
-     <zorder>label_20</zorder>
-     <zorder>label_21</zorder>
-     <zorder>label_25</zorder>
-     <zorder>label_26</zorder>
-     <zorder>label_27</zorder>
-     <zorder>label_28</zorder>
-     <zorder>label_29</zorder>
-     <zorder>label_30</zorder>
-     <zorder>label_31</zorder>
-     <zorder>label_32</zorder>
-     <zorder>label_33</zorder>
-     <zorder>label_34</zorder>
-     <zorder>label_35</zorder>
-     <zorder>label_14</zorder>
-     <zorder>label_36</zorder>
-     <zorder>fcodes_lcd</zorder>
-     <zorder>ignadvance_lcd</zorder>
-     <zorder>unknown15_lcd</zorder>
-     <zorder>unknown18_lcd</zorder>
-     <zorder>faultcode4_lcd</zorder>
-     <zorder>unknown7_lcd</zorder>
-     <zorder>unknown11_lcd</zorder>
-     <zorder>throttle_angle_lcd</zorder>
-     <zorder>air_fuel_lcd</zorder>
-     <zorder>unknown8_lcd</zorder>
-     <zorder>lambda_frequency_lcd</zorder>
-     <zorder>lambda_dutycycle_lcd</zorder>
-     <zorder>idle_base_lcd</zorder>
-     <zorder>intakeair_lcd</zorder>
-     <zorder>fuel_temp_lcd</zorder>
-     <zorder>unknown25_lcd</zorder>
-     <zorder>unknown26_lcd</zorder>
-     <zorder>unknown27_lcd</zorder>
-     <zorder>unknown29_lcd</zorder>
-     <zorder>unknown28_lcd</zorder>
-     <zorder>lambda_voltage_lcd</zorder>
-     <zorder>carboncanister_lcd</zorder>
-     <zorder>shortterm_fuel_lcd</zorder>
-     <zorder>closed_loop_lcd</zorder>
-     <zorder>lambda_status_lcd</zorder>
-     <zorder>label_37</zorder>
-     <zorder>label_38</zorder>
-     <zorder>label_39</zorder>
-     <zorder>label_40</zorder>
-     <zorder>label_41</zorder>
-     <zorder>ignadvanceoffset_lcd</zorder>
-     <zorder>ignadvance2_lcd</zorder>
-     <zorder>coiltime_lcd</zorder>
-     <zorder>unknown23_lcd</zorder>
-     <zorder>unknown24_lcd</zorder>
-     <zorder>unknown30_lcd</zorder>
-     <zorder>unknown20_lcd</zorder>
-     <zorder>fueltemp_label</zorder>
-     <zorder>water_label</zorder>
-     <zorder>ambientair_lcd</zorder>
-     <zorder>park_lcd</zorder>
-     <zorder>unknown1_lcd</zorder>
-     <zorder>intakeair_label</zorder>
-     <zorder>label_19</zorder>
-     <zorder>ignitionswitch_lcd</zorder>
-     <zorder>iac_lcd</zorder>
-     <zorder>unknown4_lcd</zorder>
-     <zorder>unknown6_lcd</zorder>
-     <zorder>label_42</zorder>
-     <zorder>label_43</zorder>
-     <zorder>faultcode0_lcd</zorder>
-     <zorder>label_44</zorder>
-     <zorder>faultcode1_lcd</zorder>
-     <zorder>faultcodes_label</zorder>
+    <layout class="QGridLayout" name="gridLayout_trois_colonnes">
+
+    <!-- Ligne 0 -->
+    <item row="0" column="0"><widget class="QWidget" name="m_faultcode1_2"/></item>
+    <item row="0" column="1"><widget class="QWidget" name="m_uk4_2"/></item>
+    <item row="0" column="2"><widget class="QWidget" name="m_iacpos_2"/></item>
+
+    <!-- Ligne 1 -->
+    <item row="1" column="0"><widget class="QWidget" name="m_idlespeeddev_2"/></item>
+    <item row="1" column="1"><widget class="QWidget" name="m_ignadvanceoffset_2"/></item>
+    <item row="1" column="2"><widget class="QWidget" name="m_ignadvance_2"/></item>
+
+    <!-- Ligne 2 -->
+    <item row="2" column="0"><widget class="QWidget" name="m_coiltime_2"/></item>
+    <item row="2" column="1"><widget class="QWidget" name="m_uk6_2"/></item>
+    <item row="2" column="2"><widget class="QWidget" name="m_uk7_2"/></item>
+
+    <!-- Ligne 3 -->
+    <item row="3" column="0"><widget class="QWidget" name="m_uk8_2"/></item>
+    <item row="3" column="1"><widget class="QWidget" name="m_ignitionswitch_2"/></item>
+    <item row="3" column="2"><widget class="QWidget" name="m_throttleangle_2"/></item>
+
+    <!-- Ligne 4 -->
+    <item row="4" column="0"><widget class="QWidget" name="m_uk11_2"/></item>
+    <item row="4" column="1"><widget class="QWidget" name="m_airratio_2"/></item>
+    <item row="4" column="2"><widget class="QWidget" name="m_faultcode0_2"/></item>
+
+    <!-- Ligne 5 -->
+    <item row="5" column="0"><widget class="QWidget" name="m_rpm_2"/></item>
+    <item row="5" column="1"><widget class="QWidget" name="m_waterT_2"/></item>
+    <item row="5" column="2"><widget class="QWidget" name="m_ambientT_2"/></item>
+
+    <!-- Ligne 6 -->
+    <item row="6" column="0"><widget class="QWidget" name="m_airT_2"/></item>
+    <item row="6" column="1"><widget class="QWidget" name="m_fuelT_2"/></item>
+    <item row="6" column="2"><widget class="QWidget" name="m_map_2"/></item>
+
+    <!-- Ligne 7 -->
+    <item row="7" column="0"><widget class="QWidget" name="m_voltage_2"/></item>
+    <item row="7" column="1"><widget class="QWidget" name="m_throttlepot_2"/></item>
+    <item row="7" column="2"><widget class="QWidget" name="m_idleswitch_2"/></item>
+
+    <!-- Ligne 8 -->
+    <item row="8" column="0"><widget class="QWidget" name="m_uk1_2"/></item>
+    <item row="8" column="1"><widget class="QWidget" name="m_park_2"/></item>
+    <item row="8" column="2"><widget class="QWidget" name="m_idlesetpoint_2"/></item>
+
+    <!-- Ligne 9 -->
+    <item row="9" column="0"><widget class="QWidget" name="m_idlehot_2"/></item>
+    <item row="9" column="1"><widget class="QWidget" name="m_lambdavoltage_2"/></item>
+    <item row="9" column="2"><widget class="QWidget" name="m_lambdafrequency_2"/></item>
+
+    <!-- Ligne 10 -->
+    <item row="10" column="0"><widget class="QWidget" name="m_lambdadutycycle_2"/></item>
+    <item row="10" column="1"><widget class="QWidget" name="m_lambdastatus_2"/></item>
+    <item row="10" column="2"><widget class="QWidget" name="m_closedloop_2"/></item>
+
+    <!-- Ligne 11 -->
+    <item row="11" column="0"><widget class="QWidget" name="m_longtermftrim_2"/></item>
+    <item row="11" column="1"><widget class="QWidget" name="m_shorttermftrim_2"/></item>
+    <item row="11" column="2"><widget class="QWidget" name="m_carbondutycycle_2"/></item>
+
+    <!-- Ligne 12 -->
+    <item row="12" column="0"><widget class="QWidget" name="m_fcodes_2"/></item>
+    <item row="12" column="1"><widget class="QWidget" name="m_idlebase_2"/></item>
+    <item row="12" column="2"><widget class="QWidget" name="m_uk15_2"/></item>
+
+    <!-- Ligne 13 -->
+    <item row="13" column="0"><widget class="QWidget" name="m_uk16_2"/></item>
+    <item row="13" column="1"><widget class="QWidget" name="m_ignadvance2_2"/></item>
+    <item row="13" column="2"><widget class="QWidget" name="m_uk18_2"/></item>
+
+    <!-- Ligne 14 -->
+    <item row="14" column="0"><widget class="QWidget" name="m_idleerror2_2"/></item>
+    <item row="14" column="1"><widget class="QWidget" name="m_uk20_2"/></item>
+    <item row="14" column="2"><widget class="QWidget" name="m_faultcode4_2"/></item>
+
+    <!-- Ligne 15 -->
+    <item row="15" column="0"><widget class="QWidget" name="m_uk22_2"/></item>
+    <item row="15" column="1"><widget class="QWidget" name="m_uk23_2"/></item>
+    <item row="15" column="2"><widget class="QWidget" name="m_uk24_2"/></item>
+
+    <!-- Ligne 16 -->
+    <item row="16" column="0"><widget class="QWidget" name="m_uk25_2"/></item>
+    <item row="16" column="1"><widget class="QWidget" name="m_uk26_2"/></item>
+    <item row="16" column="2"><widget class="QWidget" name="m_uk27_2"/></item>
+
+    <!-- Ligne 17 -->
+    <item row="17" column="0"><widget class="QWidget" name="m_uk28_2"/></item>
+    <item row="17" column="1"><widget class="QWidget" name="m_uk29_2"/></item>
+    <item row="17" column="2"><widget class="QWidget" name="m_uk30_2"/></item>
+
+    <!-- Ligne 18 -->
+    <item row="18" column="0"><widget class="QWidget" name="label_16"/></item>
+    <item row="18" column="1"><widget class="QWidget" name="rpm_label"/></item>
+    <item row="18" column="2"><widget class="QWidget" name="rpm_lcd"/></item>
+
+    <!-- Ligne 19 -->
+    <item row="19" column="0"><widget class="QWidget" name="watertemp_lcd"/></item>
+    <item row="19" column="1"><widget class="QWidget" name="unknown16_lcd"/></item>
+    <item row="19" column="2"><widget class="QWidget" name="ambient_label"/></item>
+
+    <!-- Ligne 20 -->
+    <item row="20" column="0"><widget class="QWidget" name="idleerror2_lcd"/></item>
+    <item row="20" column="1"><widget class="QWidget" name="unknown22_lcd"/></item>
+    <item row="20" column="2"><widget class="QWidget" name="map_lcd"/></item>
+
+    <!-- Ligne 21 -->
+    <item row="21" column="0"><widget class="QWidget" name="map_label"/></item>
+    <item row="21" column="1"><widget class="QWidget" name="voltage_lcd"/></item>
+    <item row="21" column="2"><widget class="QWidget" name="Voltage_label"/></item>
+
+    <!-- Ligne 22 -->
+    <item row="22" column="0"><widget class="QWidget" name="throttlepot_lcd"/></item>
+    <item row="22" column="1"><widget class="QWidget" name="throttlepot_label"/></item>
+    <item row="22" column="2"><widget class="QWidget" name="idleswitch_lcd"/></item>
+
+    <!-- Ligne 23 -->
+    <item row="23" column="0"><widget class="QWidget" name="idleswitch_label"/></item>
+    <item row="23" column="1"><widget class="QWidget" name="label_3"/></item>
+    <item row="23" column="2"><widget class="QWidget" name="park_label"/></item>
+
+    <!-- Ligne 24 -->
+    <item row="24" column="0"><widget class="QWidget" name="idlesetpoint_lcd"/></item>
+    <item row="24" column="1"><widget class="QWidget" name="idlehot_lcd"/></item>
+    <item row="24" column="2"><widget class="QWidget" name="longterm_fuel_lcd"/></item>
+
+    <!-- Ligne 25 -->
+    <item row="25" column="0"><widget class="QWidget" name="idlespeeddev_lcd"/></item>
+    <item row="25" column="1"><widget class="QWidget" name="unknown2_label"/></item>
+    <item row="25" column="2"><widget class="QWidget" name="unknown4_label"/></item>
+
+    <!-- Ligne 26 -->
+    <item row="26" column="0"><widget class="QWidget" name="label_4"/></item>
+    <item row="26" column="1"><widget class="QWidget" name="idleairpos_label"/></item>
+    <item row="26" column="2"><widget class="QWidget" name="idlespeeddev_label"/></item>
+
+    <!-- Ligne 27 -->
+    <item row="27" column="0"><widget class="QWidget" name="label_5"/></item>
+    <item row="27" column="1"><widget class="QWidget" name="label_6"/></item>
+    <item row="27" column="2"><widget class="QWidget" name="label_7"/></item>
+
+    <!-- Ligne 28 -->
+    <item row="28" column="0"><widget class="QWidget" name="label_8"/></item>
+    <item row="28" column="1"><widget class="QWidget" name="cranksensor"/></item>
+    <item row="28" column="2"><widget class="QWidget" name="label_10"/></item>
+
+    <!-- Ligne 29 -->
+    <item row="29" column="0"><widget class="QWidget" name="label_11"/></item>
+    <item row="29" column="1"><widget class="QWidget" name="label_12"/></item>
+    <item row="29" column="2"><widget class="QWidget" name="label_13"/></item>
+
+    <!-- Ligne 30 -->
+    <item row="30" column="0"><widget class="QWidget" name="label_15"/></item>
+    <item row="30" column="1"><widget class="QWidget" name="label_17"/></item>
+    <item row="30" column="2"><widget class="QWidget" name="label_18"/></item>
+
+    <!-- Ligne 31 -->
+    <item row="31" column="0"><widget class="QWidget" name="label_20"/></item>
+    <item row="31" column="1"><widget class="QWidget" name="label_21"/></item>
+    <item row="31" column="2"><widget class="QWidget" name="label_25"/></item>
+
+    <!-- Ligne 32 -->
+    <item row="32" column="0"><widget class="QWidget" name="label_26"/></item>
+    <item row="32" column="1"><widget class="QWidget" name="label_27"/></item>
+    <item row="32" column="2"><widget class="QWidget" name="label_28"/></item>
+
+    <!-- Ligne 33 -->
+    <item row="33" column="0"><widget class="QWidget" name="label_29"/></item>
+    <item row="33" column="1"><widget class="QWidget" name="label_30"/></item>
+    <item row="33" column="2"><widget class="QWidget" name="label_31"/></item>
+
+    <!-- Ligne 34 -->
+    <item row="34" column="0"><widget class="QWidget" name="label_32"/></item>
+    <item row="34" column="1"><widget class="QWidget" name="label_33"/></item>
+    <item row="34" column="2"><widget class="QWidget" name="label_34"/></item>
+
+    <!-- Ligne 35 -->
+    <item row="35" column="0"><widget class="QWidget" name="label_35"/></item>
+    <item row="35" column="1"><widget class="QWidget" name="label_14"/></item>
+    <item row="35" column="2"><widget class="QWidget" name="label_36"/></item>
+
+    <!-- Ligne 36 -->
+    <item row="36" column="0"><widget class="QWidget" name="fcodes_lcd"/></item>
+    <item row="36" column="1"><widget class="QWidget" name="ignadvance_lcd"/></item>
+    <item row="36" column="2"><widget class="QWidget" name="unknown15_lcd"/></item>
+
+    <!-- Ligne 37 -->
+    <item row="37" column="0"><widget class="QWidget" name="unknown18_lcd"/></item>
+    <item row="37" column="1"><widget class="QWidget" name="faultcode4_lcd"/></item>
+    <item row="37" column="2"><widget class="QWidget" name="unknown7_lcd"/></item>
+
+    <!-- Ligne 38 -->
+    <item row="38" column="0"><widget class="QWidget" name="unknown11_lcd"/></item>
+    <item row="38" column="1"><widget class="QWidget" name="throttle_angle_lcd"/></item>
+    <item row="38" column="2"><widget class="QWidget" name="air_fuel_lcd"/></item>
+
+    <!-- Ligne 39 -->
+    <item row="39" column="0"><widget class="QWidget" name="unknown8_lcd"/></item>
+    <item row="39" column="1"><widget class="QWidget" name="lambda_frequency_lcd"/></item>
+    <item row="39" column="2"><widget class="QWidget" name="lambda_dutycycle_lcd"/></item>
+
+    <!-- Ligne 40 -->
+    <item row="40" column="0"><widget class="QWidget" name="idle_base_lcd"/></item>
+    <item row="40" column="1"><widget class="QWidget" name="intakeair_lcd"/></item>
+    <item row="40" column="2"><widget class="QWidget" name="fuel_temp_lcd"/></item>
+
+    <!-- Ligne 41 -->
+    <item row="41" column="0"><widget class="QWidget" name="unknown25_lcd"/></item>
+    <item row="41" column="1"><widget class="QWidget" name="unknown26_lcd"/></item>
+    <item row="41" column="2"><widget class="QWidget" name="unknown27_lcd"/></item>
+
+    <!-- Ligne 42 -->
+    <item row="42" column="0"><widget class="QWidget" name="unknown29_lcd"/></item>
+    <item row="42" column="1"><widget class="QWidget" name="unknown28_lcd"/></item>
+    <item row="42" column="2"><widget class="QWidget" name="lambda_voltage_lcd"/></item>
+
+    <!-- Ligne 43 -->
+    <item row="43" column="0"><widget class="QWidget" name="carboncanister_lcd"/></item>
+    <item row="43" column="1"><widget class="QWidget" name="shortterm_fuel_lcd"/></item>
+    <item row="43" column="2"><widget class="QWidget" name="closed_loop_lcd"/></item>
+
+    <!-- Ligne 44 -->
+    <item row="44" column="0"><widget class="QWidget" name="lambda_status_lcd"/></item>
+    <item row="44" column="1"><widget class="QWidget" name="label_37"/></item>
+    <item row="44" column="2"><widget class="QWidget" name="label_38"/></item>
+
+    <!-- Ligne 45 -->
+    <item row="45" column="0"><widget class="QWidget" name="label_39"/></item>
+    <item row="45" column="1"><widget class="QWidget" name="label_40"/></item>
+    <item row="45" column="2"><widget class="QWidget" name="label_41"/></item>
+
+    <!-- Ligne 46 -->
+    <item row="46" column="0"><widget class="QWidget" name="ignadvanceoffset_lcd"/></item>
+    <item row="46" column="1"><widget class="QWidget" name="ignadvance2_lcd"/></item>
+    <item row="46" column="2"><widget class="QWidget" name="coiltime_lcd"/></item>
+
+    <!-- Ligne 47 -->
+    <item row="47" column="0"><widget class="QWidget" name="unknown23_lcd"/></item>
+    <item row="47" column="1"><widget class="QWidget" name="unknown24_lcd"/></item>
+    <item row="47" column="2"><widget class="QWidget" name="unknown30_lcd"/></item>
+
+    <!-- Ligne 48 -->
+    <item row="48" column="0"><widget class="QWidget" name="unknown20_lcd"/></item>
+    <item row="48" column="1"><widget class="QWidget" name="fueltemp_label"/></item>
+    <item row="48" column="2"><widget class="QWidget" name="water_label"/></item>
+
+    <!-- Ligne 49 -->
+    <item row="49" column="0"><widget class="QWidget" name="ambientair_lcd"/></item>
+    <item row="49" column="1"><widget class="QWidget" name="park_lcd"/></item>
+    <item row="49" column="2"><widget class="QWidget" name="unknown1_lcd"/></item>
+
+    <!-- Ligne 50 -->
+    <item row="50" column="0"><widget class="QWidget" name="intakeair_label"/></item>
+    <item row="50" column="1"><widget class="QWidget" name="label_19"/></item>
+    <item row="50" column="2"><widget class="QWidget" name="ignitionswitch_lcd"/></item>
+
+    <!-- Ligne 51 -->
+    <item row="51" column="0"><widget class="QWidget" name="iac_lcd"/></item>
+    <item row="51" column="1"><widget class="QWidget" name="unknown4_lcd"/></item>
+    <item row="51" column="2"><widget class="QWidget" name="unknown6_lcd"/></item>
+
+    <!-- Ligne 52 -->
+    <item row="52" column="0"><widget class="QWidget" name="label_42"/></item>
+    <item row="52" column="1"><widget class="QWidget" name="label_43"/></item>
+    <item row="52" column="2"><widget class="QWidget" name="faultcode0_lcd"/></item>
+
+    <!-- Ligne 53 -->
+    <item row="53" column="0"><widget class="QWidget" name="label_44"/></item>
+    <item row="53" column="1"><widget class="QWidget" name="faultcode1_lcd"/></item>
+    <item row="53" column="2"><widget class="QWidget" name="faultcodes_label"/></item>
+
+</layout>
     </widget>
 <!-- fin toutes les mesures -->
 	<widget class="QWidget" name="errors">
