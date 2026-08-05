@@ -131,7 +131,6 @@ m_mems(0), m_options(0), m_aboutBox(0), m_pleaseWaitBox(0), m_helpViewerDialog(0
 }
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
-    // ...
     m_memsLogic = new MEMSLogic();
     m_logicThread = new QThread(this);
     m_memsLogic->moveToThread(m_logicThread);
