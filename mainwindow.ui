@@ -1193,7 +1193,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="text">
-       <string>Régime de ralenti ❓</string>
+       <string>Régime de ralenti 💬</string>
       </property>
         <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -1212,7 +1212,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="text">
-       <string>Correction carburant ❓</string>
+       <string>Correction carburant 💬</string>
       </property>
         <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -1231,7 +1231,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="text">
-       <string>Position ralenti chaud ❓</string>
+       <string>Position ralenti chaud 💬</string>
       </property>
         <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -1250,7 +1250,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
       <property name="text">
-       <string>Avance à l'allumage ❓</string>
+       <string>Avance à l'allumage 💬</string>
       </property>
         <property name="alignment">
        <set>Qt::AlignCenter</set>
