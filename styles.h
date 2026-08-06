@@ -190,8 +190,9 @@ QGroupBox::title {
     padding: 0 6px;
     color: #5b9dff;
 }
+//   background-color: transparent;
 QLabel {
-    background-color: transparent;
+    background-color: #0a0d78;
 }
 QPushButton {
     background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
