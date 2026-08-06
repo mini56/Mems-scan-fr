@@ -4,17 +4,19 @@
 #include <QWidget>
 #include <QTableWidget>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include "rosco.h"
 
 /**
- * Onglet "toutes les mesures" : liste complète et lisible de toutes les
- * valeurs actuellement lues sur l'ECU, sous forme de tableau à deux
- * colonnes (paramètre / valeur), mis à jour en direct.
+ * Onglet "toutes les mesures" : liste complete de toutes les valeurs
+ * actuellement lues sur l'ECU (y compris les champs non documentes),
+ * repartie sur trois tableaux cote a cote pour tenir a l'ecran. Les
+ * lignes ayant une info-bulle explicative sont reperables par une
+ * icone (bulle) devant leur nom.
  *
- * Cet onglet a été reconstruit intégralement par le code : dans le fichier
- * .ui d'origine, tout son contenu (environ 170 widgets) avait été laissé
- * commenté par l'auteur du logiciel, ce qui faisait apparaître un onglet
- * vide dans le programme.
+ * Cet onglet a ete reconstruit integralement par le code : dans le
+ * fichier .ui d'origine, tout son contenu avait ete laisse commente
+ * par l'auteur du logiciel.
  */
 class SummaryTab : public QWidget
 {
@@ -25,52 +27,27 @@ public:
     void updateData(mems_data *data);
 
 private:
-    void addRow(const QString &label);
+    int addRow(const QString &label);
     void setValue(int row, const QString &text);
+    void setTooltip(int row, const QString &text);
 
     QTableWidget *m_table0;
     QTableWidget *m_table1;
     QTableWidget *m_table2;
     int m_rowCount;
+    int m_rowsPerTable;
 
-    // Index de chaque ligne du tableau, dans l'ordre d'ajout
-    int m_rowEngineRpm;
-    int m_rowCoolantTemp;
-    int m_rowAmbientTemp;
-    int m_rowIntakeAirTemp;
-    int m_rowFuelTemp;
-    int m_rowMapKpa;
-    int m_rowBatteryVoltage;
-    int m_rowThrottlePot;
-    int m_rowIdleSwitch;
-    int m_rowParkNeutralSwitch;
-    int m_rowFaultCodes;
-    int m_rowIdleSetPoint;
-    int m_rowIdleHot;
-    int m_rowIacPosition;
-    int m_rowIdleError;
-    int m_rowIgnitionAdvanceOffset;
-    int m_rowIgnitionAdvance;
-    int m_rowCoilTime;
-    int m_rowIgnitionSwitch;
-    int m_rowThrottleAngle;
-    int m_rowAirFuelRatio;
-    int m_rowDtc2;
-    int m_rowLambdaVoltage;
-    int m_rowLambdaFrequency;
-    int m_rowLambdaDutycycle;
-    int m_rowLambdaStatus;
-    int m_rowClosedLoop;
-    int m_rowLongTermFuelTrim;
-    int m_rowShortTermFuelTrim;
-    int m_rowCarbonCanisterDutycycle;
-    int m_rowDtc3;
-    int m_rowIdleBasePos;
-    int m_rowDtc4;
-    int m_rowIgnitionAdvance2;
-    int m_rowIdleSpeedOffset;
-    int m_rowIdleError2;
-    int m_rowDtc5;
+    int m_rowEngineRpm, m_rowCoolantTemp, m_rowAmbientTemp, m_rowIntakeAirTemp, m_rowFuelTemp,
+        m_rowMapKpa, m_rowBatteryVoltage, m_rowThrottlePot, m_rowIdleSwitch, m_rowUk1,
+        m_rowParkNeutralSwitch, m_rowFaultCodes, m_rowIdleSetPoint, m_rowIdleHot, m_rowUk2,
+        m_rowIacPosition, m_rowIdleError, m_rowIgnitionAdvanceOffset, m_rowIgnitionAdvance,
+        m_rowCoilTime, m_rowUk3, m_rowUk4, m_rowUk5, m_rowIgnitionSwitch, m_rowThrottleAngle,
+        m_rowUk6, m_rowAirFuelRatio, m_rowDtc2, m_rowLambdaVoltage, m_rowLambdaFrequency,
+        m_rowLambdaDutycycle, m_rowLambdaStatus, m_rowClosedLoop, m_rowLongTermFuelTrim,
+        m_rowShortTermFuelTrim, m_rowCarbonCanisterDutycycle, m_rowDtc3, m_rowIdleBasePos,
+        m_rowUk7, m_rowDtc4, m_rowIgnitionAdvance2, m_rowIdleSpeedOffset, m_rowIdleError2,
+        m_rowUk10, m_rowDtc5, m_rowUk11, m_rowUk12, m_rowUk13, m_rowUk14, m_rowUk15, m_rowUk16,
+        m_rowUk1A, m_rowUk1B, m_rowUk1C, m_rowDtc0, m_rowDtc1;
 };
 
 #endif // SUMMARYTAB_H
