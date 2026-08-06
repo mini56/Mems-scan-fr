@@ -28,7 +28,10 @@ private:
     void addRow(const QString &label);
     void setValue(int row, const QString &text);
 
-    QTableWidget *m_table;
+    QTableWidget *m_table0;
+    QTableWidget *m_table1;
+    QTableWidget *m_table2;
+    int m_rowCount;
 
     // Index de chaque ligne du tableau, dans l'ordre d'ajout
     int m_rowEngineRpm;

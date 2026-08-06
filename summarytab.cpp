@@ -3,17 +3,25 @@
 
 SummaryTab::SummaryTab(QWidget *parent) : QWidget(parent)
 {
-  QVBoxLayout *layout = new QVBoxLayout(this);
+  QHBoxLayout *layout = new QHBoxLayout(this);
+  m_rowCount = 0;
 
-  m_table = new QTableWidget(0, 2, this);
-  m_table->setHorizontalHeaderLabels(QStringList() << "Paramètre" << "Valeur");
-  m_table->horizontalHeader()->setStretchLastSection(true);
-  m_table->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
-  m_table->verticalHeader()->setVisible(false);
-  m_table->setEditTriggers(QTableWidget::NoEditTriggers);
-  m_table->setSelectionMode(QTableWidget::NoSelection);
-  m_table->setAlternatingRowColors(true);
-  layout->addWidget(m_table);
+  m_table0 = new QTableWidget(0, 2, this);
+  m_table1 = new QTableWidget(0, 2, this);
+  m_table2 = new QTableWidget(0, 2, this);
+
+  QTableWidget *tables[3] = { m_table0, m_table1, m_table2 };
+  for (int i = 0; i < 3; i++)
+  {
+    tables[i]->setHorizontalHeaderLabels(QStringList() << "Paramètre" << "Valeur");
+    tables[i]->horizontalHeader()->setStretchLastSection(true);
+    tables[i]->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+    tables[i]->verticalHeader()->setVisible(false);
+    tables[i]->setEditTriggers(QTableWidget::NoEditTriggers);
+    tables[i]->setSelectionMode(QTableWidget::NoSelection);
+    tables[i]->setAlternatingRowColors(true);
+    layout->addWidget(tables[i]);
+  }
 
   m_rowEngineRpm = -1;
   int row = 0;
@@ -59,23 +67,35 @@ SummaryTab::SummaryTab(QWidget *parent) : QWidget(parent)
 
 void SummaryTab::addRow(const QString &label)
 {
-  int row = m_table->rowCount();
-  m_table->insertRow(row);
+  int tableIdx = m_rowCount / 12;
+  QTableWidget *table = (tableIdx == 0) ? m_table0 : (tableIdx == 1) ? m_table1 : m_table2;
+
+  int row = table->rowCount();
+  table->insertRow(row);
   QTableWidgetItem *labelItem = new QTableWidgetItem(label);
   labelItem->setFlags(labelItem->flags() & ~Qt::ItemIsEditable);
-  m_table->setItem(row, 0, labelItem);
+  table->setItem(row, 0, labelItem);
 
   QTableWidgetItem *valueItem = new QTableWidgetItem("--");
   valueItem->setFlags(valueItem->flags() & ~Qt::ItemIsEditable);
   valueItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
-  m_table->setItem(row, 1, valueItem);
+  table->setItem(row, 1, valueItem);
+
+  m_rowCount++;
 }
 
-void SummaryTab::setValue(int row, const QString &text)
+void SummaryTab::setValue(int globalRow, const QString &text)
 {
-  if (row >= 0 && row < m_table->rowCount())
+  if (globalRow < 0)
   {
-    m_table->item(row, 1)->setText(text);
+    return;
+  }
+  int tableIdx = globalRow / 12;
+  int localRow = globalRow % 12;
+  QTableWidget *table = (tableIdx == 0) ? m_table0 : (tableIdx == 1) ? m_table1 : m_table2;
+  if (localRow >= 0 && localRow < table->rowCount())
+  {
+    table->item(localRow, 1)->setText(text);
   }
 }
 
