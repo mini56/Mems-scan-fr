@@ -334,7 +334,6 @@ QLCDNumber {
     color: #4fa3ff;
 }
 
-Le fond d'origine des cadrans reste inchangé, seul le texte passe en bleu clair pour rester lisible sur fond sombre. Commit changes, relancez le workflow.
 )";
 
 #endif // STYLES_H
