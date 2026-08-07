@@ -288,10 +288,21 @@ AnalysisTab::AnalysisTab(QWidget *parent) : QWidget(parent)
            << QColor("#ef5350") << QColor("#9ccc65") << QColor("#ec407a")
            << QColor("#7e57c2") << QColor("#8d6e63") << QColor("#5c6bc0");
 
-  QHBoxLayout *mainLayout = new QHBoxLayout(this);
+  // Zone défilante englobant tout le contenu de l'onglet : garantit que
+  // rien ne reste jamais invisible, quelle que soit la taille de la fenêtre
+  QVBoxLayout *outerLayout = new QVBoxLayout(this);
+  outerLayout->setContentsMargins(0, 0, 0, 0);
+  QScrollArea *outerScrollArea = new QScrollArea(this);
+  outerScrollArea->setWidgetResizable(true);
+  outerScrollArea->setFrameShape(QFrame::NoFrame);
+  outerLayout->addWidget(outerScrollArea);
+
+  QWidget *contentWidget = new QWidget();
+  contentWidget->setMinimumHeight(500);
+  QHBoxLayout *mainLayout = new QHBoxLayout(contentWidget);
 
   // --- Colonne de gauche : chargement + liste des voies ---
-  QWidget *leftPanel = new QWidget(this);
+  QWidget *leftPanel = new QWidget(contentWidget);
   leftPanel->setMaximumWidth(320);
   leftPanel->setMinimumWidth(300);
   QVBoxLayout *leftLayout = new QVBoxLayout(leftPanel);
@@ -318,9 +329,12 @@ AnalysisTab::AnalysisTab(QWidget *parent) : QWidget(parent)
   voiesLabel->setStyleSheet("font-weight: 600; margin-top: 6px;");
   leftLayout->addWidget(voiesLabel);
 
+  // Liste des voies : hauteur fixe et son propre défilement interne, pour
+  // ne pas pousser indéfiniment la hauteur totale de l'onglet
   m_checkboxScrollArea = new QScrollArea(leftPanel);
   m_checkboxScrollArea->setWidgetResizable(true);
-  m_checkboxScrollArea->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+  m_checkboxScrollArea->setMinimumHeight(200);
+  m_checkboxScrollArea->setMaximumHeight(400);
   m_checkboxContainer = new QWidget();
   m_checkboxLayout = new QVBoxLayout(m_checkboxContainer);
   m_checkboxLayout->addStretch();
@@ -330,8 +344,10 @@ AnalysisTab::AnalysisTab(QWidget *parent) : QWidget(parent)
   mainLayout->addWidget(leftPanel);
 
   // --- Zone de tracé (droite) ---
-  m_chart = new ChartWidget(this);
+  m_chart = new ChartWidget(contentWidget);
   mainLayout->addWidget(m_chart, 1);
+
+  outerScrollArea->setWidget(contentWidget);
 }
 
 void AnalysisTab::loadFile(const QString &path)
