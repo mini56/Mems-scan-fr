@@ -58,17 +58,6 @@ static void createDesktopShortcut()
 }
 #endif
 
-#ifdef WIN32
-  QSettings firstRunSettings(QSettings::IniFormat, QSettings::UserScope, PROJECTNAME);
-  firstRunSettings.beginGroup("Settings");
-  if (!firstRunSettings.value("DesktopShortcutCreated", false).toBool())
-  {
-    createDesktopShortcut();
-    firstRunSettings.setValue("DesktopShortcutCreated", true);
-  }
-  firstRunSettings.endGroup();
-#endif
-
 static int g_currentProgress = 0;
 
 static void drawSplash(QPixmap &pix, int percent)
