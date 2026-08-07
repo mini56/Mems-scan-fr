@@ -6,6 +6,7 @@
 #include <QTime>
 #include <QMessageBox>
 #include <QScrollBar>
+#include <QFontMetrics>
 #include <QMap>
 
 // Correspondance entre les noms techniques des colonnes du CSV et des
@@ -67,7 +68,172 @@ static QString friendlyColumnName(const QString &rawName)
 }
 
 //=============================================================================
-// ChartWidget
+// SingleChartWidget : un graphique dedie a une seule voie
+//=============================================================================
+
+SingleChartWidget::SingleChartWidget(const QString &name, const QColor &color, QWidget *parent)
+  : QWidget(parent), m_name(name), m_color(color), m_hasCursor(false), m_cursorX(0)
+{
+  setMinimumHeight(190);
+  setMaximumHeight(190);
+  setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+  setMouseTracking(true);
+  setAutoFillBackground(true);
+  QPalette pal = palette();
+  pal.setColor(QPalette::Window, QColor("#ffffff"));
+  setPalette(pal);
+}
+
+void SingleChartWidget::setData(const QVector<double> &time, const QVector<double> &values)
+{
+  m_time = time;
+  m_values = values;
+  update();
+}
+
+void SingleChartWidget::mouseMoveEvent(QMouseEvent *event)
+{
+  m_hasCursor = true;
+  m_cursorX = event->pos().x();
+  update();
+}
+
+void SingleChartWidget::leaveEvent(QEvent *event)
+{
+  Q_UNUSED(event);
+  m_hasCursor = false;
+  update();
+}
+
+void SingleChartWidget::paintEvent(QPaintEvent *event)
+{
+  Q_UNUSED(event);
+  QPainter painter(this);
+  painter.setRenderHint(QPainter::Antialiasing);
+
+  // Titre de la courbe
+  painter.setPen(QColor("#1f2430"));
+  QFont titleFont = painter.font();
+  titleFont.setBold(true);
+  titleFont.setPointSize(9);
+  painter.setFont(titleFont);
+  painter.drawText(QRect(0, 4, width(), 18), Qt::AlignHCenter, m_name);
+
+  const int leftMargin = 55;
+  const int rightMargin = 10;
+  const int topMargin = 26;
+  const int bottomMargin = 20;
+  QRect plotRect(leftMargin, topMargin, width() - leftMargin - rightMargin,
+                  height() - topMargin - bottomMargin);
+
+  painter.setPen(QPen(QColor("#e5e8ee"), 1));
+  painter.setBrush(QColor("#fbfbfd"));
+  painter.drawRect(plotRect);
+
+  if (m_time.count() < 2 || m_values.count() < 2)
+  {
+    painter.setPen(QColor("#9aa0ab"));
+    painter.drawText(plotRect, Qt::AlignCenter, "Pas de données");
+    return;
+  }
+
+  double tMin = m_time.first();
+  double tMax = m_time.last();
+  double tSpan = (tMax - tMin) > 0.0001 ? (tMax - tMin) : 1.0;
+
+  double vMin = m_values[0];
+  double vMax = m_values[0];
+  for (int i = 1; i < m_values.count(); i++)
+  {
+    if (m_values[i] < vMin) vMin = m_values[i];
+    if (m_values[i] > vMax) vMax = m_values[i];
+  }
+  if (vMax - vMin < 0.0001)
+  {
+    vMax += 1.0;
+    vMin -= 1.0;
+  }
+  double margin = (vMax - vMin) * 0.08;
+  vMax += margin;
+  vMin -= margin;
+  double vSpan = vMax - vMin;
+
+  // Grille horizontale + graduation de l'échelle réelle à gauche
+  painter.setPen(QColor("#eef0f4"));
+  QFont axisFont = painter.font();
+  axisFont.setBold(false);
+  axisFont.setPointSize(7);
+  painter.setFont(axisFont);
+  for (int i = 0; i <= 4; i++)
+  {
+    int y = plotRect.top() + (plotRect.height() * i) / 4;
+    painter.drawLine(plotRect.left(), y, plotRect.right(), y);
+    double val = vMax - (vSpan * i) / 4.0;
+    painter.setPen(QColor("#6b7280"));
+    painter.drawText(QRect(0, y - 8, leftMargin - 6, 16), Qt::AlignRight | Qt::AlignVCenter,
+                      QString::number(val, 'f', val < 10 ? 1 : 0));
+    painter.setPen(QColor("#eef0f4"));
+  }
+
+  // Tracé de la courbe
+  painter.setPen(QPen(m_color, 2));
+  QPolygonF poly;
+  int n = qMin(m_time.count(), m_values.count());
+  for (int i = 0; i < n; i++)
+  {
+    double xFrac = (m_time[i] - tMin) / tSpan;
+    double yFrac = (m_values[i] - vMin) / vSpan;
+    double x = plotRect.left() + xFrac * plotRect.width();
+    double y = plotRect.bottom() - yFrac * plotRect.height();
+    poly << QPointF(x, y);
+  }
+  painter.drawPolyline(poly);
+
+  // Axe du temps en bas
+  painter.setPen(QColor("#6b7280"));
+  for (int i = 0; i <= 5; i++)
+  {
+    double t = tMin + (tSpan * i) / 5.0;
+    int x = plotRect.left() + (plotRect.width() * i) / 5;
+    painter.drawText(QRect(x - 30, plotRect.bottom() + 2, 60, 16), Qt::AlignCenter,
+                      QString("%1 s").arg(t - tMin, 0, 'f', 0));
+  }
+
+  // Curseur de survol avec valeur instantanée
+  if (m_hasCursor && m_cursorX >= plotRect.left() && m_cursorX <= plotRect.right())
+  {
+    painter.setPen(QPen(QColor("#9aa0ab"), 1, Qt::DashLine));
+    painter.drawLine(m_cursorX, plotRect.top(), m_cursorX, plotRect.bottom());
+
+    double xFrac = double(m_cursorX - plotRect.left()) / double(plotRect.width());
+    double tAtCursor = tMin + xFrac * tSpan;
+    int idx = 0;
+    double best = 1e18;
+    for (int i = 0; i < m_time.count(); i++)
+    {
+      double d = qAbs(m_time[i] - tAtCursor);
+      if (d < best) { best = d; idx = i; }
+    }
+    if (idx < m_values.count())
+    {
+      QString label = QString::number(m_values[idx], 'f', 1);
+      QFontMetrics fm(axisFont);
+      int textW = fm.horizontalAdvance(label) + 10;
+      int boxX = m_cursorX + 6;
+      if (boxX + textW > plotRect.right()) boxX = m_cursorX - 6 - textW;
+
+      painter.setPen(Qt::NoPen);
+      painter.setBrush(QColor(255, 255, 255, 230));
+      painter.drawRect(boxX, plotRect.top() + 4, textW, 16);
+      painter.setPen(m_color);
+      painter.drawText(QRect(boxX + 5, plotRect.top() + 4, textW, 16),
+                        Qt::AlignVCenter | Qt::AlignLeft, label);
+    }
+  }
+}
+
+//=============================================================================
+// ChartWidget : mode superpose (toutes les voies sur un seul graphique)
 //=============================================================================
 
 ChartWidget::ChartWidget(QWidget *parent) : QWidget(parent), m_hasCursor(false), m_cursorX(0)
@@ -137,11 +303,9 @@ void ChartWidget::paintEvent(QPaintEvent *event)
   const int rightMargin = 8;
   const int topMargin = 10;
   const int bottomMargin = 26;
-  QRect plotRect(leftMargin, topMargin,
-                  width() - leftMargin - rightMargin,
+  QRect plotRect(leftMargin, topMargin, width() - leftMargin - rightMargin,
                   height() - topMargin - bottomMargin);
 
-  // Grille de fond
   painter.setPen(QPen(QColor("#233047"), 1));
   for (int i = 0; i <= 4; i++)
   {
@@ -166,21 +330,13 @@ void ChartWidget::paintEvent(QPaintEvent *event)
   double tMax = m_time.last();
   double tSpan = (tMax - tMin) > 0.0001 ? (tMax - tMin) : 1.0;
 
-  // Tracé de chaque voie cochée, normalisée sur sa propre plage (comme un
-  // oscilloscope multi-voies)
   int anyVisible = 0;
   for (int s = 0; s < m_series.count(); s++)
   {
-    if (s >= m_visible.count() || !m_visible[s])
-    {
-      continue;
-    }
+    if (s >= m_visible.count() || !m_visible[s]) continue;
     anyVisible++;
     const QVector<double> &values = m_series[s];
-    if (values.isEmpty())
-    {
-      continue;
-    }
+    if (values.isEmpty()) continue;
 
     double vMin = values[0];
     double vMax = values[0];
@@ -191,18 +347,15 @@ void ChartWidget::paintEvent(QPaintEvent *event)
     }
     double vSpan = (vMax - vMin) > 0.0001 ? (vMax - vMin) : 1.0;
 
-    QPen pen(m_colors[s % m_colors.count()], 2);
-    painter.setPen(pen);
-
+    painter.setPen(QPen(m_colors[s % m_colors.count()], 2));
     QPolygonF poly;
     int n = qMin(m_time.count(), values.count());
     for (int i = 0; i < n; i++)
     {
       double xFrac = (m_time[i] - tMin) / tSpan;
       double yFrac = (values[i] - vMin) / vSpan;
-      double x = plotRect.left() + xFrac * plotRect.width();
-      double y = plotRect.bottom() - yFrac * plotRect.height();
-      poly << QPointF(x, y);
+      poly << QPointF(plotRect.left() + xFrac * plotRect.width(),
+                       plotRect.bottom() - yFrac * plotRect.height());
     }
     painter.drawPolyline(poly);
   }
@@ -214,7 +367,6 @@ void ChartWidget::paintEvent(QPaintEvent *event)
                       "Cochez une ou plusieurs voies dans la liste à gauche pour les afficher");
   }
 
-  // Axe temporel (secondes écoulées depuis le début de l'enregistrement)
   painter.setPen(QColor("#8a93a6"));
   for (int i = 0; i <= 5; i++)
   {
@@ -224,7 +376,6 @@ void ChartWidget::paintEvent(QPaintEvent *event)
                       QString("%1 s").arg(t - tMin, 0, 'f', 0));
   }
 
-  // Curseur de survol avec valeurs instantanées (façon marqueur d'oscilloscope)
   if (m_hasCursor && m_cursorX >= plotRect.left() && m_cursorX <= plotRect.right() && anyVisible > 0)
   {
     painter.setPen(QPen(QColor("#e6e8ee"), 1, Qt::DashLine));
@@ -232,8 +383,6 @@ void ChartWidget::paintEvent(QPaintEvent *event)
 
     double xFrac = double(m_cursorX - plotRect.left()) / double(plotRect.width());
     double tAtCursor = tMin + xFrac * tSpan;
-
-    // Trouver l'index temporel le plus proche
     int idx = 0;
     double best = 1e18;
     for (int i = 0; i < m_time.count(); i++)
@@ -246,29 +395,20 @@ void ChartWidget::paintEvent(QPaintEvent *event)
     QFont f = painter.font();
     f.setPointSize(8);
     painter.setFont(f);
-
     for (int s = 0; s < m_series.count(); s++)
     {
       if (s >= m_visible.count() || !m_visible[s]) continue;
       if (idx >= m_series[s].count()) continue;
-
       QString label = QString("%1 : %2").arg(m_names[s]).arg(m_series[s][idx], 0, 'f', 1);
       QFontMetrics fm(f);
       int textW = fm.horizontalAdvance(label) + 10;
-
       int boxX = m_cursorX + 8;
-      if (boxX + textW > plotRect.right())
-      {
-        boxX = m_cursorX - 8 - textW;
-      }
-
+      if (boxX + textW > plotRect.right()) boxX = m_cursorX - 8 - textW;
       painter.setPen(Qt::NoPen);
       painter.setBrush(QColor(14, 20, 32, 210));
       painter.drawRect(boxX, legendY, textW, 16);
-
       painter.setPen(m_colors[s % m_colors.count()]);
       painter.drawText(QRect(boxX + 5, legendY, textW, 16), Qt::AlignVCenter | Qt::AlignLeft, label);
-
       legendY += 18;
     }
   }
@@ -278,31 +418,29 @@ void ChartWidget::paintEvent(QPaintEvent *event)
 // AnalysisTab
 //=============================================================================
 
-AnalysisTab::AnalysisTab(QWidget *parent) : QWidget(parent)
+AnalysisTab::AnalysisTab(QWidget *parent) : QWidget(parent), m_overlayMode(false)
 {
-  setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-
-  // Palette de couleurs distinctes pour les voies (cycle si plus de colonnes)
   m_colors << QColor("#4fc3f7") << QColor("#ff7043") << QColor("#66bb6a")
            << QColor("#ffca28") << QColor("#ba68c8") << QColor("#26c6da")
            << QColor("#ef5350") << QColor("#9ccc65") << QColor("#ec407a")
            << QColor("#7e57c2") << QColor("#8d6e63") << QColor("#5c6bc0");
 
-  // Zone défilante englobant tout le contenu de l'onglet : garantit que
-  // rien ne reste jamais invisible, quelle que soit la taille de la fenêtre
-  QVBoxLayout *outerLayout = new QVBoxLayout(this);
-  outerLayout->setContentsMargins(0, 0, 0, 0);
-  QScrollArea *outerScrollArea = new QScrollArea(this);
-  outerScrollArea->setWidgetResizable(true);
-  outerScrollArea->setFrameShape(QFrame::NoFrame);
-  outerLayout->addWidget(outerScrollArea);
+  QVBoxLayout *rootLayout = new QVBoxLayout(this);
 
-  QWidget *contentWidget = new QWidget();
-  contentWidget->setMinimumHeight(500);
-  QHBoxLayout *mainLayout = new QHBoxLayout(contentWidget);
+  // --- Barre du haut : bouton de superposition ---
+  QHBoxLayout *topBar = new QHBoxLayout();
+  m_overlayButton = new QPushButton("Superposer toutes les courbes sélectionnées", this);
+  m_overlayButton->setCheckable(true);
+  connect(m_overlayButton, SIGNAL(toggled(bool)), this, SLOT(onOverlayToggled(bool)));
+  topBar->addWidget(m_overlayButton);
+  topBar->addStretch();
+  rootLayout->addLayout(topBar);
 
-  // --- Colonne de gauche : chargement + liste des voies ---
-  QWidget *leftPanel = new QWidget(contentWidget);
+  QHBoxLayout *mainLayout = new QHBoxLayout();
+  rootLayout->addLayout(mainLayout, 1);
+
+  // --- Colonne de gauche : chargement + liste des voies (défilement propre) ---
+  QWidget *leftPanel = new QWidget(this);
   leftPanel->setMaximumWidth(320);
   leftPanel->setMinimumWidth(300);
   QVBoxLayout *leftLayout = new QVBoxLayout(leftPanel);
@@ -329,41 +467,42 @@ AnalysisTab::AnalysisTab(QWidget *parent) : QWidget(parent)
   voiesLabel->setStyleSheet("font-weight: 600; margin-top: 6px;");
   leftLayout->addWidget(voiesLabel);
 
-  // Liste des voies : hauteur fixe et son propre défilement interne, pour
-  // ne pas pousser indéfiniment la hauteur totale de l'onglet
   m_checkboxScrollArea = new QScrollArea(leftPanel);
   m_checkboxScrollArea->setWidgetResizable(true);
-  m_checkboxScrollArea->setMinimumHeight(200);
-  m_checkboxScrollArea->setMaximumHeight(400);
   m_checkboxContainer = new QWidget();
   m_checkboxLayout = new QVBoxLayout(m_checkboxContainer);
   m_checkboxLayout->addStretch();
   m_checkboxScrollArea->setWidget(m_checkboxContainer);
-  leftLayout->addWidget(m_checkboxScrollArea);
+  leftLayout->addWidget(m_checkboxScrollArea, 1);
 
   mainLayout->addWidget(leftPanel);
 
-  // --- Zone de tracé (droite) ---
-  m_chart = new ChartWidget(contentWidget);
-  mainLayout->addWidget(m_chart, 1);
+  // --- Colonne de droite : pile de mini-graphiques, avec son propre défilement ---
+  m_stackScrollArea = new QScrollArea(this);
+  m_stackScrollArea->setWidgetResizable(true);
+  m_stackContainer = new QWidget();
+  m_stackLayout = new QVBoxLayout(m_stackContainer);
+  m_stackLayout->addStretch();
+  m_stackScrollArea->setWidget(m_stackContainer);
+  mainLayout->addWidget(m_stackScrollArea, 1);
 
-  outerScrollArea->setWidget(contentWidget);
-}
-
-void AnalysisTab::loadFile(const QString &path)
-{
-  parseCsv(path);
+  // Graphique superposé (mode alternatif, masqué par défaut)
+  m_overlayChart = new ChartWidget(this);
+  m_overlayChart->hide();
+  mainLayout->addWidget(m_overlayChart, 1);
 }
 
 void AnalysisTab::onLoadFileClicked()
 {
   QString path = QFileDialog::getOpenFileName(this, "Charger un fichier journal",
                                                 "logs", "Fichiers CSV (*.csv);;Tous les fichiers (*.*)");
-  if (path.isEmpty())
-  {
-    return;
-  }
+  if (path.isEmpty()) return;
   loadFile(path);
+}
+
+void AnalysisTab::loadFile(const QString &path)
+{
+  parseCsv(path);
 }
 
 void AnalysisTab::parseCsv(const QString &path)
@@ -376,14 +515,8 @@ void AnalysisTab::parseCsv(const QString &path)
   }
 
   QTextStream stream(&file);
+  if (!stream.atEnd()) stream.readLine(); // ID ECU, ignoré
 
-  // Première ligne : ID de l'ECU (ignorée pour l'analyse)
-  if (!stream.atEnd())
-  {
-    stream.readLine();
-  }
-
-  // Deuxième ligne : en-têtes des colonnes
   if (stream.atEnd())
   {
     QMessageBox::warning(this, "Erreur", "Fichier CSV vide ou incomplet.", QMessageBox::Ok);
@@ -396,7 +529,7 @@ void AnalysisTab::parseCsv(const QString &path)
     headers[0] = headers[0].mid(1);
   }
 
-  int columnCount = headers.count() - 1; // la première colonne est le temps
+  int columnCount = headers.count() - 1;
   if (columnCount <= 0)
   {
     QMessageBox::warning(this, "Erreur", "Format de fichier CSV non reconnu.", QMessageBox::Ok);
@@ -419,30 +552,17 @@ void AnalysisTab::parseCsv(const QString &path)
   while (!stream.atEnd())
   {
     QString line = stream.readLine();
-    if (line.trimmed().isEmpty())
-    {
-      continue;
-    }
+    if (line.trimmed().isEmpty()) continue;
     QStringList fields = line.split(",");
-    if (fields.count() < 2)
-    {
-      continue;
-    }
+    if (fields.count() < 2) continue;
 
     QTime t = QTime::fromString(fields[0], "hh:mm:ss");
     double seconds;
     if (t.isValid())
     {
-      if (!firstTime.isValid())
-      {
-        firstTime = t;
-      }
+      if (!firstTime.isValid()) firstTime = t;
       seconds = firstTime.secsTo(t);
-      if (seconds < 0)
-      {
-        // franchissement de minuit pendant l'enregistrement
-        seconds += 24 * 3600;
-      }
+      if (seconds < 0) seconds += 24 * 3600;
     }
     else
     {
@@ -471,14 +591,12 @@ void AnalysisTab::parseCsv(const QString &path)
 
   m_fileLabel->setText(QFileInfo(path).fileName() + " (" + QString::number(lineCount) + " points)");
 
-  m_chart->setData(m_time, m_columns, m_columnNames, m_colors);
-
+  m_overlayChart->setData(m_time, m_columns, m_columnNames, m_colors);
   rebuildCheckboxes();
 }
 
 void AnalysisTab::rebuildCheckboxes()
 {
-  // Nettoyer les anciennes cases à cocher
   for (int i = 0; i < m_checkboxes.count(); i++)
   {
     m_checkboxLayout->removeWidget(m_checkboxes[i]);
@@ -486,7 +604,9 @@ void AnalysisTab::rebuildCheckboxes()
   }
   m_checkboxes.clear();
 
-  // Retirer le stretch temporairement pour insérer avant lui
+  qDeleteAll(m_stackedCharts);
+  m_stackedCharts.clear();
+
   QLayoutItem *stretchItem = m_checkboxLayout->takeAt(m_checkboxLayout->count() - 1);
 
   for (int i = 0; i < m_columnNames.count(); i++)
@@ -500,7 +620,6 @@ void AnalysisTab::rebuildCheckboxes()
       "QCheckBox::indicator:hover { border: 2px solid %1; }"
       ).arg(c.name()));
 
-    // Cocher automatiquement quelques voies usuelles au premier chargement
     if (m_columnNames[i].contains("Régime moteur") || m_columnNames[i].contains("liquide refroid") ||
         m_columnNames[i].contains("Tension batterie"))
     {
@@ -512,14 +631,8 @@ void AnalysisTab::rebuildCheckboxes()
     m_checkboxes.append(cb);
   }
 
-  if (stretchItem)
-  {
-    m_checkboxLayout->addItem(stretchItem);
-  }
-  else
-  {
-    m_checkboxLayout->addStretch();
-  }
+  if (stretchItem) m_checkboxLayout->addItem(stretchItem);
+  else m_checkboxLayout->addStretch();
 
   updateChartVisibility();
 }
@@ -527,15 +640,42 @@ void AnalysisTab::rebuildCheckboxes()
 void AnalysisTab::onCheckboxToggled(bool checked)
 {
   QCheckBox *cb = qobject_cast<QCheckBox*>(sender());
-  if (!cb)
-  {
-    return;
-  }
+  if (!cb) return;
   int index = m_checkboxes.indexOf(cb);
-  if (index >= 0)
+  if (index < 0) return;
+
+  if (m_overlayMode)
   {
-    m_chart->setVisible(index, checked);
+    m_overlayChart->setVisible(index, checked);
   }
+  else
+  {
+    if (checked) addStackedChart(index);
+    else removeStackedChart(index);
+  }
+}
+
+void AnalysisTab::addStackedChart(int index)
+{
+  if (m_stackedCharts.contains(index)) return;
+  if (index < 0 || index >= m_columns.count()) return;
+
+  SingleChartWidget *chart = new SingleChartWidget(m_columnNames[index],
+                                                     m_colors[index % m_colors.count()],
+                                                     m_stackContainer);
+  chart->setData(m_time, m_columns[index]);
+
+  int insertPos = m_stackLayout->count() - 1; // avant le stretch final
+  m_stackLayout->insertWidget(insertPos, chart);
+  m_stackedCharts[index] = chart;
+}
+
+void AnalysisTab::removeStackedChart(int index)
+{
+  if (!m_stackedCharts.contains(index)) return;
+  SingleChartWidget *chart = m_stackedCharts.take(index);
+  m_stackLayout->removeWidget(chart);
+  delete chart;
 }
 
 void AnalysisTab::onSelectAllClicked()
@@ -558,6 +698,39 @@ void AnalysisTab::updateChartVisibility()
 {
   for (int i = 0; i < m_checkboxes.count(); i++)
   {
-    m_chart->setVisible(i, m_checkboxes[i]->isChecked());
+    bool checked = m_checkboxes[i]->isChecked();
+    m_overlayChart->setVisible(i, checked);
+    if (!m_overlayMode)
+    {
+      if (checked) addStackedChart(i);
+      else removeStackedChart(i);
+    }
+  }
+}
+
+void AnalysisTab::onOverlayToggled(bool checked)
+{
+  m_overlayMode = checked;
+  if (checked)
+  {
+    m_overlayButton->setText("Revenir à l'affichage empilé");
+    m_stackScrollArea->hide();
+    m_overlayChart->show();
+    rebuildOverlayChart();
+  }
+  else
+  {
+    m_overlayButton->setText("Superposer toutes les courbes sélectionnées");
+    m_overlayChart->hide();
+    m_stackScrollArea->show();
+    updateChartVisibility();
+  }
+}
+
+void AnalysisTab::rebuildOverlayChart()
+{
+  for (int i = 0; i < m_checkboxes.count(); i++)
+  {
+    m_overlayChart->setVisible(i, m_checkboxes[i]->isChecked());
   }
 }
