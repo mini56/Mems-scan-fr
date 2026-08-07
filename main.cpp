@@ -112,6 +112,17 @@ int main(int argc, char *argv[])
 {
   QApplication a(argc, argv);
   a.setWindowIcon(QIcon(":/icons/key.png"));
+  
+  #ifdef WIN32
+  QSettings firstRunSettings(QSettings::IniFormat, QSettings::UserScope, PROJECTNAME);
+  firstRunSettings.beginGroup("Settings");
+  if (!firstRunSettings.value("DesktopShortcutCreated", false).toBool())
+  {
+    createDesktopShortcut();
+    firstRunSettings.setValue("DesktopShortcutCreated", true);
+  }
+  firstRunSettings.endGroup();
+#endif
 
   // Écran de démarrage avec barre de progression réelle
   QPixmap splashPix(420, 150);
