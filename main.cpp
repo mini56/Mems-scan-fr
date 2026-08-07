@@ -6,9 +6,57 @@
 #include <QPainter>
 #include <QTimer>
 #include <QtMath>
+#include <QSettings>
+#include <QStandardPaths>
+#include <QDir>
+#include <QFileInfo>
 #include "mainwindow.h"
 #include "splashprogress.h"
 #include <QtPlugin>
+
+#ifdef WIN32
+#include <windows.h>
+#include <shlobj.h>
+#include <objbase.h>
+
+/**
+ * Crée un raccourci vers l'exécutable sur le Bureau de l'utilisateur.
+ * N'est appelée qu'une seule fois, au tout premier lancement du logiciel.
+ */
+static void createDesktopShortcut()
+{
+  QString exePath = QDir::toNativeSeparators(QCoreApplication::applicationFilePath());
+  QString workDir = QDir::toNativeSeparators(QFileInfo(exePath).absolutePath());
+  QString desktopPath = QStandardPaths::writableLocation(QStandardPaths::DesktopLocation);
+  if (desktopPath.isEmpty())
+  {
+    return;
+  }
+  QString linkPath = QDir::toNativeSeparators(desktopPath + "/MEMS-Scan.lnk");
+
+  HRESULT hres = CoInitialize(NULL);
+  IShellLinkW *psl = NULL;
+  hres = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER,
+                           IID_IShellLinkW, (LPVOID*)&psl);
+  if (SUCCEEDED(hres) && psl)
+  {
+    psl->SetPath(reinterpret_cast<LPCWSTR>(exePath.utf16()));
+    psl->SetWorkingDirectory(reinterpret_cast<LPCWSTR>(workDir.utf16()));
+    psl->SetDescription(L"MEMS-Scan - Diagnostic Rover MEMS");
+    psl->SetIconLocation(reinterpret_cast<LPCWSTR>(exePath.utf16()), 0);
+
+    IPersistFile *ppf = NULL;
+    hres = psl->QueryInterface(IID_IPersistFile, (LPVOID*)&ppf);
+    if (SUCCEEDED(hres) && ppf)
+    {
+      ppf->Save(reinterpret_cast<LPCOLESTR>(linkPath.utf16()), TRUE);
+      ppf->Release();
+    }
+    psl->Release();
+  }
+  CoUninitialize();
+}
+#endif
 
 static int g_currentProgress = 0;
 
