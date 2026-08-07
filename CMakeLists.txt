@@ -175,7 +175,7 @@ if (MINGW)
     message (SEND_ERROR "Could not find librosco.dll! Check that it exists in one of the directories in your PATH.")
   endif ()
 
-  target_link_libraries (${PNAME} ${LIBROSCO_DLL} Qt5::Widgets)
+  target_link_libraries (${PNAME} ${LIBROSCO_DLL} Qt5::Widgets ole32 uuid)
 
   # convert Unix-style newline characters into Windows-style
   configure_file ("${CMAKE_SOURCE_DIR}/README" "${CMAKE_BINARY_DIR}/README.TXT" NEWLINE_STYLE WIN32)
