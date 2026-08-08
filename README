@@ -41,9 +41,9 @@ il n’est fourni ABSOLUMENT AUCUNE GARANTIE.
 ----------------------
 Installation et exécution
 ----------------------
-Si vous utilisez Windows, la manière la plus simple de commencer est de télécharger le
-Archives binaires Win32. La plupart des gens voudront probablement faire cela. Les archives
-contient l'exécutable Mems-Scan-fr, les bibliothèques Qt et la bibliothèque librosco, toutes
+Si vous utilisez Windows, la manière la plus simple est de commencer par télécharger 
+l'archives binaires Win32. L'archive contient l'exécutable Mems-Scan-fr,
+les bibliothèques Qt et la bibliothèque librosco,
 qui sont nécessaires pour fonctionner.
 
 -------------------
@@ -84,17 +84,7 @@ cartes de carburant) ?
 R : Oui, vous pouvez effectuer des réglages pour le réglage du carburant, le délai de ralenti/ralenti à chaud, le régime de ralenti et
 avance à l'allumage. Notez que s'il existe un signal de capteur d'O2 valide, le régulateur de carburant et
 Le délai de ralenti/ralenti à chaud sera automatiquement ajusté par l'ECU, les ajustements sont donc simplement
-temporaire jusqu'à ce que MEMS ait réappris son propre paramètre "optimal".
+temporaire jusqu'à ce que l'ecu MEMS ait réappris son propre paramètre "optimal".
 AVERTISSEMENT : LES RÉGLAGES DE LA RÉGLAGE DU CARBURANT ET DE L'AVANCE D'ALLUMAGE PEUVENT PROVOQUER DES DOMMAGES IMPORTANTS AU MOTEUR,
 TOUS LES AJUSTEMENTS SONT À VOS PROPRES RISQUES !
 
-------------------------------------------------
-Notes sur la construction à partir des sources sous Windows
-------------------------------------------------
-Si vous construisez à partir des sources dans un environnement Windows, notez que la valeur par défaut
-l'installation de Qt inclut une dépendance à l'internationalisation d'ICU
-bibliothèques. La version Win32 de MEMSGauge que je fournis était liée à
-une version personnalisée de Qt et n'a pas ces dépendances. Si vous souhaitez
-construisez Qt de la même manière, configurez l'arborescence des sources de Qt avec cette commande :
-
-configure.bat -release -opensource -no-icu -no-opengl -nomake exemples -nomake tests
