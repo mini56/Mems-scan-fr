@@ -167,8 +167,11 @@ QToolTip {
 
 // Feuille de style moderne - thème sombre
 static const QString STYLE_DARK = R"(
+Qstring {
+    color: #3e68c9;
+}
 QWidget {
-    background-color: #1e2128;
+background-color: #1e2128;
     color: #e6e8ee;
     font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
     font-size: 9pt;
