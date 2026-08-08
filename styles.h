@@ -167,7 +167,7 @@ QToolTip {
 
 // Feuille de style moderne - thème sombre
 static const QString STYLE_DARK = R"(
-Qstring {
+QString {
     color: #3e68c9;
 }
 QWidget {
