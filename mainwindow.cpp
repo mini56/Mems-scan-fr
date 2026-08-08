@@ -202,10 +202,6 @@ void MainWindow::setupWidgets()
   // Ajout de l'onglet "Analyse" (lecture de fichiers CSV enregistrés)
   AnalysisTab *analysisTab = new AnalysisTab(this);
   m_ui->Tab_main->addTab(analysisTab, "Analyse");
-	  
-  // Ajout de l'onglet "TEST" (lecture de fichiers XML enregistrés)
-  TestTab *testTab = new TestTab(this);
-  m_ui->Tab_main->addTab(testTab, "Test");
 	
   // connect menu item signals
   connect(m_ui->m_exitAction, SIGNAL(triggered()), this, SLOT(onExitSelected()));
