@@ -427,15 +427,6 @@ AnalysisTab::AnalysisTab(QWidget *parent) : QWidget(parent), m_overlayMode(false
 
   QVBoxLayout *rootLayout = new QVBoxLayout(this);
 
-  // --- Barre du haut : bouton de superposition ---
-  QHBoxLayout *topBar = new QHBoxLayout();
-  m_overlayButton = new QPushButton("Superposer toutes les courbes sélectionnées", this);
-  m_overlayButton->setCheckable(true);
-  connect(m_overlayButton, SIGNAL(toggled(bool)), this, SLOT(onOverlayToggled(bool)));
-  topBar->addWidget(m_overlayButton);
-  topBar->addStretch();
-  rootLayout->addLayout(topBar);
-
   QHBoxLayout *mainLayout = new QHBoxLayout();
   rootLayout->addLayout(mainLayout, 1);
 
@@ -462,6 +453,16 @@ AnalysisTab::AnalysisTab(QWidget *parent) : QWidget(parent), m_overlayMode(false
   selectRow->addWidget(m_selectAllButton);
   selectRow->addWidget(m_selectNoneButton);
   leftLayout->addLayout(selectRow);
+
+  // Bouton de superposition : sous les deux boutons ci-dessus, largeur fixe
+  // pour qu'il ne change pas de taille selon le texte affiché
+  m_overlayButton = new QPushButton("Superposer toutes\nles courbes sélectionnées", leftPanel);
+  m_overlayButton->setCheckable(true);
+  m_overlayButton->setMinimumWidth(290);
+  m_overlayButton->setFixedWidth(290);
+  m_overlayButton->setMinimumHeight(44);
+  connect(m_overlayButton, SIGNAL(toggled(bool)), this, SLOT(onOverlayToggled(bool)));
+  leftLayout->addWidget(m_overlayButton);
 
   QLabel *voiesLabel = new QLabel("Voies disponibles :", leftPanel);
   voiesLabel->setStyleSheet("font-weight: 600; margin-top: 6px;");
