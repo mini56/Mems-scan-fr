@@ -22,6 +22,8 @@
 #include <QPixmap>
 #include <QScreen>
 #include <QStatusBar>
+#include <QScrollArea>
+#include <QFrame>
 
 MainWindow::MainWindow(QWidget* parent):QMainWindow(parent),
 m_ui(new Ui::MainWindow),
@@ -197,12 +199,12 @@ void MainWindow::setupWidgets()
   // Ajout de l'onglet "toutes les mesures" (reconstruit : son contenu
   // d'origine était resté commenté dans le fichier .ui, le rendant vide)
   m_summaryTab = new SummaryTab(this);
-  m_ui->Tab_main->insertTab(2, m_summaryTab, "Toutes les mesures");
+  m_ui->Tab_main->insertTab(2, m_summaryTab, "toutes les mesures");
 
   // Ajout de l'onglet "Analyse" (lecture de fichiers CSV enregistrés)
   AnalysisTab *analysisTab = new AnalysisTab(this);
   m_ui->Tab_main->addTab(analysisTab, "Analyse");
-	
+
   // connect menu item signals
   connect(m_ui->m_exitAction, SIGNAL(triggered()), this, SLOT(onExitSelected()));
   connect(m_ui->m_editSettingsAction, SIGNAL(triggered()), this, SLOT(onEditOptionsClicked()));
