@@ -24,6 +24,148 @@
 #include <QStatusBar>
 #include <QScrollArea>
 #include <QFrame>
+#include <QTabWidget>
+#include <QVBoxLayout>
+#include <QEvent>
+#include <QVector>
+#include <QtMath>
+
+
+// Les pages Qt Designer historiques utilisent des coordonnées absolues.
+// Cet adaptateur conserve leurs proportions lorsque la fenêtre change de taille.
+// Les onglets modernes qui possèdent déjà un QLayout restent gérés par Qt.
+class ResponsiveTabPages : public QObject
+{
+public:
+  explicit ResponsiveTabPages(QTabWidget *tabs) : QObject(tabs)
+  {
+    for (int index = 0; index < tabs->count(); ++index)
+    {
+      QWidget *page = tabs->widget(index);
+      if (!page || page->layout())
+        continue;
+
+      Page p;
+      p.widget = page;
+      p.contentWidth = 0;
+      p.contentHeight = 0;
+      p.lastFontSize = 0;
+
+      // Seuls les enfants directs sont repositionnés : les sous-layouts
+      // restent maîtres de leurs propres boutons, libellés et indicateurs.
+      const QList<QWidget *> children =
+          page->findChildren<QWidget *>(QString(), Qt::FindDirectChildrenOnly);
+      for (QWidget *child : children)
+      {
+        if (child->parentWidget() != page)
+          continue;
+        Item item;
+        item.widget = child;
+        item.designRect = child->geometry();
+        p.items.append(item);
+        p.contentWidth = qMax(p.contentWidth, item.designRect.right() + 1);
+        p.contentHeight = qMax(p.contentHeight, item.designRect.bottom() + 1);
+      }
+
+      if (p.items.isEmpty())
+        continue;
+      m_pages.append(p);
+      page->installEventFilter(this);
+    }
+
+    connect(tabs, &QTabWidget::currentChanged, this, [this, tabs](int index) {
+      QWidget *active = tabs->widget(index);
+      for (Page &page : m_pages)
+      {
+        if (page.widget == active)
+        {
+          fit(page);
+          break;
+        }
+      }
+    });
+
+    for (Page &page : m_pages)
+      fit(page);
+  }
+
+protected:
+  bool eventFilter(QObject *target, QEvent *event) override
+  {
+    if (event->type() == QEvent::Resize)
+    {
+      for (Page &page : m_pages)
+      {
+        if (page.widget == target)
+        {
+          fit(page);
+          break;
+        }
+      }
+    }
+    return QObject::eventFilter(target, event);
+  }
+
+private:
+  struct Item
+  {
+    QWidget *widget;
+    QRect designRect;
+  };
+  struct Page
+  {
+    QWidget *widget;
+    QVector<Item> items;
+    int contentWidth;
+    int contentHeight;
+    int lastFontSize;
+  };
+
+  void fit(Page &page)
+  {
+    const int availableWidth = page.widget->width();
+    const int availableHeight = page.widget->height();
+    if (availableWidth <= 0 || availableHeight <= 0 ||
+        page.contentWidth <= 0 || page.contentHeight <= 0)
+      return;
+
+    // Garder les cadrans ronds, sans déformation horizontale / verticale.
+    // La place libre est répartie autour du contenu plutôt que laissée
+    // entièrement à droite comme dans la version historique.
+    const qreal widthScale =
+        qreal(qMax(1, availableWidth - 20)) / (page.contentWidth + 10);
+    const qreal heightScale =
+        qreal(qMax(1, availableHeight - 12)) / (page.contentHeight + 10);
+    const qreal scale = qMin(widthScale, heightScale);
+    const int xOffset = qMax(0, (availableWidth - qRound(page.contentWidth * scale)) / 2);
+    const int yOffset = qMax(0, (availableHeight - qRound(page.contentHeight * scale)) / 2);
+
+    // La feuille de style historique impose 9pt sur QWidget. Adapter
+    // également cette valeur, sans changer les couleurs ni les contrôles.
+    const int fontSize = qBound(7, qRound(9.0 * scale), 20);
+    if (fontSize != page.lastFontSize)
+    {
+      page.lastFontSize = fontSize;
+      page.widget->setStyleSheet(QStringLiteral("QWidget { font-size: %1pt; }")
+                                 .arg(fontSize));
+    }
+
+    for (const Item &item : page.items)
+    {
+      const QRect &r = item.designRect;
+      const QRect target(
+          xOffset + qRound(r.x() * scale),
+          yOffset + qRound(r.y() * scale),
+          qMax(1, qRound(r.width() * scale)),
+          qMax(1, qRound(r.height() * scale)));
+      if (item.widget->geometry() != target)
+        item.widget->setGeometry(target);
+    }
+  }
+
+  QVector<Page> m_pages;
+};
+
 
 MainWindow::MainWindow(QWidget* parent):QMainWindow(parent),
 m_ui(new Ui::MainWindow),
@@ -130,6 +272,19 @@ m_mems(0), m_options(0), m_aboutBox(0), m_pleaseWaitBox(0), m_helpViewerDialog(0
 
   qApp->processEvents();
   setupWidgets();
+
+  // Le conteneur principal suit désormais la surface réelle de la fenêtre
+  // (maximisation, redimensionnement, résolution et mise à l'échelle Windows).
+  // La barre de connexion reste au-dessus et les onglets prennent tout
+  // l'espace restant. Aucun changement dans les fonctions ECU.
+  QVBoxLayout *windowLayout = new QVBoxLayout(m_ui->centralWidget);
+  windowLayout->setContentsMargins(0, 0, 0, 0);
+  windowLayout->setSpacing(2);
+  windowLayout->addWidget(m_ui->layoutWidget_7, 0, Qt::AlignLeft);
+  windowLayout->addWidget(m_ui->Tab_main, 1);
+  m_ui->layoutWidget_8->hide(); // emplacement historique inutilisé
+
+  new ResponsiveTabPages(m_ui->Tab_main);
 }
 
 MainWindow::~MainWindow()
